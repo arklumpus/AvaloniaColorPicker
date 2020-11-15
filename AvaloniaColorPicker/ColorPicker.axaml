@@ -1,0 +1,311 @@
+﻿<!--
+    AvaloniaColorPicker - A color picker for Avalonia.
+    Copyright (C) 2020  Giorgio Bianchini
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, version 3.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:local="clr-namespace:AvaloniaColorPicker;assembly=AvaloniaColorPicker"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AvaloniaColorPicker.ColorPicker" Margin="10">
+  <UserControl.Styles>
+    <Styles>
+      <Style Selector="Path.HexagonLeftPalette:pointerover">
+        <Setter Property="Margin" Value="-6.93,0,0,0" />
+      </Style>
+      <Style Selector="Path.HexagonRightPalette:pointerover">
+        <Setter Property="Margin" Value="6.93,0,0,0" />
+      </Style>
+
+      <Style Selector="Path.HexagonLeft">
+        <Setter Property="Transitions">
+          <Transitions>
+            <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1" />
+          </Transitions>
+        </Setter>
+      </Style>
+      <Style Selector="Path.HexagonRight">
+        <Setter Property="Transitions">
+          <Transitions>
+            <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1" />
+          </Transitions>
+        </Setter>
+      </Style>
+      <Style Selector="Path.HexagonCenter">
+        <Setter Property="Stroke" Value="{StaticResource ThemeBackgroundBrush}" />
+        <Setter Property="Transitions">
+          <Setter.Value>
+            <Transitions>
+              <DoubleTransition Property="StrokeThickness" Duration="0:0:0.1" />
+            </Transitions>
+          </Setter.Value>
+        </Setter>
+      </Style>
+      <Style Selector="Path.HexagonCenter:pointerover">
+        <Setter Property="StrokeThickness" Value="4" />
+      </Style>
+      <Style Selector="Path.HexagonLeft:pointerover">
+        <Setter Property="RenderTransform" Value="translate(-6.93px, 0)" />
+      </Style>
+      <Style Selector="Path.HexagonRight:pointerover">
+        <Setter Property="RenderTransform" Value="translate(6.93px, 0)" />
+      </Style>
+    </Styles>
+  </UserControl.Styles>
+  <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Grid VerticalAlignment="Center">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="256" />
+        <ColumnDefinition Width="15" />
+        <ColumnDefinition Width="24" />
+        <ColumnDefinition Width="15" />
+        <ColumnDefinition Width="24" />
+        <ColumnDefinition Width="15" />
+        <ColumnDefinition Width="128" />
+        <ColumnDefinition Width="15" />
+        <ColumnDefinition Width="128" />
+        <ColumnDefinition Width="15" />
+        <ColumnDefinition Width="128" />
+      </Grid.ColumnDefinitions>
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+        <RowDefinition Height="Auto" />
+      </Grid.RowDefinitions>
+      <Canvas Grid.Column="0" Width="256" Height="256" Name="Canvas2D" Grid.RowSpan="2">
+        <Canvas Width="256" Height="256" Name="Canvas2DImageContainer">
+
+        </Canvas>
+        <Ellipse Width="16" Height="16" Stroke="White" StrokeThickness="2" Margin="-8,-8" Name="2DPositionCircle">
+          <Ellipse.RenderTransform>
+            <TranslateTransform X="0" Y="0">
+              <TranslateTransform.Transitions>
+                <Transitions>
+                  <DoubleTransition Property="X" Duration="0:0:0.1" />
+                  <DoubleTransition Property="Y" Duration="0:0:0.1" />
+                </Transitions>
+              </TranslateTransform.Transitions>
+            </TranslateTransform>
+          </Ellipse.RenderTransform>
+        </Ellipse>
+      </Canvas>
+      <Canvas Grid.Column="2" Width="24" Height="256" Name="Canvas1D" Grid.RowSpan="2">
+        <Canvas Width="256" Height="256" Name="Canvas1DImageContainer">
+
+        </Canvas>
+        <Canvas Width="24" Height="8" Name="1DPositionCanvas">
+          <Rectangle Width="30" Height="10" Margin="-3,-5,0,0" Name="1DPositionRectangle" />
+          <Rectangle StrokeThickness="4" Stroke="#808080" Width="32" Height="12" Margin="-4,-6,0,0" StrokeJoin="Round" />
+          <Rectangle StrokeThickness="2" Stroke="White" Width="30" Height="10" Margin="-3,-5,0,0" StrokeJoin="Round"/>
+          <Canvas.RenderTransform>
+            <TranslateTransform X="0" Y="0">
+              <TranslateTransform.Transitions>
+                <Transitions>
+                  <DoubleTransition Property="X" Duration="0:0:0.1" />
+                  <DoubleTransition Property="Y" Duration="0:0:0.1" />
+                </Transitions>
+              </TranslateTransform.Transitions>
+            </TranslateTransform>
+          </Canvas.RenderTransform>
+        </Canvas>
+      </Canvas>
+      <Canvas Grid.Column="4" Width="24" Height="256" Name="AlphaCanvas" Grid.RowSpan="2">
+        <Canvas Name="AlphaCanvasBackground" Width="24" Height="256" Background="White"></Canvas>
+        <Canvas Width="256" Height="256" Name="AlphaCanvasImageContainer">
+
+        </Canvas>
+        <Canvas Width="24" Height="8" Name="AlphaPositionCanvas">
+          <Rectangle Width="30" Height="10" Margin="-3,-5,0,0" Fill="White"></Rectangle>
+          <Rectangle Width="8" Height="10" Margin="0,-5,0,0" Fill="#DCDCDC"></Rectangle>
+          <Rectangle Width="8" Height="10" Margin="16,-5,0,0" Fill="#DCDCDC"></Rectangle>
+          <Rectangle Width="30" Height="10" Margin="-3,-5,0,0" Name="AlphaPositionRectangle" />
+          <Rectangle StrokeThickness="4" Stroke="#808080" Width="32" Height="12" Margin="-4,-6,0,0" StrokeJoin="Round" />
+          <Rectangle StrokeThickness="2" Stroke="White" Width="30" Height="10" Margin="-3,-5,0,0" StrokeJoin="Round"/>
+          <Canvas.RenderTransform>
+            <TranslateTransform X="0" Y="0">
+              <TranslateTransform.Transitions>
+                <Transitions>
+                  <DoubleTransition Property="X" Duration="0:0:0.1" />
+                  <DoubleTransition Property="Y" Duration="0:0:0.1" />
+                </Transitions>
+              </TranslateTransform.Transitions>
+            </TranslateTransform>
+          </Canvas.RenderTransform>
+        </Canvas>
+      </Canvas>
+      <Grid Grid.Column="6" MinHeight="256" VerticalAlignment="Center" Grid.RowSpan="2">
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="1*" MaxHeight="96" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <ComboBox SelectedIndex="1" Name="ColorSpaceComboBox">
+          <ComboBox.Items>
+            <ComboBoxItem>RGB</ComboBoxItem>
+            <ComboBoxItem>HSB</ComboBoxItem>
+            <ComboBoxItem>L*a*b*</ComboBoxItem>
+          </ComboBox.Items>
+        </ComboBox>
+
+        <Canvas Grid.Row="1" Height="96" Name="ColorSpaceCanvas" Margin="0,5,0,5">
+
+        </Canvas>
+        <Grid Grid.Row="2">
+          <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="1*" />
+          </Grid.ColumnDefinitions>
+          <ToggleButton IsChecked="True" IsEnabled="False" Name="Dim1Toggle">H</ToggleButton>
+          <ToggleButton Grid.Column="1" Name="Dim2Toggle">S</ToggleButton>
+          <ToggleButton Grid.Column="2" Name="Dim3Toggle">B</ToggleButton>
+        </Grid>
+
+        <TextBlock Grid.Row="3" TextAlignment="Center" Name="CurrentBlock">current</TextBlock>
+        <Viewbox Grid.Row="4" MaxHeight="96" Margin="0,2,0,0">
+          <Canvas Width="128" Height="96">
+
+            <Path Data="M0,24 L13.86,0 L41.57,0 L55.43,24 L41.57,48 L13.86,48 Z" Fill="#80FF0000" Margin="16,48,0,0" Name="HexagonColor5" Cursor="Hand" Classes="HexagonLeft"></Path>
+            <Path Data="M0,24 L13.86,0 L41.57,0 L55.43,24 L41.57,48 L13.86,48 Z" Fill="#80FF0000" Margin="16,0,0,0" Name="HexagonColor1" Cursor="Hand" Classes="HexagonLeft"></Path>
+
+            <Path Data="M0,24 L13.86,0 L41.57,0 L55.43,24 L41.57,48 L13.86,48 Z" Fill="#80008000" Margin="57.57,48,0,0" Name="HexagonColor8" Cursor="Hand" Classes="HexagonRight"></Path>
+            <Path Data="M0,24 L13.86,0 L41.57,0 L55.43,24 L41.57,48 L13.86,48 Z" Fill="#80008000" Margin="57.57,0,0,0" Name="HexagonColor4" Cursor="Hand" Classes="HexagonRight"></Path>
+
+            <Path Data="M0,24 L13.86,0 L41.57,0 L55.43,24 L41.57,48 L13.86,48 Z" Fill="#800000FF" Margin="43.71,48,0,0" Name="HexagonColor7" Cursor="Hand" Classes="HexagonRight"></Path>
+            <Path Data="M0,24 L13.86,0 L41.57,0 L55.43,24 L41.57,48 L13.86,48 Z" Fill="#800000FF" Margin="43.71,0,0,0" Name="HexagonColor3" Cursor="Hand" Classes="HexagonRight"></Path>
+
+            <Path Data="M0,24 L13.86,0 L41.57,0 L55.43,24 L41.57,48 L13.86,48 Z" Fill="#80FFFF00" Margin="29.86,48,0,0" Name="HexagonColor6"></Path>
+            <Path Data="M0,24 L13.86,0 L41.57,0 L55.43,24 L41.57,48 L13.86,48 Z" Fill="#80FFFF00" Margin="29.86,0,0,0" Name="HexagonColor2" Cursor="Hand" Classes="HexagonCenter"></Path>
+          </Canvas>
+        </Viewbox>
+        <TextBlock Grid.Row="5" TextAlignment="Center" Name="NewBlock">new</TextBlock>
+      </Grid>
+      <Grid Grid.Column="8" VerticalAlignment="Center" >
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="15" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Grid.ColumnSpan="2">RGB</TextBlock>
+
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,5" Grid.Row="1">R:</TextBlock>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="R_NUD" Padding="5,2,5,0" Grid.Row="1"></NumericUpDown>
+
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Margin="0,0,0,5">G:</TextBlock>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="G_NUD" Grid.Row="2" Padding="5,2,5,0"></NumericUpDown>
+
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3" Margin="0,0,0,5">B:</TextBlock>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="B_NUD" Grid.Row="3" Padding="5,2,5,0"></NumericUpDown>
+
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Grid.ColumnSpan="2" Grid.Row="5">HSB</TextBlock>
+
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="6" Margin="0,0,0,5">H:</TextBlock>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="H_NUD" Grid.Row="6" Padding="5,2,5,0"></NumericUpDown>
+
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="7" Margin="0,0,0,5">S:</TextBlock>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="S_NUD" Grid.Row="7" Padding="5,2,5,0"></NumericUpDown>
+
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="8" Margin="0,0,0,5">B:</TextBlock>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="V_NUD" Grid.Row="8" Padding="5,2,5,0"></NumericUpDown>
+      </Grid>
+      <Grid Grid.Column="10" VerticalAlignment="Center">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="15" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="15" />
+          <RowDefinition Height="Auto" />
+          <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Grid.ColumnSpan="2">CIELAB</TextBlock>
+
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,5" Grid.Row="1">L*:</TextBlock>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="100" Margin="5,0,0,5" Name="L_NUD" Padding="5,2,5,0" Grid.Row="1"></NumericUpDown>
+
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Margin="0,0,0,5">a*:</TextBlock>
+        <NumericUpDown Grid.Column="1" Minimum="-100" Maximum="100" Margin="5,0,0,5" Name="a_NUD" Grid.Row="2" Padding="5,2,5,0"></NumericUpDown>
+
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3" Margin="0,0,0,5">b*:</TextBlock>
+        <NumericUpDown Grid.Column="1" Minimum="-100" Maximum="100" Margin="5,0,0,5" Name="b_NUD" Grid.Row="3" Padding="5,2,5,0"></NumericUpDown>
+
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Grid.ColumnSpan="2" Grid.Row="5">Transparency</TextBlock>
+
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="6" Margin="0,0,0,5">A:</TextBlock>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="A_NUD" Grid.Row="6" Padding="5,2,5,0"></NumericUpDown>
+
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Grid.ColumnSpan="2" Grid.Row="8">Hex</TextBlock>
+
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="9" Margin="0,0,0,5">#</TextBlock>
+        <TextBox Grid.Column="1" Text="000000" Grid.Row="9" VerticalContentAlignment="Center" Margin="5,0,0,5" Name="Hex_Box"></TextBox>
+      </Grid>
+      <Grid Grid.Column="8" Grid.ColumnSpan="3" Grid.Row="1">
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <TextBlock VerticalAlignment="Center" Margin="2,0,0,0">Colour-blind mode:</TextBlock>
+        <ComboBox Grid.Column="1" Margin="5, 5, 0, 5" SelectedIndex="0" Name="ColourBlindnessBox">
+          <ComboBox.Items>
+            <ComboBoxItem>Normal vision</ComboBoxItem>
+            <ComboBoxItem>Protanopia</ComboBoxItem>
+            <ComboBoxItem>Deuteranopia</ComboBoxItem>
+            <ComboBoxItem>Tritanopia</ComboBoxItem>
+            <ComboBoxItem>Cone achromatopsia</ComboBoxItem>
+            <ComboBoxItem>Rod achromatopsia</ComboBoxItem>
+          </ComboBox.Items>
+        </ComboBox>
+      </Grid>
+
+
+      <local:PaletteSelector Grid.Row="2" Grid.ColumnSpan="11" Name="PaletteSelector">
+
+      </local:PaletteSelector>
+
+      <Grid Grid.ColumnSpan="11" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0" Name="WarningTooltip" IsHitTestVisible="False" Grid.RowSpan="2">
+        <Border Background="{StaticResource ThemeBackgroundBrush}" Padding="10,2,10,2" CornerRadius="5" BorderBrush="{StaticResource ThemeBorderHighBrush}" BorderThickness="1">
+          <TextBlock Text="The colour falls outside of the sRGB colour space!"  HorizontalAlignment="Center" />
+        </Border>
+        <Grid.Transitions>
+          <Transitions>
+            <DoubleTransition Property="Opacity" Duration="0:0:0.1" />
+          </Transitions>
+        </Grid.Transitions>
+      </Grid>
+    </Grid>
+  </Grid>
+</UserControl>

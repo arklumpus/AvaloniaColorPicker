@@ -1,0 +1,17 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:colorpicker="clr-namespace:AvaloniaColorPicker;assembly=AvaloniaColorPicker"
+        mc:Ignorable="d" Width="200" Height="100"
+        x:Class="ColorButtonDemo.MainWindow"
+        Title="ColorButtonDemo">
+  <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width ="Auto" />
+      <ColumnDefinition Width ="Auto" />
+    </Grid.ColumnDefinitions>
+    <TextBlock Margin="5">Select colour:</TextBlock>
+    <colorpicker:ColorButton Grid.Column="1" Color="#56B4E9"></colorpicker:ColorButton>
+  </Grid>
+</Window>

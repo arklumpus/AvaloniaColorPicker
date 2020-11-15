@@ -1,0 +1,43 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaColorPicker", "AvaloniaColorPicker\AvaloniaColorPicker.csproj", "{8DDBA87E-F8AA-4FBC-9BBE-DAF33F8913B8}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColorPickerDemo", "ColorPickerDemo\ColorPickerDemo.csproj", "{E2E508AD-77B3-4748-AA79-5B7B0F1570BA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabColorSpaceCache", "LabColorSpaceCache\LabColorSpaceCache.csproj", "{EA73DA92-4A09-480E-BEEB-B946FA43E0A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorButtonDemo", "ColorButtonDemo\ColorButtonDemo.csproj", "{395EEBF6-9282-44BA-81D8-A48C1E37B67E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8DDBA87E-F8AA-4FBC-9BBE-DAF33F8913B8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DDBA87E-F8AA-4FBC-9BBE-DAF33F8913B8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DDBA87E-F8AA-4FBC-9BBE-DAF33F8913B8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DDBA87E-F8AA-4FBC-9BBE-DAF33F8913B8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E2E508AD-77B3-4748-AA79-5B7B0F1570BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E2E508AD-77B3-4748-AA79-5B7B0F1570BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E2E508AD-77B3-4748-AA79-5B7B0F1570BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E2E508AD-77B3-4748-AA79-5B7B0F1570BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA73DA92-4A09-480E-BEEB-B946FA43E0A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA73DA92-4A09-480E-BEEB-B946FA43E0A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA73DA92-4A09-480E-BEEB-B946FA43E0A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA73DA92-4A09-480E-BEEB-B946FA43E0A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{395EEBF6-9282-44BA-81D8-A48C1E37B67E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{395EEBF6-9282-44BA-81D8-A48C1E37B67E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{395EEBF6-9282-44BA-81D8-A48C1E37B67E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{395EEBF6-9282-44BA-81D8-A48C1E37B67E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {73E7A6DB-73F9-49C4-B346-3C9823B00D35}
+	EndGlobalSection
+EndGlobal
