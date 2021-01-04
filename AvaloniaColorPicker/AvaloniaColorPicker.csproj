@@ -8,7 +8,7 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <Company>University of Bristol</Company>
     <Description>A colour picker control for Avalonia, with support for RGB, HSB and CIELAB colour spaces, palettes and colour blindness simulation.</Description>
-    <Version>1.0.1-preview6</Version>
+    <Version>1.0.1-rc1</Version>
     <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/arklumpus/ColorPicker</PackageProjectUrl>
     <PackageIcon>icon.png</PackageIcon>
@@ -42,7 +42,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Avalonia" Version="0.10.0-preview6" />
+    <PackageReference Include="Avalonia" Version="0.10.0-rc1" />
   </ItemGroup>
 
 </Project>
