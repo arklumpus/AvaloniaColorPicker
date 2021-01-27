@@ -6,6 +6,6 @@
   <ItemGroup>
     <PackageReference Include="Avalonia" Version="0.10.0" />
     <PackageReference Include="Avalonia.Desktop" Version="0.10.0" />
-    <PackageReference Include="AvaloniaColorPicker" Version="1.0.2" />
+    <PackageReference Include="AvaloniaColorPicker" Version="1.0.3" />
   </ItemGroup>
 </Project>

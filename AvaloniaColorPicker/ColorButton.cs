@@ -26,9 +26,21 @@ using Avalonia.Media.Transformation;
 using Avalonia.Styling;
 using System;
 using System.Threading.Tasks;
+using System.Linq;
 
 namespace AvaloniaColorPicker
 {
+    internal class MyToggleButton : ToggleButton, IStyleable
+    {
+        Type IStyleable.StyleKey => typeof(ToggleButton);
+
+        public void Unpress()
+        {
+            this.PseudoClasses.Remove(":pressed");
+        }
+    }
+
+
     /// <summary>
     /// A control that can be used to select a <see cref="Avalonia.Media.Color"/>.
     /// </summary>
@@ -52,7 +64,7 @@ namespace AvaloniaColorPicker
 
         private ColorVisualBrush ColorBrush { get; }
 
-        private ToggleButton ContentButton { get; }
+        private MyToggleButton ContentButton { get; }
 
         /// <summary>
         /// Creates a new <see cref="ColorButton"/> instance.
@@ -61,7 +73,7 @@ namespace AvaloniaColorPicker
         {
             SetStyles();
 
-            ContentButton = new ToggleButton();
+            ContentButton = new MyToggleButton();
 
             ContentButton.Classes.Add("ContentButton");
             ContentButton.Padding = new Thickness(4, 4, 0, 4);
@@ -112,7 +124,7 @@ namespace AvaloniaColorPicker
             paletteGrid.RowDefinitions.Add(new RowDefinition(0, GridUnitType.Auto));
             paletteGrid.RowDefinitions.Add(new RowDefinition(0, GridUnitType.Auto));
 
-            Button openColorPickerButton = new Button() { Content = "More colours...", HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center };
+            Button openColorPickerButton = new Button() { Content = "More colours...", HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center, FontFamily = this.FontFamily, FontSize = this.FontSize };
             Grid.SetRow(openColorPickerButton, 1);
             paletteGrid.Children.Add(openColorPickerButton);
 
@@ -123,7 +135,7 @@ namespace AvaloniaColorPicker
             openColorPickerButton.Click += async (s, e) =>
             {
                 palettePopup.Close();
-                ColorPickerWindow win = new ColorPickerWindow(Color);
+                ColorPickerWindow win = new ColorPickerWindow(Color) { FontFamily = this.FontFamily, FontSize = this.FontSize };
                 Color? newCol = await win.ShowDialog(this.FindLogicalAncestorOfType<Window>());
                 if (newCol != null)
                 {
@@ -148,7 +160,7 @@ namespace AvaloniaColorPicker
                         }
                         else
                         {
-                            ColorPickerWindow win = new ColorPickerWindow(Color);
+                            ColorPickerWindow win = new ColorPickerWindow(Color) { FontFamily = this.FontFamily, FontSize = this.FontSize };
                             Color? newCol = await win.ShowDialog(this.FindLogicalAncestorOfType<Window>());
                             if (newCol != null)
                             {
@@ -428,19 +440,37 @@ namespace AvaloniaColorPicker
                 leftPath.Classes.Remove("centerOverBlurring");
             };
 
-            leftPath.PointerPressed += (s, e) =>
+            leftPath.PointerPressed += async(s, e) =>
             {
                 this.Color = lighterColor;
+                ContentButton.IsChecked = false;
+
+                await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(async () =>
+                {
+                    ContentButton.Unpress();
+                });
             };
 
-            rightPath.PointerPressed += (s, e) =>
+            rightPath.PointerPressed += async (s, e) =>
             {
                 this.Color = darkerColor;
+                ContentButton.IsChecked = false;
+
+                await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(async () =>
+                {
+                    ContentButton.Unpress();
+                });
             };
 
-            centerPath.PointerPressed += (s, e) =>
+            centerPath.PointerPressed += async (s, e) =>
             {
                 this.Color = color;
+                ContentButton.IsChecked = false;
+
+                await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(async () =>
+                {
+                    ContentButton.Unpress();
+                });
             };
 
             RelativePoint renderTransformOrigin = new RelativePoint(centerX, centerY, RelativeUnit.Absolute);
