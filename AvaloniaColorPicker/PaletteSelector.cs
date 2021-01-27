@@ -115,7 +115,13 @@ namespace AvaloniaColorPicker
             mainGrid.RowDefinitions.Add(new RowDefinition(0, GridUnitType.Auto));
             mainGrid.RowDefinitions.Add(new RowDefinition(0, GridUnitType.Auto));
 
-            StackPanel headerPanel = new StackPanel() { Orientation = Avalonia.Layout.Orientation.Horizontal };
+            Grid headerPanel = new Grid();
+            headerPanel.ColumnDefinitions.Add(new ColumnDefinition(0, GridUnitType.Auto));
+            headerPanel.ColumnDefinitions.Add(new ColumnDefinition(0, GridUnitType.Auto));
+            headerPanel.ColumnDefinitions.Add(new ColumnDefinition(0, GridUnitType.Auto));
+            headerPanel.ColumnDefinitions.Add(new ColumnDefinition(0, GridUnitType.Auto));
+            headerPanel.ColumnDefinitions.Add(new ColumnDefinition(0, GridUnitType.Auto));
+            headerPanel.ColumnDefinitions.Add(new ColumnDefinition(1, GridUnitType.Star));
             mainGrid.Children.Add(headerPanel);
 
             headerPanel.Children.Add(new TextBlock() { Text = "Palette:", Margin = new Avalonia.Thickness(5), VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center });
@@ -129,11 +135,13 @@ namespace AvaloniaColorPicker
                 defaultIndex = Palettes.IndexOf(Palette.CurrentPalette);
             }
 
-            PaletteSelectorBox = new ComboBox() { Items = paletteNames, SelectedIndex = defaultIndex };
+            PaletteSelectorBox = new ComboBox() { Items = paletteNames, SelectedIndex = defaultIndex, VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center };
+            Grid.SetColumn(PaletteSelectorBox, 1);
             headerPanel.Children.Add(PaletteSelectorBox);
 
             Canvas deleteCanvas = GetDeleteCanvas();
             deleteCanvas.Margin = new Thickness(5, 0, 0, 0);
+            Grid.SetColumn(deleteCanvas, 2);
             headerPanel.Children.Add(deleteCanvas);
             deleteCanvas.PointerPressed += (s, e) =>
             {
@@ -159,6 +167,7 @@ namespace AvaloniaColorPicker
             };
 
             Canvas saveCanvas = GetSaveCanvas();
+            Grid.SetColumn(saveCanvas, 3);
             headerPanel.Children.Add(saveCanvas);
             saveCanvas.PointerPressed += (s, e) =>
             {
@@ -166,6 +175,7 @@ namespace AvaloniaColorPicker
             };
 
             Canvas addCanvas = GetAddCanvas();
+            Grid.SetColumn(addCanvas, 4);
             headerPanel.Children.Add(addCanvas);
             addCanvas.PointerPressed += async (s, e) =>
             {
@@ -173,7 +183,8 @@ namespace AvaloniaColorPicker
                 addCanvas.Classes.Remove("pressed");
             };
 
-            PaletteDescription = new TextBlock() { FontStyle = FontStyle.Italic, Foreground = new SolidColorBrush(Color.FromRgb(128, 128, 128)), VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center, Margin = new Thickness(5) };
+            PaletteDescription = new TextBlock() { FontStyle = FontStyle.Italic, Foreground = new SolidColorBrush(Color.FromRgb(128, 128, 128)), VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center, Margin = new Thickness(5), TextWrapping = TextWrapping.Wrap };
+            Grid.SetColumn(PaletteDescription, 5);
             headerPanel.Children.Add(PaletteDescription);
 
             ScrollViewer paletteScroller = new ScrollViewer() { HorizontalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Auto, VerticalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Disabled, HorizontalContentAlignment = Avalonia.Layout.HorizontalAlignment.Left, Margin = new Thickness(5) };
@@ -776,8 +787,8 @@ namespace AvaloniaColorPicker
             this.Styles.Add(ButtonBGOver);
 
             Style ButtonBGOverPath = new Style(x => x.OfType<Canvas>().Class("ButtonBG").Class(":pointerover").Child().OfType<Avalonia.Controls.Shapes.Path>());
-            ButtonBGOverPath.Setters.Add(new Setter(Avalonia.Controls.Shapes.Path.StrokeProperty, Application.Current.FindResource("ThemeBackgroundBrush")));
-            ButtonBGOverPath.Setters.Add(new Setter(Avalonia.Controls.Shapes.Path.FillProperty, Application.Current.FindResource("ThemeBackgroundBrush")));
+            ButtonBGOverPath.Setters.Add(new Setter(Avalonia.Controls.Shapes.Path.StrokeProperty, Colours.BackgroundColour));
+            ButtonBGOverPath.Setters.Add(new Setter(Avalonia.Controls.Shapes.Path.FillProperty, Colours.BackgroundColour));
             this.Styles.Add(ButtonBGOverPath);
 
             Style ButtonBGPressed = new Style(x => x.OfType<Canvas>().Class("ButtonBG").Class("pressed"));

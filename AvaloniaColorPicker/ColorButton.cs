@@ -72,7 +72,7 @@ namespace AvaloniaColorPicker
             mainGrid.ColumnDefinitions.Add(new ColumnDefinition(1, GridUnitType.Star));
             mainGrid.ColumnDefinitions.Add(new ColumnDefinition(16, GridUnitType.Pixel));
 
-            Border colorBorder = new Border() { MinHeight = 16, MinWidth = 24, BorderThickness = new Avalonia.Thickness(1), BorderBrush = (IBrush)Application.Current.FindResource("ThemeForegroundBrush"), HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch, VerticalAlignment = Avalonia.Layout.VerticalAlignment.Stretch };
+            Border colorBorder = new Border() { MinHeight = 16, MinWidth = 24, BorderThickness = new Avalonia.Thickness(1), BorderBrush = Colours.ForegroundColour, HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch, VerticalAlignment = Avalonia.Layout.VerticalAlignment.Stretch };
 
             mainGrid.Children.Add(colorBorder);
 
@@ -105,14 +105,14 @@ namespace AvaloniaColorPicker
             };
             mainGrid.Children.Add(palettePopup);
 
-            Border paletteBorder = new Border() { BorderThickness = new Thickness(1), BorderBrush = (IBrush)Application.Current.FindResource("ThemeBorderLowBrush") };
+            Border paletteBorder = new Border() { BorderThickness = new Thickness(1), BorderBrush = Colours.BorderLowColour, Background = Colours.BackgroundColour };
             palettePopup.Child = paletteBorder;
 
             Grid paletteGrid = new Grid() { Margin = new Thickness(5) };
             paletteGrid.RowDefinitions.Add(new RowDefinition(0, GridUnitType.Auto));
             paletteGrid.RowDefinitions.Add(new RowDefinition(0, GridUnitType.Auto));
 
-            Button openColorPickerButton = new Button() { Content = "More colours..." };
+            Button openColorPickerButton = new Button() { Content = "More colours...", HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Center };
             Grid.SetRow(openColorPickerButton, 1);
             paletteGrid.Children.Add(openColorPickerButton);
 
@@ -198,15 +198,15 @@ namespace AvaloniaColorPicker
         private void SetStyles()
         {
             Style arrowColor = new Style(x => x.OfType<ToggleButton>().Class("ContentButton").Child().OfType<Grid>().Child().OfType<Canvas>().Class("ArrowCanvas").Child().OfType<Path>());
-            arrowColor.Setters.Add(new Setter(Path.FillProperty, Application.Current.FindResource("ThemeForegroundBrush")));
+            arrowColor.Setters.Add(new Setter(Path.FillProperty, Colours.ForegroundColour));
             this.Styles.Add(arrowColor);
 
             Style arrowColorPressed = new Style(x => x.OfType<ToggleButton>().Class("ContentButton").Class(":pressed").Child().OfType<Grid>().Child().OfType<Canvas>().Class("ArrowCanvas").Child().OfType<Path>());
-            arrowColorPressed.Setters.Add(new Setter(Path.FillProperty, Application.Current.FindResource("ThemeControlHighlightLowBrush")));
+            arrowColorPressed.Setters.Add(new Setter(Path.FillProperty, Colours.ControlHighlightLowColour));
             this.Styles.Add(arrowColorPressed);
 
             Style arrowColorActive = new Style(x => x.OfType<ToggleButton>().Class("ContentButton").Class(":checked").Child().OfType<Grid>().Child().OfType<Canvas>().Class("ArrowCanvas").Child().OfType<Path>());
-            arrowColorActive.Setters.Add(new Setter(Path.FillProperty, Application.Current.FindResource("ThemeControlHighlightLowBrush")));
+            arrowColorActive.Setters.Add(new Setter(Path.FillProperty, Colours.ControlHighlightLowColour));
             this.Styles.Add(arrowColorActive);
 
             Style canvasRotationActive = new Style(x => x.OfType<ToggleButton>().Class("ContentButton").Class(":checked").Child().OfType<Grid>().Child().OfType<Canvas>().Class("ArrowCanvas"));
@@ -234,7 +234,7 @@ namespace AvaloniaColorPicker
                 this.Styles.Add(HexagonRight);
 
                 Style HexagonCenter = new Style(x => x.OfType<Path>().Class("HexagonCenterButton"));
-                HexagonCenter.Setters.Add(new Setter(Path.StrokeProperty, Application.Current.FindResource("ThemeBackgroundBrush")));
+                HexagonCenter.Setters.Add(new Setter(Path.StrokeProperty, Colours.BackgroundColour));
                 HexagonCenter.Setters.Add(new Setter(Path.TransitionsProperty, strokeTransitions));
                 this.Styles.Add(HexagonCenter);
             }

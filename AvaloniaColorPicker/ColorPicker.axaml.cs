@@ -299,6 +299,11 @@ namespace AvaloniaColorPicker
         {
             this.InitializeComponent();
 
+            ((Style)((Styles)this.Styles[0])[4]).Setters.Add(new Setter(Path.StrokeProperty, Colours.BackgroundColour));
+
+            this.FindControl<Border>("WarningTooltipBorder").BorderBrush = Colours.BorderLowColour;
+            this.FindControl<Border>("WarningTooltipBorder").Background = Colours.BackgroundColour;
+
             IBrush alphaBGBrush = Brush.Parse("#DCDCDC");
 
             for (int i = 0; i < 256 / 8; i++)

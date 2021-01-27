@@ -18,7 +18,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:local="clr-namespace:AvaloniaColorPicker;assembly=AvaloniaColorPicker"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="864" d:DesignHeight="450"
              x:Class="AvaloniaColorPicker.ColorPicker" Margin="10">
   <UserControl.Styles>
     <Styles>
@@ -28,7 +28,6 @@
       <Style Selector="Path.HexagonRightPalette:pointerover">
         <Setter Property="Margin" Value="6.93,0,0,0" />
       </Style>
-
       <Style Selector="Path.HexagonLeft">
         <Setter Property="Transitions">
           <Transitions>
@@ -44,7 +43,8 @@
         </Setter>
       </Style>
       <Style Selector="Path.HexagonCenter">
-        <Setter Property="Stroke" Value="{StaticResource ThemeBackgroundBrush}" />
+        <!--
+        <Setter Property="Stroke" Value="{StaticResource ThemeBackgroundBrush}" />-->
         <Setter Property="Transitions">
           <Setter.Value>
             <Transitions>
@@ -75,9 +75,9 @@
         <ColumnDefinition Width="15" />
         <ColumnDefinition Width="128" />
         <ColumnDefinition Width="15" />
-        <ColumnDefinition Width="128" />
+        <ColumnDefinition Width="160" />
         <ColumnDefinition Width="15" />
-        <ColumnDefinition Width="128" />
+        <ColumnDefinition Width="160" />
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -171,9 +171,9 @@
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="1*" />
           </Grid.ColumnDefinitions>
-          <ToggleButton IsChecked="True" IsEnabled="False" Name="Dim1Toggle">H</ToggleButton>
-          <ToggleButton Grid.Column="1" Name="Dim2Toggle">S</ToggleButton>
-          <ToggleButton Grid.Column="2" Name="Dim3Toggle">B</ToggleButton>
+          <ToggleButton IsChecked="True" IsEnabled="False" Name="Dim1Toggle" HorizontalAlignment="Center" Width="32">H</ToggleButton>
+          <ToggleButton Grid.Column="1" Name="Dim2Toggle" HorizontalAlignment="Center" Width="32">S</ToggleButton>
+          <ToggleButton Grid.Column="2" Name="Dim3Toggle" HorizontalAlignment="Center" Width="32">B</ToggleButton>
         </Grid>
 
         <TextBlock Grid.Row="3" TextAlignment="Center" Name="CurrentBlock">current</TextBlock>
@@ -215,24 +215,24 @@
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Grid.ColumnSpan="2">RGB</TextBlock>
 
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,5" Grid.Row="1">R:</TextBlock>
-        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="R_NUD" Padding="5,2,5,0" Grid.Row="1"></NumericUpDown>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="R_NUD" Padding="5,0,5,0" VerticalContentAlignment="Center" Grid.Row="1"></NumericUpDown>
 
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Margin="0,0,0,5">G:</TextBlock>
-        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="G_NUD" Grid.Row="2" Padding="5,2,5,0"></NumericUpDown>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="G_NUD" Grid.Row="2" Padding="5,0,5,0" VerticalContentAlignment="Center"></NumericUpDown>
 
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3" Margin="0,0,0,5">B:</TextBlock>
-        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="B_NUD" Grid.Row="3" Padding="5,2,5,0"></NumericUpDown>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="B_NUD" Grid.Row="3" Padding="5,0,5,0" VerticalContentAlignment="Center"></NumericUpDown>
 
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Grid.ColumnSpan="2" Grid.Row="5">HSB</TextBlock>
 
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="6" Margin="0,0,0,5">H:</TextBlock>
-        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="H_NUD" Grid.Row="6" Padding="5,2,5,0"></NumericUpDown>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="H_NUD" Grid.Row="6" Padding="5,0,5,0" VerticalContentAlignment="Center"></NumericUpDown>
 
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="7" Margin="0,0,0,5">S:</TextBlock>
-        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="S_NUD" Grid.Row="7" Padding="5,2,5,0"></NumericUpDown>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="S_NUD" Grid.Row="7" Padding="5,0,5,0" VerticalContentAlignment="Center"></NumericUpDown>
 
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="8" Margin="0,0,0,5">B:</TextBlock>
-        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="V_NUD" Grid.Row="8" Padding="5,2,5,0"></NumericUpDown>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="V_NUD" Grid.Row="8" Padding="5,0,5,0" VerticalContentAlignment="Center"></NumericUpDown>
       </Grid>
       <Grid Grid.Column="10" VerticalAlignment="Center">
         <Grid.ColumnDefinitions>
@@ -255,23 +255,23 @@
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Grid.ColumnSpan="2">CIELAB</TextBlock>
 
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,5" Grid.Row="1">L*:</TextBlock>
-        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="100" Margin="5,0,0,5" Name="L_NUD" Padding="5,2,5,0" Grid.Row="1"></NumericUpDown>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="100" Margin="5,0,0,5" Name="L_NUD" Padding="5,0,5,0" VerticalContentAlignment="Center" Grid.Row="1"></NumericUpDown>
 
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Margin="0,0,0,5">a*:</TextBlock>
-        <NumericUpDown Grid.Column="1" Minimum="-100" Maximum="100" Margin="5,0,0,5" Name="a_NUD" Grid.Row="2" Padding="5,2,5,0"></NumericUpDown>
+        <NumericUpDown Grid.Column="1" Minimum="-100" Maximum="100" Margin="5,0,0,5" Name="a_NUD" Grid.Row="2" Padding="5,0,5,0" VerticalContentAlignment="Center"></NumericUpDown>
 
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3" Margin="0,0,0,5">b*:</TextBlock>
-        <NumericUpDown Grid.Column="1" Minimum="-100" Maximum="100" Margin="5,0,0,5" Name="b_NUD" Grid.Row="3" Padding="5,2,5,0"></NumericUpDown>
+        <NumericUpDown Grid.Column="1" Minimum="-100" Maximum="100" Margin="5,0,0,5" Name="b_NUD" Grid.Row="3" Padding="5,0,5,0" VerticalContentAlignment="Center"></NumericUpDown>
 
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Grid.ColumnSpan="2" Grid.Row="5">Transparency</TextBlock>
 
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="6" Margin="0,0,0,5">A:</TextBlock>
-        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="A_NUD" Grid.Row="6" Padding="5,2,5,0"></NumericUpDown>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="A_NUD" Grid.Row="6" Padding="5,0,5,0" VerticalContentAlignment="Center"></NumericUpDown>
 
         <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Grid.ColumnSpan="2" Grid.Row="8">Hex</TextBlock>
 
         <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="9" Margin="0,0,0,5">#</TextBlock>
-        <TextBox Grid.Column="1" Text="000000" Grid.Row="9" VerticalContentAlignment="Center" Margin="5,0,0,5" Name="Hex_Box"></TextBox>
+        <TextBox Grid.Column="1" Text="000000" Grid.Row="9" VerticalContentAlignment="Center" Margin="5,0,0,5" Name="Hex_Box" Padding="10,5,0,5"></TextBox>
       </Grid>
       <Grid Grid.Column="8" Grid.ColumnSpan="3" Grid.Row="1">
         <Grid.ColumnDefinitions>
@@ -297,7 +297,7 @@
       </local:PaletteSelector>
 
       <Grid Grid.ColumnSpan="11" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0" Name="WarningTooltip" IsHitTestVisible="False" Grid.RowSpan="2">
-        <Border Background="{StaticResource ThemeBackgroundBrush}" Padding="10,2,10,2" CornerRadius="5" BorderBrush="{StaticResource ThemeBorderHighBrush}" BorderThickness="1">
+        <Border Padding="10,2,10,2" CornerRadius="5" BorderThickness="1" Name="WarningTooltipBorder">
           <TextBlock Text="The colour falls outside of the sRGB colour space!"  HorizontalAlignment="Center" />
         </Border>
         <Grid.Transitions>
