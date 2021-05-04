@@ -22,6 +22,12 @@
              x:Class="AvaloniaColorPicker.ColorPicker" Margin="10">
   <UserControl.Styles>
     <Styles>
+      <Style Selector="Path.HexagonLeftPalette">
+        <Setter Property="Margin" Value="0,0,0,0" />
+      </Style>
+      <Style Selector="Path.HexagonRightPalette">
+        <Setter Property="Margin" Value="0,0,0,0" />
+      </Style>
       <Style Selector="Path.HexagonLeftPalette:pointerover">
         <Setter Property="Margin" Value="-6.93,0,0,0" />
       </Style>
@@ -29,6 +35,7 @@
         <Setter Property="Margin" Value="6.93,0,0,0" />
       </Style>
       <Style Selector="Path.HexagonLeft">
+        <Setter Property="RenderTransform" Value="none" />
         <Setter Property="Transitions">
           <Transitions>
             <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1" />
@@ -36,6 +43,7 @@
         </Setter>
       </Style>
       <Style Selector="Path.HexagonRight">
+        <Setter Property="RenderTransform" Value="none" />
         <Setter Property="Transitions">
           <Transitions>
             <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1" />
@@ -45,6 +53,7 @@
       <Style Selector="Path.HexagonCenter">
         <!--
         <Setter Property="Stroke" Value="{StaticResource ThemeBackgroundBrush}" />-->
+        <Setter Property="StrokeThickness" Value="0" />
         <Setter Property="Transitions">
           <Setter.Value>
             <Transitions>

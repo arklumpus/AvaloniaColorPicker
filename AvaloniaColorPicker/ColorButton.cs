@@ -239,14 +239,17 @@ namespace AvaloniaColorPicker
 
                 Style HexagonLeft = new Style(x => x.OfType<Path>().Class("HexagonLeftButton"));
                 HexagonLeft.Setters.Add(new Setter(Path.TransitionsProperty, transformTransitions));
+                HexagonLeft.Setters.Add(new Setter(Path.RenderTransformProperty, TransformOperations.Parse("none")));
                 this.Styles.Add(HexagonLeft);
 
                 Style HexagonRight = new Style(x => x.OfType<Path>().Class("HexagonRightButton"));
                 HexagonRight.Setters.Add(new Setter(Path.TransitionsProperty, transformTransitions));
+                HexagonRight.Setters.Add(new Setter(Path.RenderTransformProperty, TransformOperations.Parse("none")));
                 this.Styles.Add(HexagonRight);
 
                 Style HexagonCenter = new Style(x => x.OfType<Path>().Class("HexagonCenterButton"));
                 HexagonCenter.Setters.Add(new Setter(Path.StrokeProperty, Colours.BackgroundColour));
+                HexagonCenter.Setters.Add(new Setter(Path.StrokeThicknessProperty, 0.0));
                 HexagonCenter.Setters.Add(new Setter(Path.TransitionsProperty, strokeTransitions));
                 this.Styles.Add(HexagonCenter);
             }
