@@ -393,6 +393,9 @@ namespace AvaloniaColorPicker
 
         private static void AddColorHexagon(int i, Palette palette, Canvas container, PaletteSelector owner, List<PaletteColorInfo> infos, Func<Color, Color> colourBlindnessFunction)
         {
+            // Needed to address https://github.com/AvaloniaUI/Avalonia/issues/6257
+            Canvas myContainer = new Canvas() { Width = container.Width, Height = container.Height };
+
             AnimatableTransform transform = new AnimatableTransform(new Matrix(1, 0, 0, 1, 0, 0));
 
             PaletteColorInfo info = new PaletteColorInfo() { Index = i, OriginalIndex = i, Transform = transform };
@@ -437,6 +440,7 @@ namespace AvaloniaColorPicker
             {
                 rightPath.ZIndex = 10;
                 centerPath.ZIndex = 10;
+                myContainer.ZIndex = 10;
             };
 
             rightPath.PointerLeave += async (s, e) =>
@@ -444,6 +448,7 @@ namespace AvaloniaColorPicker
                 await Task.Delay(100);
                 rightPath.ZIndex = 0;
                 centerPath.ZIndex = 0;
+                myContainer.ZIndex = 0;
             };
 
             leftPath.PointerPressed += (s, e) =>
@@ -529,8 +534,8 @@ namespace AvaloniaColorPicker
                 fgStroke.Update(Colors.White, false);
             };
 
-            container.Children.Add(deleteBG.Path);
-            container.Children.Add(deleteFG);
+            myContainer.Children.Add(deleteBG.Path);
+            myContainer.Children.Add(deleteFG);
 
             bool deleteVisible = false;
 
@@ -567,15 +572,17 @@ namespace AvaloniaColorPicker
                     await Task.Delay(1000);
                     deleteBG.Path.ZIndex = 0;
                     deleteFG.ZIndex = 0;
+                    myContainer.ZIndex = 0;
                     fgTransform.Matrix = new Matrix(1, 0, 0, 1, 0, (info.Index % 2 == 0 ? 1 : -1) * HexagonRadius * Math.Sin(Math.PI / 3) * 0.7);
                     deleteBG.Points = new PointCollection4(_p1, _p2, _p2, _p1);
                     deleteVisible = false;
                 }
             };
 
-            container.Children.Add(leftPath);
-            container.Children.Add(rightPath);
-            container.Children.Add(centerPath);
+            myContainer.Children.Add(leftPath);
+            myContainer.Children.Add(rightPath);
+            myContainer.Children.Add(centerPath);
+            container.Children.Add(myContainer);
 
 
             deleteBG.Path.PointerPressed += async (s, e) =>
@@ -616,11 +623,12 @@ namespace AvaloniaColorPicker
                 infos.RemoveAt(info.Index);
                 palette.Colors.RemoveAt(info.Index);
 
-                container.Children.Remove(leftPath);
+                /*container.Children.Remove(leftPath);
                 container.Children.Remove(rightPath);
                 container.Children.Remove(centerPath);
                 container.Children.Remove(deleteBG.Path);
-                container.Children.Remove(deleteFG);
+                container.Children.Remove(deleteFG);*/
+                container.Children.Remove(myContainer);
             };
         }
 

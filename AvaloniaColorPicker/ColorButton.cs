@@ -289,6 +289,31 @@ namespace AvaloniaColorPicker
             Style centerOver = new Style(x => x.OfType<Path>().Class("centerOver"));
             centerOver.Setters.Add(new Setter(Path.ZIndexProperty, 10));
             this.Styles.Add(centerOver);
+
+
+            Style rightOverBlurringCanvas = new Style(x => x.OfType<Canvas>().Class("rightOverBlurring"));
+            rightOverBlurringCanvas.Setters.Add(new Setter(Canvas.ZIndexProperty, 9));
+            this.Styles.Add(rightOverBlurringCanvas);
+
+            Style leftOverBlurringCanvas = new Style(x => x.OfType<Canvas>().Class("leftOverBlurring"));
+            leftOverBlurringCanvas.Setters.Add(new Setter(Canvas.ZIndexProperty, 9));
+            this.Styles.Add(leftOverBlurringCanvas);
+
+            Style centerOverBlurringCanvas = new Style(x => x.OfType<Canvas>().Class("centerOverBlurring"));
+            centerOverBlurringCanvas.Setters.Add(new Setter(Canvas.ZIndexProperty, 9));
+            this.Styles.Add(centerOverBlurringCanvas);
+
+            Style rightOverCanvas = new Style(x => x.OfType<Canvas>().Class("rightOver"));
+            rightOverCanvas.Setters.Add(new Setter(Canvas.ZIndexProperty, 10));
+            this.Styles.Add(rightOverCanvas);
+
+            Style leftOverCanvas = new Style(x => x.OfType<Canvas>().Class("leftOver"));
+            leftOverCanvas.Setters.Add(new Setter(Canvas.ZIndexProperty, 10));
+            this.Styles.Add(leftOverCanvas);
+
+            Style centerOverCanvas = new Style(x => x.OfType<Canvas>().Class("centerOver"));
+            centerOverCanvas.Setters.Add(new Setter(Canvas.ZIndexProperty, 10));
+            this.Styles.Add(centerOverCanvas);
         }
 
         /// <inheritdoc/>
@@ -330,6 +355,9 @@ namespace AvaloniaColorPicker
 
         private void AddColorHexagon(int i, Palette palette, Canvas container)
         {
+            // Necessary to address https://github.com/AvaloniaUI/Avalonia/issues/6257
+            Canvas myContainer = new Canvas() { Width = container.Width, Height = container.Height };
+
             int rowInd = i / MaxColumns;
             int colInd = i % MaxColumns;
 
@@ -382,6 +410,7 @@ namespace AvaloniaColorPicker
                 rightPath.Classes.Add("rightOver");
                 centerPath.Classes.Add("rightOver");
                 leftPath.Classes.Add("rightOver");
+                myContainer.Classes.Add("rightOver");
             };
 
             rightPath.PointerLeave += async (s, e) =>
@@ -389,14 +418,17 @@ namespace AvaloniaColorPicker
                 rightPath.Classes.Add("rightOverBlurring");
                 centerPath.Classes.Add("rightOverBlurring");
                 leftPath.Classes.Add("rightOverBlurring");
+                myContainer.Classes.Add("rightOverBlurring");
                 rightPath.Classes.Remove("rightOver");
                 centerPath.Classes.Remove("rightOver");
                 leftPath.Classes.Remove("rightOver");
+                myContainer.Classes.Remove("rightOver");
 
                 await Task.Delay(100);
                 rightPath.Classes.Remove("rightOverBlurring");
                 centerPath.Classes.Remove("rightOverBlurring");
                 leftPath.Classes.Remove("rightOverBlurring");
+                myContainer.Classes.Remove("rightOverBlurring");
             };
 
             leftPath.PointerEnter += (s, e) =>
@@ -404,6 +436,7 @@ namespace AvaloniaColorPicker
                 rightPath.Classes.Add("leftOver");
                 centerPath.Classes.Add("leftOver");
                 leftPath.Classes.Add("leftOver");
+                myContainer.Classes.Add("leftOver");
             };
 
             leftPath.PointerLeave += async (s, e) =>
@@ -411,14 +444,17 @@ namespace AvaloniaColorPicker
                 rightPath.Classes.Add("leftOverBlurring");
                 centerPath.Classes.Add("leftOverBlurring");
                 leftPath.Classes.Add("leftOverBlurring");
+                myContainer.Classes.Add("leftOverBlurring");
                 rightPath.Classes.Remove("leftOver");
                 centerPath.Classes.Remove("leftOver");
                 leftPath.Classes.Remove("leftOver");
+                myContainer.Classes.Remove("leftOver");
 
                 await Task.Delay(100);
                 rightPath.Classes.Remove("leftOverBlurring");
                 centerPath.Classes.Remove("leftOverBlurring");
                 leftPath.Classes.Remove("leftOverBlurring");
+                myContainer.Classes.Remove("leftOverBlurring");
             };
 
             centerPath.PointerEnter += (s, e) =>
@@ -426,6 +462,7 @@ namespace AvaloniaColorPicker
                 rightPath.Classes.Add("centerOver");
                 centerPath.Classes.Add("centerOver");
                 leftPath.Classes.Add("centerOver");
+                myContainer.Classes.Add("centerOver");
             };
 
             centerPath.PointerLeave += async (s, e) =>
@@ -433,14 +470,17 @@ namespace AvaloniaColorPicker
                 rightPath.Classes.Add("centerOverBlurring");
                 centerPath.Classes.Add("centerOverBlurring");
                 leftPath.Classes.Add("centerOverBlurring");
+                myContainer.Classes.Add("centerOverBlurring");
                 rightPath.Classes.Remove("centerOver");
                 centerPath.Classes.Remove("centerOver");
                 leftPath.Classes.Remove("centerOver");
+                myContainer.Classes.Remove("centerOver");
 
                 await Task.Delay(100);
                 rightPath.Classes.Remove("centerOverBlurring");
                 centerPath.Classes.Remove("centerOverBlurring");
                 leftPath.Classes.Remove("centerOverBlurring");
+                myContainer.Classes.Remove("centerOverBlurring");
             };
 
             leftPath.PointerPressed += async(s, e) =>
@@ -482,9 +522,11 @@ namespace AvaloniaColorPicker
             rightPath.RenderTransformOrigin = renderTransformOrigin;
             centerPath.RenderTransformOrigin = renderTransformOrigin;
 
-            container.Children.Add(leftPath);
-            container.Children.Add(rightPath);
-            container.Children.Add(centerPath);
+            myContainer.Children.Add(leftPath);
+            myContainer.Children.Add(rightPath);
+            myContainer.Children.Add(centerPath);
+
+            container.Children.Add(myContainer);
         }
 
         private static PathGeometry GetHexagonPath(Point center, double radius)
