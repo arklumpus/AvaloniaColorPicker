@@ -10,7 +10,7 @@ The library contains three controls:
 * The `ColorPickerWindow` class represents a window containing a `ColorPicker` and two buttons (`OK` and `Cancel`); this can be used as a dialog window to let users choose a colour.
 * The `ColorButton` class represents a button displaying the currently selected colour, which can be clicked to choose another colour from the current palette or from a `ColorPickerWindow`.
 
-The library is released under the [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html) licence.
+The library is released under the [LGPLv3](https://www.gnu.org/licenses/lgpl-3.0.html) licence.
 
 <img src="screenshot.png">
 
