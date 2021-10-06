@@ -84,9 +84,9 @@
         <ColumnDefinition Width="15" />
         <ColumnDefinition Width="128" />
         <ColumnDefinition Width="15" />
-        <ColumnDefinition Width="160" />
+        <ColumnDefinition Width="180" />
         <ColumnDefinition Width="15" />
-        <ColumnDefinition Width="160" />
+        <ColumnDefinition Width="180" />
       </Grid.ColumnDefinitions>
       <Grid.RowDefinitions>
         <RowDefinition Height="Auto" />
@@ -163,7 +163,7 @@
           <RowDefinition Height="1*" MaxHeight="96" />
           <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <ComboBox SelectedIndex="1" Name="ColorSpaceComboBox">
+        <ComboBox SelectedIndex="1" Name="ColorSpaceComboBox" HorizontalAlignment="Stretch">
           <ComboBox.Items>
             <ComboBoxItem>RGB</ComboBoxItem>
             <ComboBoxItem>HSB</ComboBoxItem>
@@ -288,7 +288,7 @@
           <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
         <TextBlock VerticalAlignment="Center" Margin="2,0,0,0">Colour-blind mode:</TextBlock>
-        <ComboBox Grid.Column="1" Margin="5, 5, 0, 5" SelectedIndex="0" Name="ColourBlindnessBox">
+        <ComboBox Grid.Column="1" Margin="5, 5, 0, 5" SelectedIndex="0" Name="ColourBlindnessBox" VerticalAlignment="Center" HorizontalAlignment="Stretch">
           <ComboBox.Items>
             <ComboBoxItem>Normal vision</ComboBoxItem>
             <ComboBoxItem>Protanopia</ComboBoxItem>

@@ -21,9 +21,33 @@ using System.Threading.Tasks;
 namespace AvaloniaColorPicker
 {
     /// <summary>
+    /// Interface describing a contract for a colour picker window. Note that, even though this is not enforced by the interface, a class implementing this interface MUST have a constructor which takes a single <see cref="Color"/>? parameter representing the previous colour in the colour picker.
+    /// </summary>
+    public interface IColorPickerWindow
+    {
+        /// <summary>
+        /// The color that is currently selected in the <see cref="ColorPicker"/>.
+        /// </summary>
+        Color Color { get; set; }
+
+        /// <summary>
+        /// Represents the previously selected <see cref="Avalonia.Media.Color"/> (e.g. if the <see cref="ColorPicker"/> is being used to change the colour of an object, it would represent the previous colour of the object. Set to <see langword="null" /> to hide the previous colour display.
+        /// </summary>
+        Color? PreviousColor { get; set; }
+
+        /// <summary>
+        /// Shows the <see cref="ColorPickerWindow"/> as a dialog.
+        /// </summary>
+        /// <param name="parent">The <see cref="ColorPickerWindow"/>'s owner window.</param>
+        /// <returns>The selected <see cref="Avalonia.Media.Color"/> if the user clicks on the "OK" button; <see langword="null"/> otherwise.</returns>
+        Task<Color?> ShowDialog(Window parent);
+    }
+
+
+    /// <summary>
     /// A <see cref="Window"/> containing a <see cref="ColorPicker"/> control.
     /// </summary>
-    public class ColorPickerWindow : Window
+    public class ColorPickerWindow : Window, IColorPickerWindow
     {
         /// <summary>
         /// The color that is currently selected in the <see cref="ColorPicker"/>.

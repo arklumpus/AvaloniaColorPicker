@@ -40,11 +40,15 @@ namespace AvaloniaColorPicker
         }
     }
 
+    /// <summary>
+    /// A control that can be used to select a <see cref="Avalonia.Media.Color"/>.
+    /// </summary>
+    public class ColorButton : ColorButton<ColorPickerWindow> { }
 
     /// <summary>
     /// A control that can be used to select a <see cref="Avalonia.Media.Color"/>.
     /// </summary>
-    public class ColorButton : UserControl
+    public class ColorButton<T> : UserControl where T : Window, IColorPickerWindow
     {
         /// <summary>
         /// Defines the <see cref="Color"/> property.
@@ -66,8 +70,13 @@ namespace AvaloniaColorPicker
 
         private MyToggleButton ContentButton { get; }
 
+        private static T CreateColourPickerWindow(Color? previousColour)
+        {
+            return (T)typeof(T).GetConstructor(new Type[] { typeof(Color?) }).Invoke(new object[] { previousColour });
+        }
+
         /// <summary>
-        /// Creates a new <see cref="ColorButton"/> instance.
+        /// Creates a new <see cref="ColorButton{T}"/> instance.
         /// </summary>
         public ColorButton()
         {
@@ -135,8 +144,10 @@ namespace AvaloniaColorPicker
             openColorPickerButton.Click += async (s, e) =>
             {
                 palettePopup.Close();
-                ColorPickerWindow win = new ColorPickerWindow(Color) { FontFamily = this.FontFamily, FontSize = this.FontSize };
-                Color? newCol = await win.ShowDialog(this.FindLogicalAncestorOfType<Window>());
+                T win = CreateColourPickerWindow(Color);
+                win.FontFamily = this.FontFamily;
+                win.FontSize = this.FontSize;
+                Color? newCol = await ((IColorPickerWindow)win).ShowDialog(this.FindLogicalAncestorOfType<Window>());
                 if (newCol != null)
                 {
                     this.Color = newCol.Value;
@@ -160,8 +171,10 @@ namespace AvaloniaColorPicker
                         }
                         else
                         {
-                            ColorPickerWindow win = new ColorPickerWindow(Color) { FontFamily = this.FontFamily, FontSize = this.FontSize };
-                            Color? newCol = await win.ShowDialog(this.FindLogicalAncestorOfType<Window>());
+                            T win = CreateColourPickerWindow(Color);
+                            win.FontFamily = this.FontFamily;
+                            win.FontSize = this.FontSize;
+                            Color? newCol = await ((IColorPickerWindow)win).ShowDialog(this.FindLogicalAncestorOfType<Window>());
                             if (newCol != null)
                             {
                                 this.Color = newCol.Value;
@@ -317,7 +330,7 @@ namespace AvaloniaColorPicker
         }
 
         /// <inheritdoc/>
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged<T2>(AvaloniaPropertyChangedEventArgs<T2> change)
         {
             base.OnPropertyChanged(change);
 
@@ -488,7 +501,7 @@ namespace AvaloniaColorPicker
                 this.Color = lighterColor;
                 ContentButton.IsChecked = false;
 
-                await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(async () =>
+                await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     ContentButton.Unpress();
                 });
@@ -499,7 +512,7 @@ namespace AvaloniaColorPicker
                 this.Color = darkerColor;
                 ContentButton.IsChecked = false;
 
-                await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(async () =>
+                await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     ContentButton.Unpress();
                 });
@@ -510,7 +523,7 @@ namespace AvaloniaColorPicker
                 this.Color = color;
                 ContentButton.IsChecked = false;
 
-                await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(async () =>
+                await Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
                 {
                     ContentButton.Unpress();
                 });

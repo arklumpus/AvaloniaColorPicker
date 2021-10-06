@@ -4,11 +4,13 @@
 
 **AvaloniaColorPicker** is a colour picker control for Avalonia, with support for RGB, HSB and CIELAB colour spaces, palettes and colour blindness simulation.
 
-The library contains three controls:
+The library contains three main controls:
 
 * The `ColorPicker` class represents the core of the library: a color picker control that lets users specify a color in RGB, HSB or CIELAB components, either as raw values, or by using a 1-D slider combined with a 2-D surface. It can simulate how the colours would look when viewed by people with various kinds of color-blindness and it can suggest, for any given colour, a lighter and darker shade of the colour, as well as a "contrasting colour" that is stands up against it, even when viewed by colour-blind people. It has a "palette" feature to store user-defined colours that persist between sessions and are shared between all applications using this control). Seven predefined palettes are also provided.
 * The `ColorPickerWindow` class represents a window containing a `ColorPicker` and two buttons (`OK` and `Cancel`); this can be used as a dialog window to let users choose a colour.
 * The `ColorButton` class represents a button displaying the currently selected colour, which can be clicked to choose another colour from the current palette or from a `ColorPickerWindow`.
+
+In addition, the library contains the `IColorPickerWindow` interface, which defines a contract for a generic colour picker window, and the generic `ColorButton<T>` control, which can be used to obtain a control that is identical to the normal `ColorButton`, but shows a customised colour picker window instead of the default one (in particular, `ColorButton` inherits from `ColorButton<ColorPickerWindow>`).
 
 The library is released under the [LGPLv3](https://www.gnu.org/licenses/lgpl-3.0.html) licence.
 
@@ -66,6 +68,131 @@ button.PropertyChanged += (s, e) =>
 ```
 
 Please note that this event will fire even when the colour is changed programmatically (i.e. if you set the value of the `ColorPicker.Color` property in your code). The `Color` property can also be used in Avalonia styles or bindings.
+
+### `IColorPickerWindow` interface
+
+The `IColorPickerWindow` interface can be used to define a customised colour picker window (e.g. with a custom icon, or with more controls in addition to the colour picker). For example:
+
+```XAML
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:acp="clr-namespace:AvaloniaColorPicker;assembly=AvaloniaColorPicker"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="MyColourPicker.MyColourPickerWindow"
+        SizeToContent="WidthAndHeight" Title="Colour picker">
+  <Grid Margin="10">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="1*" />
+      <RowDefinition Height="Auto" />
+    </Grid.RowDefinitions>
+    <acp:ColorPicker Name="ColorPicker" />
+    <Grid Grid.Row="1">
+      <Grid.ColumnDefinitions>
+        <ColumnDefinition Width="1*" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="1*" />
+        <ColumnDefinition Width="Auto" />
+        <ColumnDefinition Width="1*" />
+      </Grid.ColumnDefinitions>
+      <Button Grid.Column="1" Width="100" Name="OKButton" HorizontalContentAlignment="Center">OK</Button>
+      <Button Grid.Column="3" Width="100" Name="CancelButton" HorizontalContentAlignment="Center">Cancel</Button>
+    </Grid>
+  </Grid>
+</Window>
+
+```
+
+```CSharp
+public partial class MyColorPickerWindow : Window, IColorPickerWindow
+{
+    // Currently selected colour.
+    public Color Color
+    {
+        get => this.FindControl<ColorPicker>("ColorPicker").Color;
+        set
+        {
+            this.FindControl<ColorPicker>("ColorPicker").Color = value;
+        }
+    }
+
+    // Previously selected colour (or null if not applicable).
+    public Color? PreviousColor
+    {
+        get => this.FindControl<ColorPicker>("ColorPicker").PreviousColor;
+        set
+        {
+            this.FindControl<ColorPicker>("ColorPicker").PreviousColor = value;
+        }
+    }
+
+    private bool Result = false;
+
+    // Parameterless constructor - required by Avalonia
+    public ColourPickerWindow()
+    {
+        this.InitializeComponent();
+
+        this.FindControl<ColorPicker>("ColorPicker").FindControl<TextBox>("Hex_Box").Padding = new Thickness(5, 2, 5, 2);
+
+        this.FindControl<Button>("OKButton").Click += (s, e) =>
+        {
+            this.Result = true;
+            this.Close();
+        };
+
+        this.FindControl<Button>("CancelButton").Click += (s, e) =>
+        {
+            this.Result = false;
+            this.Close();
+        };
+    }
+
+    // Constructor required (but not enforced).
+    public ColourPickerWindow(Color? previousColor) : this()
+    {
+        this.PreviousColor = previousColor;
+
+        if (previousColor != null)
+        {
+            this.Color = previousColor.Value;
+        }
+    }
+
+    // Show the window. This method should return null if the user clicked on the "Cancel" button, and the selected colour otherwise.
+    public new async Task<Color?> ShowDialog(Window parent)
+    {
+        await base.ShowDialog(parent);
+
+        if (this.Result)
+        {
+            return this.Color;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    private void InitializeComponent()
+    {
+        AvaloniaXamlLoader.Load(this);
+    }
+}
+```
+
+You can add other controls or methods to the XAML or C# code as needed.
+
+Note that, though this cannot be enforced by the interface, a class implementing `IColorPickerWindow` should always have a public parameterless constructor, as well as a constructor acccepting a single `Color?` parameter (this will be invoked by a `ColorButton<T>` to create and open the window).
+
+### `ColourButton<T>` control
+
+The `ColourButton<T>` control (where `T` inherits from `Window` and implements `IColorPickerWindow`) represents a colour button that opens a window of type `T` when the user clicks on it. You can use this control to obtain a colour button that opens your custom colour picker window as needed. For example:
+
+```CSharp
+grid.Children.Add(new ColorButton<MyColorPickerWindow>())
+```
 
 ## Source code
 
