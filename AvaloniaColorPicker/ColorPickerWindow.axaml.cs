@@ -73,6 +73,123 @@ namespace AvaloniaColorPicker
             }
         }
 
+        /// <summary>
+        /// Determines whether the palette selector is visible or not.
+        /// </summary>
+        public bool IsPaletteVisible
+        {
+            get => this.FindControl<ColorPicker>("ColorPicker").IsPaletteVisible;
+            set { this.FindControl<ColorPicker>("ColorPicker").IsPaletteVisible = value; }
+        }
+
+        /// <summary>
+        /// Determines whether the colour blindness selector is visible or not.
+        /// </summary>
+        public bool IsColourBlindnessSelectorVisible
+        {
+            get => this.FindControl<ColorPicker>("ColorPicker").IsColourBlindnessSelectorVisible;
+            set { this.FindControl<ColorPicker>("ColorPicker").IsColourBlindnessSelectorVisible = value; }
+        }
+
+        /// <summary>
+        /// Determines whether the hex value text box is visible or not.
+        /// </summary>
+        public bool IsHexVisible
+        {
+            get => this.FindControl<ColorPicker>("ColorPicker").IsHexVisible;
+            set { this.FindControl<ColorPicker>("ColorPicker").IsHexVisible = value; }
+        }
+
+        /// <summary>
+        /// Determines whether the alpha value text box and slider are visible or not.
+        /// </summary>
+        public bool IsAlphaVisible
+        {
+            get => this.FindControl<ColorPicker>("ColorPicker").IsAlphaVisible;
+            set { this.FindControl<ColorPicker>("ColorPicker").IsAlphaVisible = value; }
+        }
+
+        /// <summary>
+        /// Determines whether the CIELAB component text boxes are visible or not.
+        /// </summary>
+        public bool IsCIELABVisible
+        {
+            get => this.FindControl<ColorPicker>("ColorPicker").IsCIELABVisible;
+            set { this.FindControl<ColorPicker>("ColorPicker").IsCIELABVisible = value; }
+        }
+
+        /// <summary>
+        /// Determines whether the HSB component text boxes are visible or not.
+        /// </summary>
+        public bool IsHSBVisible
+        {
+            get => this.FindControl<ColorPicker>("ColorPicker").IsHSBVisible;
+            set { this.FindControl<ColorPicker>("ColorPicker").IsHSBVisible = value; }
+        }
+
+        /// <summary>
+        /// Determines whether RGB component text boxes are visible or not.
+        /// </summary>
+        public bool IsRGBVisible
+        {
+            get => this.FindControl<ColorPicker>("ColorPicker").IsRGBVisible;
+            set { this.FindControl<ColorPicker>("ColorPicker").IsRGBVisible = value; }
+        }
+
+        /// <summary>
+        /// Determines whether the colour space preview is visible or not.
+        /// </summary>
+        public bool IsColourSpacePreviewVisible
+        {
+            get => this.FindControl<ColorPicker>("ColorPicker").IsColourSpacePreviewVisible;
+            set { this.FindControl<ColorPicker>("ColorPicker").IsColourSpacePreviewVisible = value; }
+        }
+
+        /// <summary>
+        /// Determines whether the colour space selector is visible or not.
+        /// </summary>
+        public bool IsColourSpaceSelectorVisible
+        {
+            get => this.FindControl<ColorPicker>("ColorPicker").IsColourSpaceSelectorVisible;
+            set { this.FindControl<ColorPicker>("ColorPicker").IsColourSpaceSelectorVisible = value; }
+        }
+
+        /// <summary>
+        /// Determines whether the CIELAB colour space can be selected or not.
+        /// </summary>
+        public bool IsCIELABSelectable
+        {
+            get => this.FindControl<ColorPicker>("ColorPicker").IsCIELABSelectable;
+            set { this.FindControl<ColorPicker>("ColorPicker").IsCIELABSelectable = value; }
+        }
+
+        /// <summary>
+        /// Determines whether the HSB colour space can be selected or not.
+        /// </summary>
+        public bool IsHSBSelectable
+        {
+            get => this.FindControl<ColorPicker>("ColorPicker").IsHSBSelectable;
+            set { this.FindControl<ColorPicker>("ColorPicker").IsHSBSelectable = value; }
+        }
+
+        /// <summary>
+        /// Determines whether the RGB colour space can be selected or not.
+        /// </summary>
+        public bool IsRGBSelectable
+        {
+            get => this.FindControl<ColorPicker>("ColorPicker").IsRGBSelectable;
+            set { this.FindControl<ColorPicker>("ColorPicker").IsRGBSelectable = value; }
+        }
+
+        /// <summary>
+        /// The currently selected colour space.
+        /// </summary>
+        public ColorPicker.ColorSpaces ColorSpace
+        {
+            get => this.FindControl<ColorPicker>("ColorPicker").ColorSpace;
+            set { this.FindControl<ColorPicker>("ColorPicker").ColorSpace = value; }
+        }
+
         private bool Result = false;
 
         /// <summary>

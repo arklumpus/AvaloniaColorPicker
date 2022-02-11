@@ -91,9 +91,208 @@ namespace AvaloniaColorPicker
             }
         }
 
-        internal enum ColorSpaces
+        /// <summary>
+        /// Defines the <see cref="IsPaletteVisible"/> property.
+        /// </summary>
+        public static readonly StyledProperty<bool> IsPaletteVisibleProperty = AvaloniaProperty.Register<ColorPicker, bool>(nameof(IsPaletteVisible), true);
+
+        /// <summary>
+        /// Determines whether the palette selector is visible or not.
+        /// </summary>
+        public bool IsPaletteVisible
         {
-            RGB, HSB, LAB
+            get { return GetValue(IsPaletteVisibleProperty); }
+            set { SetValue(IsPaletteVisibleProperty, value); }
+        }
+
+        /// <summary>
+        /// Defines the <see cref="IsColourBlindnessSelectorVisible"/> property.
+        /// </summary>
+        public static readonly StyledProperty<bool> IsColourBlindnessSelectorVisibleProperty = AvaloniaProperty.Register<ColorPicker, bool>(nameof(IsColourBlindnessSelectorVisible), true);
+
+        /// <summary>
+        /// Determines whether the colour blindness selector is visible or not.
+        /// </summary>
+        public bool IsColourBlindnessSelectorVisible
+        {
+            get { return GetValue(IsColourBlindnessSelectorVisibleProperty); }
+            set { SetValue(IsColourBlindnessSelectorVisibleProperty, value); }
+        }
+
+        /// <summary>
+        /// Defines the <see cref="IsHexVisible"/> property.
+        /// </summary>
+        public static readonly StyledProperty<bool> IsHexVisibleProperty = AvaloniaProperty.Register<ColorPicker, bool>(nameof(IsHexVisible), true);
+
+        /// <summary>
+        /// Determines whether the hex value text box is visible or not.
+        /// </summary>
+        public bool IsHexVisible
+        {
+            get { return GetValue(IsHexVisibleProperty); }
+            set { SetValue(IsHexVisibleProperty, value); }
+        }
+
+        /// <summary>
+        /// Defines the <see cref="IsAlphaVisible"/> property.
+        /// </summary>
+        public static readonly StyledProperty<bool> IsAlphaVisibleProperty = AvaloniaProperty.Register<ColorPicker, bool>(nameof(IsAlphaVisible), true);
+
+        /// <summary>
+        /// Determines whether the alpha value text box and slider are visible or not.
+        /// </summary>
+        public bool IsAlphaVisible
+        {
+            get { return GetValue(IsAlphaVisibleProperty); }
+            set { SetValue(IsAlphaVisibleProperty, value); }
+        }
+
+        /// <summary>
+        /// Defines the <see cref="IsCIELABVisible"/> property.
+        /// </summary>
+        public static readonly StyledProperty<bool> IsCIELABVisibleProperty = AvaloniaProperty.Register<ColorPicker, bool>(nameof(IsCIELABVisible), true);
+
+        /// <summary>
+        /// Determines whether the CIELAB component text boxes are visible or not.
+        /// </summary>
+        public bool IsCIELABVisible
+        {
+            get { return GetValue(IsCIELABVisibleProperty); }
+            set { SetValue(IsCIELABVisibleProperty, value); }
+        }
+
+        /// <summary>
+        /// Defines the <see cref="IsHSBVisible"/> property.
+        /// </summary>
+        public static readonly StyledProperty<bool> IsHSBVisibleProperty = AvaloniaProperty.Register<ColorPicker, bool>(nameof(IsHSBVisible), true);
+
+        /// <summary>
+        /// Determines whether the HSB component text boxes are visible or not.
+        /// </summary>
+        public bool IsHSBVisible
+        {
+            get { return GetValue(IsHSBVisibleProperty); }
+            set { SetValue(IsHSBVisibleProperty, value); }
+        }
+
+        /// <summary>
+        /// Defines the <see cref="IsRGBVisible"/> property.
+        /// </summary>
+        public static readonly StyledProperty<bool> IsRGBVisibleProperty = AvaloniaProperty.Register<ColorPicker, bool>(nameof(IsRGBVisible), true);
+
+        /// <summary>
+        /// Determines whether RGB component text boxes are visible or not.
+        /// </summary>
+        public bool IsRGBVisible
+        {
+            get { return GetValue(IsRGBVisibleProperty); }
+            set { SetValue(IsRGBVisibleProperty, value); }
+        }
+
+        /// <summary>
+        /// Defines the <see cref="IsColourSpacePreviewVisible"/> property.
+        /// </summary>
+        public static readonly StyledProperty<bool> IsColourSpacePreviewVisibleProperty = AvaloniaProperty.Register<ColorPicker, bool>(nameof(IsColourSpacePreviewVisible), true);
+
+        /// <summary>
+        /// Determines whether the colour space preview is visible or not.
+        /// </summary>
+        public bool IsColourSpacePreviewVisible
+        {
+            get { return GetValue(IsColourSpacePreviewVisibleProperty); }
+            set { SetValue(IsColourSpacePreviewVisibleProperty, value); }
+        }
+
+        /// <summary>
+        /// Defines the <see cref="IsColourSpaceSelectorVisible"/> property.
+        /// </summary>
+        public static readonly StyledProperty<bool> IsColourSpaceSelectorVisibleProperty = AvaloniaProperty.Register<ColorPicker, bool>(nameof(IsColourSpaceSelectorVisible), true);
+
+        /// <summary>
+        /// Determines whether the colour space selector is visible or not.
+        /// </summary>
+        public bool IsColourSpaceSelectorVisible
+        {
+            get { return GetValue(IsColourSpaceSelectorVisibleProperty); }
+            set { SetValue(IsColourSpaceSelectorVisibleProperty, value); }
+        }
+
+        /// <summary>
+        /// Defines the <see cref="IsCIELABSelectable"/> property.
+        /// </summary>
+        public static readonly StyledProperty<bool> IsCIELABSelectableProperty = AvaloniaProperty.Register<ColorPicker, bool>(nameof(IsCIELABSelectable), true);
+
+        /// <summary>
+        /// Determines whether the CIELAB colour space can be selected or not.
+        /// </summary>
+        public bool IsCIELABSelectable
+        {
+            get { return GetValue(IsCIELABSelectableProperty); }
+            set { SetValue(IsCIELABSelectableProperty, value); }
+        }
+
+        /// <summary>
+        /// Defines the <see cref="IsHSBSelectable"/> property.
+        /// </summary>
+        public static readonly StyledProperty<bool> IsHSBSelectableProperty = AvaloniaProperty.Register<ColorPicker, bool>(nameof(IsHSBSelectable), true);
+
+        /// <summary>
+        /// Determines whether the HSB colour space can be selected or not.
+        /// </summary>
+        public bool IsHSBSelectable
+        {
+            get { return GetValue(IsHSBSelectableProperty); }
+            set { SetValue(IsHSBSelectableProperty, value); }
+        }
+
+        /// <summary>
+        /// Defines the <see cref="IsRGBSelectable"/> property.
+        /// </summary>
+        public static readonly StyledProperty<bool> IsRGBSelectableProperty = AvaloniaProperty.Register<ColorPicker, bool>(nameof(IsRGBSelectable), true);
+
+        /// <summary>
+        /// Determines whether the RGB colour space can be selected or not.
+        /// </summary>
+        public bool IsRGBSelectable
+        {
+            get { return GetValue(IsRGBSelectableProperty); }
+            set { SetValue(IsRGBSelectableProperty, value); }
+        }
+
+
+        /// <summary>
+        /// Defines the <see cref="ColorSpace"/> property.
+        /// </summary>
+        public static readonly StyledProperty<ColorSpaces> ColorSpaceProperty = AvaloniaProperty.Register<ColorPicker, ColorSpaces>(nameof(ColorSpace), ColorSpaces.HSB);
+
+        /// <summary>
+        /// The currently selected colour space.
+        /// </summary>
+        public ColorSpaces ColorSpace
+        {
+            get { return GetValue(ColorSpaceProperty); }
+            set { SetValue(ColorSpaceProperty, value); }
+        }
+
+        /// <summary>
+        /// Describes the possible colour spaces.
+        /// </summary>
+        public enum ColorSpaces
+        {
+            /// <summary>
+            /// The RGB colour space.
+            /// </summary>
+            RGB,
+
+            /// <summary>
+            /// The HSB colour space.
+            /// </summary>
+            HSB,
+
+            /// <summary>
+            /// The CIELAB colour space.
+            /// </summary>
+            LAB
         }
 
         internal enum ColorComponents
@@ -236,9 +435,6 @@ namespace AvaloniaColorPicker
             }
         }
 
-
-
-        private ColorSpaces ColorSpace { get; set; } = ColorSpaces.HSB;
         private ColorComponents ColorComponent { get; set; } = ColorComponents.H;
 
         /// <summary>
@@ -386,42 +582,6 @@ namespace AvaloniaColorPicker
                 ColorComponent = ColorComponents.B;
 
                 BuildColorInterface(true);
-            };
-
-            this.FindControl<ComboBox>("ColorSpaceComboBox").SelectionChanged += (s, e) =>
-            {
-                switch (this.FindControl<ComboBox>("ColorSpaceComboBox").SelectedIndex)
-                {
-                    case 0:
-                        ColorSpace = ColorSpaces.RGB;
-                        this.FindControl<ToggleButton>("Dim1Toggle").Content = "R";
-                        this.FindControl<ToggleButton>("Dim2Toggle").Content = "G";
-                        this.FindControl<ToggleButton>("Dim3Toggle").Content = "B";
-                        break;
-                    case 1:
-                        ColorSpace = ColorSpaces.HSB;
-                        this.FindControl<ToggleButton>("Dim1Toggle").Content = "H";
-                        this.FindControl<ToggleButton>("Dim2Toggle").Content = "S";
-                        this.FindControl<ToggleButton>("Dim3Toggle").Content = "B";
-                        break;
-                    case 2:
-                        ColorSpace = ColorSpaces.LAB;
-                        this.FindControl<ToggleButton>("Dim1Toggle").Content = "L*";
-                        this.FindControl<ToggleButton>("Dim2Toggle").Content = "a*";
-                        this.FindControl<ToggleButton>("Dim3Toggle").Content = "b*";
-                        break;
-                }
-
-                if (this.FindControl<ToggleButton>("Dim1Toggle").IsChecked != true)
-                {
-                    this.FindControl<ToggleButton>("Dim1Toggle").IsChecked = true;
-                }
-                else
-                {
-                    this.FindControl<ToggleButton>("Dim1Toggle").IsChecked = false;
-                    this.FindControl<ToggleButton>("Dim1Toggle").IsChecked = true;
-                }
-
             };
 
             this.FindControl<Path>("HexagonColor1").PointerPressed += HexagonPressed;
@@ -578,6 +738,78 @@ namespace AvaloniaColorPicker
             if (change.Property == PreviousColorProperty)
             {
                 UpdateDependingOnAlpha(true);
+            }
+            else if (change.Property == IsAlphaVisibleProperty)
+            {
+                if (change.NewValue.GetValueOrDefault<bool>())
+                {
+                    this.FindControl<Grid>("MainGrid").ColumnDefinitions[3].Width = new GridLength(15, GridUnitType.Pixel);
+                    this.FindControl<Grid>("MainGrid").ColumnDefinitions[4].Width = new GridLength(24, GridUnitType.Pixel);
+                }
+                else
+                {
+                    this.FindControl<Grid>("MainGrid").ColumnDefinitions[3].Width = new GridLength(0, GridUnitType.Pixel);
+                    this.FindControl<Grid>("MainGrid").ColumnDefinitions[4].Width = new GridLength(0, GridUnitType.Pixel);
+                }
+            }
+            else if (change.Property == ColorSpaceProperty)
+            {
+                switch (ColorSpace)
+                {
+                    case ColorSpaces.RGB:
+                        this.FindControl<ToggleButton>("Dim1Toggle").Content = "R";
+                        this.FindControl<ToggleButton>("Dim2Toggle").Content = "G";
+                        this.FindControl<ToggleButton>("Dim3Toggle").Content = "B";
+                        break;
+                    case ColorSpaces.HSB:
+                        this.FindControl<ToggleButton>("Dim1Toggle").Content = "H";
+                        this.FindControl<ToggleButton>("Dim2Toggle").Content = "S";
+                        this.FindControl<ToggleButton>("Dim3Toggle").Content = "B";
+                        break;
+                    case ColorSpaces.LAB:
+                        this.FindControl<ToggleButton>("Dim1Toggle").Content = "L*";
+                        this.FindControl<ToggleButton>("Dim2Toggle").Content = "a*";
+                        this.FindControl<ToggleButton>("Dim3Toggle").Content = "b*";
+                        break;
+                }
+
+                if (this.FindControl<ToggleButton>("Dim1Toggle").IsChecked != true)
+                {
+                    this.FindControl<ToggleButton>("Dim1Toggle").IsChecked = true;
+                }
+                else
+                {
+                    this.FindControl<ToggleButton>("Dim1Toggle").IsChecked = false;
+                    this.FindControl<ToggleButton>("Dim1Toggle").IsChecked = true;
+                }
+            }
+
+            if (change.Property == IsAlphaVisibleProperty || change.Property == IsHexVisibleProperty || change.Property == IsCIELABVisibleProperty || change.Property == IsColourBlindnessSelectorVisibleProperty)
+            {
+                if (!IsAlphaVisible && !IsHexVisible && !IsCIELABVisible && !IsColourBlindnessSelectorVisible)
+                {
+                    this.FindControl<Grid>("MainGrid").ColumnDefinitions[9].Width = new GridLength(0, GridUnitType.Pixel);
+                    this.FindControl<Grid>("MainGrid").ColumnDefinitions[10].Width = new GridLength(0, GridUnitType.Pixel);
+                }
+                else
+                {
+                    this.FindControl<Grid>("MainGrid").ColumnDefinitions[9].Width = new GridLength(15, GridUnitType.Pixel);
+                    this.FindControl<Grid>("MainGrid").ColumnDefinitions[10].Width = new GridLength(180, GridUnitType.Pixel);
+                }
+            }
+
+            if (change.Property == IsRGBVisibleProperty || change.Property == IsHSBVisibleProperty || change.Property == IsColourBlindnessSelectorVisibleProperty)
+            {
+                if (!IsRGBVisible && !IsHSBVisible && !IsColourBlindnessSelectorVisible)
+                {
+                    this.FindControl<Grid>("MainGrid").ColumnDefinitions[7].Width = new GridLength(0, GridUnitType.Pixel);
+                    this.FindControl<Grid>("MainGrid").ColumnDefinitions[8].Width = new GridLength(0, GridUnitType.Pixel);
+                }
+                else
+                {
+                    this.FindControl<Grid>("MainGrid").ColumnDefinitions[7].Width = new GridLength(15, GridUnitType.Pixel);
+                    this.FindControl<Grid>("MainGrid").ColumnDefinitions[8].Width = new GridLength(180, GridUnitType.Pixel);
+                }
             }
         }
 

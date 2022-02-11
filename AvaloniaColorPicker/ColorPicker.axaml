@@ -74,7 +74,7 @@
     </Styles>
   </UserControl.Styles>
   <Grid HorizontalAlignment="Center" VerticalAlignment="Center">
-    <Grid VerticalAlignment="Center">
+    <Grid VerticalAlignment="Center" Name="MainGrid">
       <Grid.ColumnDefinitions>
         <ColumnDefinition Width="256" />
         <ColumnDefinition Width="15" />
@@ -130,7 +130,7 @@
           </Canvas.RenderTransform>
         </Canvas>
       </Canvas>
-      <Canvas Grid.Column="4" Width="24" Height="256" Name="AlphaCanvas" Grid.RowSpan="2">
+      <Canvas Grid.Column="4" Width="24" Height="256" Name="AlphaCanvas" Grid.RowSpan="2" IsVisible="{Binding $parent[2].IsAlphaVisible}">
         <Canvas Name="AlphaCanvasBackground" Width="24" Height="256" Background="White"></Canvas>
         <Canvas Width="256" Height="256" Name="AlphaCanvasImageContainer">
 
@@ -163,15 +163,15 @@
           <RowDefinition Height="1*" MaxHeight="96" />
           <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <ComboBox SelectedIndex="1" Name="ColorSpaceComboBox" HorizontalAlignment="Stretch">
+        <ComboBox SelectedIndex="{Binding $parent[3].ColorSpace}" Name="ColorSpaceComboBox" HorizontalAlignment="Stretch" IsVisible="{Binding $parent[3].IsColourSpaceSelectorVisible}">
           <ComboBox.Items>
-            <ComboBoxItem>RGB</ComboBoxItem>
-            <ComboBoxItem>HSB</ComboBoxItem>
-            <ComboBoxItem>L*a*b*</ComboBoxItem>
+            <ComboBoxItem IsVisible="{Binding $parent[4].IsRGBSelectable}">RGB</ComboBoxItem>
+            <ComboBoxItem IsVisible="{Binding $parent[4].IsHSBSelectable}">HSB</ComboBoxItem>
+            <ComboBoxItem IsVisible="{Binding $parent[4].IsCIELABSelectable}">L*a*b*</ComboBoxItem>
           </ComboBox.Items>
         </ComboBox>
 
-        <Canvas Grid.Row="1" Height="96" Name="ColorSpaceCanvas" Margin="0,5,0,5">
+        <Canvas Grid.Row="1" Height="96" Name="ColorSpaceCanvas" Margin="0,5,0,5" IsVisible="{Binding $parent[3].IsColourSpacePreviewVisible}">
 
         </Canvas>
         <Grid Grid.Row="2">
@@ -221,27 +221,27 @@
           <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Grid.ColumnSpan="2">RGB</TextBlock>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Grid.ColumnSpan="2" IsVisible="{Binding $parent[3].IsRGBVisible}">RGB</TextBlock>
 
-        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,5" Grid.Row="1">R:</TextBlock>
-        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="R_NUD" Padding="5,0,5,0" VerticalContentAlignment="Center" Grid.Row="1"></NumericUpDown>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,5" Grid.Row="1" IsVisible="{Binding $parent[3].IsRGBVisible}">R:</TextBlock>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="R_NUD" Padding="5,0,5,0" VerticalContentAlignment="Center" Grid.Row="1" IsVisible="{Binding $parent[3].IsRGBVisible}"></NumericUpDown>
 
-        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Margin="0,0,0,5">G:</TextBlock>
-        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="G_NUD" Grid.Row="2" Padding="5,0,5,0" VerticalContentAlignment="Center"></NumericUpDown>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Margin="0,0,0,5" IsVisible="{Binding $parent[3].IsRGBVisible}">G:</TextBlock>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="G_NUD" Grid.Row="2" Padding="5,0,5,0" VerticalContentAlignment="Center" IsVisible="{Binding $parent[3].IsRGBVisible}"></NumericUpDown>
 
-        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3" Margin="0,0,0,5">B:</TextBlock>
-        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="B_NUD" Grid.Row="3" Padding="5,0,5,0" VerticalContentAlignment="Center"></NumericUpDown>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3" Margin="0,0,0,5" IsVisible="{Binding $parent[3].IsRGBVisible}">B:</TextBlock>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="B_NUD" Grid.Row="3" Padding="5,0,5,0" VerticalContentAlignment="Center" IsVisible="{Binding $parent[3].IsRGBVisible}"></NumericUpDown>
 
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Grid.ColumnSpan="2" Grid.Row="5">HSB</TextBlock>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Grid.ColumnSpan="2" Grid.Row="5" IsVisible="{Binding $parent[3].IsHSBVisible}">HSB</TextBlock>
 
-        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="6" Margin="0,0,0,5">H:</TextBlock>
-        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="H_NUD" Grid.Row="6" Padding="5,0,5,0" VerticalContentAlignment="Center"></NumericUpDown>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="6" Margin="0,0,0,5" IsVisible="{Binding $parent[3].IsHSBVisible}">H:</TextBlock>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="H_NUD" Grid.Row="6" Padding="5,0,5,0" VerticalContentAlignment="Center" IsVisible="{Binding $parent[3].IsHSBVisible}"></NumericUpDown>
 
-        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="7" Margin="0,0,0,5">S:</TextBlock>
-        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="S_NUD" Grid.Row="7" Padding="5,0,5,0" VerticalContentAlignment="Center"></NumericUpDown>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="7" Margin="0,0,0,5" IsVisible="{Binding $parent[3].IsHSBVisible}">S:</TextBlock>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="S_NUD" Grid.Row="7" Padding="5,0,5,0" VerticalContentAlignment="Center" IsVisible="{Binding $parent[3].IsHSBVisible}"></NumericUpDown>
 
-        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="8" Margin="0,0,0,5">B:</TextBlock>
-        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="V_NUD" Grid.Row="8" Padding="5,0,5,0" VerticalContentAlignment="Center"></NumericUpDown>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="8" Margin="0,0,0,5" IsVisible="{Binding $parent[3].IsHSBVisible}">B:</TextBlock>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="V_NUD" Grid.Row="8" Padding="5,0,5,0" VerticalContentAlignment="Center" IsVisible="{Binding $parent[3].IsHSBVisible}"></NumericUpDown>
       </Grid>
       <Grid Grid.Column="10" VerticalAlignment="Center">
         <Grid.ColumnDefinitions>
@@ -261,28 +261,28 @@
           <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Grid.ColumnSpan="2">CIELAB</TextBlock>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Grid.ColumnSpan="2" IsVisible="{Binding $parent[3].IsCIELABVisible}">CIELAB</TextBlock>
 
-        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,5" Grid.Row="1">L*:</TextBlock>
-        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="100" Margin="5,0,0,5" Name="L_NUD" Padding="5,0,5,0" VerticalContentAlignment="Center" Grid.Row="1"></NumericUpDown>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,5" Grid.Row="1" IsVisible="{Binding $parent[3].IsCIELABVisible}">L*:</TextBlock>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="100" Margin="5,0,0,5" Name="L_NUD" Padding="5,0,5,0" VerticalContentAlignment="Center" Grid.Row="1" IsVisible="{Binding $parent[3].IsCIELABVisible}"></NumericUpDown>
 
-        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Margin="0,0,0,5">a*:</TextBlock>
-        <NumericUpDown Grid.Column="1" Minimum="-100" Maximum="100" Margin="5,0,0,5" Name="a_NUD" Grid.Row="2" Padding="5,0,5,0" VerticalContentAlignment="Center"></NumericUpDown>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Margin="0,0,0,5" IsVisible="{Binding $parent[3].IsCIELABVisible}">a*:</TextBlock>
+        <NumericUpDown Grid.Column="1" Minimum="-100" Maximum="100" Margin="5,0,0,5" Name="a_NUD" Grid.Row="2" Padding="5,0,5,0" VerticalContentAlignment="Center" IsVisible="{Binding $parent[3].IsCIELABVisible}"></NumericUpDown>
 
-        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3" Margin="0,0,0,5">b*:</TextBlock>
-        <NumericUpDown Grid.Column="1" Minimum="-100" Maximum="100" Margin="5,0,0,5" Name="b_NUD" Grid.Row="3" Padding="5,0,5,0" VerticalContentAlignment="Center"></NumericUpDown>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="3" Margin="0,0,0,5" IsVisible="{Binding $parent[3].IsCIELABVisible}">b*:</TextBlock>
+        <NumericUpDown Grid.Column="1" Minimum="-100" Maximum="100" Margin="5,0,0,5" Name="b_NUD" Grid.Row="3" Padding="5,0,5,0" VerticalContentAlignment="Center" IsVisible="{Binding $parent[3].IsCIELABVisible}"></NumericUpDown>
 
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Grid.ColumnSpan="2" Grid.Row="5">Transparency</TextBlock>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Grid.ColumnSpan="2" Grid.Row="5" IsVisible="{Binding $parent[3].IsAlphaVisible}">Transparency</TextBlock>
 
-        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="6" Margin="0,0,0,5">A:</TextBlock>
-        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="A_NUD" Grid.Row="6" Padding="5,0,5,0" VerticalContentAlignment="Center"></NumericUpDown>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="6" Margin="0,0,0,5" IsVisible="{Binding $parent[3].IsAlphaVisible}">A:</TextBlock>
+        <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Name="A_NUD" Grid.Row="6" Padding="5,0,5,0" VerticalContentAlignment="Center" IsVisible="{Binding $parent[3].IsAlphaVisible}"></NumericUpDown>
 
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Grid.ColumnSpan="2" Grid.Row="8">Hex</TextBlock>
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,0,0,5" Grid.ColumnSpan="2" Grid.Row="8" IsVisible="{Binding $parent[3].IsHexVisible}">Hex</TextBlock>
 
-        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="9" Margin="0,0,0,5">#</TextBlock>
-        <TextBox Grid.Column="1" Text="000000" Grid.Row="9" VerticalContentAlignment="Center" Margin="5,0,0,5" Name="Hex_Box" Padding="10,5,0,5"></TextBox>
+        <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="9" Margin="0,0,0,5" IsVisible="{Binding $parent[3].IsHexVisible}">#</TextBlock>
+        <TextBox Grid.Column="1" Text="000000" Grid.Row="9" VerticalContentAlignment="Center" Margin="5,0,0,5" Name="Hex_Box" Padding="10,5,0,5" IsVisible="{Binding $parent[3].IsHexVisible}"></TextBox>
       </Grid>
-      <Grid Grid.Column="8" Grid.ColumnSpan="3" Grid.Row="1">
+      <Grid Grid.Column="8" Grid.ColumnSpan="3" Grid.Row="1" IsVisible="{Binding $parent[2].IsColourBlindnessSelectorVisible}">
         <Grid.ColumnDefinitions>
           <ColumnDefinition Width="Auto" />
           <ColumnDefinition Width="1*" />
@@ -301,7 +301,7 @@
       </Grid>
 
 
-      <local:PaletteSelector Grid.Row="2" Grid.ColumnSpan="11" Name="PaletteSelector">
+      <local:PaletteSelector Grid.Row="2" Grid.ColumnSpan="11" Name="PaletteSelector" IsVisible="{Binding $parent[2].IsPaletteVisible}">
 
       </local:PaletteSelector>
 
