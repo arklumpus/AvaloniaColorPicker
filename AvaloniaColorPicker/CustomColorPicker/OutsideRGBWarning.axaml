@@ -1,0 +1,33 @@
+<!--
+    AvaloniaColorPicker - A color picker for Avalonia.
+    Copyright (C) 2022  Giorgio Bianchini
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, version 3.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+    You should have received a copy of the GNU Lesser General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AvaloniaColorPicker.OutsideRGBWarning" Opacity="0">
+  <UserControl.Transitions>
+    <Transitions>
+      <DoubleTransition Property="Opacity" Duration="0:0:0.1" />
+    </Transitions>
+  </UserControl.Transitions>
+
+  <Grid HorizontalAlignment="Center" VerticalAlignment="Center" IsHitTestVisible="False">
+    <Border Padding="10,2,10,2" CornerRadius="5" BorderThickness="1" Name="WarningTooltipBorder">
+      <TextBlock Text="The colour falls outside of the sRGB colour space!"  HorizontalAlignment="Center" />
+    </Border>
+  </Grid>
+</UserControl>

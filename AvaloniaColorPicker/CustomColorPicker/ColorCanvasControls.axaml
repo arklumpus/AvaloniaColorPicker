@@ -1,0 +1,92 @@
+<!--
+    AvaloniaColorPicker - A color picker for Avalonia.
+    Copyright (C) 2022  Giorgio Bianchini
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, version 3.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+    You should have received a copy of the GNU Lesser General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AvaloniaColorPicker.ColorCanvasControls">
+  <Grid VerticalAlignment="Center" Name="MainGrid" Width="354" Height="272" HorizontalAlignment="Center" ClipToBounds="False">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="264" />
+      <ColumnDefinition Width="13" />
+      <ColumnDefinition Width="24" />
+      <ColumnDefinition Width="15" />
+      <ColumnDefinition Width="24" />
+    </Grid.ColumnDefinitions>
+    <Canvas Grid.Column="0" Width="256" Height="256" Name="Canvas2D" Margin="8,0,0,0">
+      <Canvas Width="256" Height="256" Name="Canvas2DImageContainer">
+
+      </Canvas>
+      <Ellipse Width="16" Height="16" Stroke="White" StrokeThickness="2" Margin="-8,-8" Name="2DPositionCircle">
+        <Ellipse.RenderTransform>
+          <TranslateTransform X="0" Y="0">
+            <TranslateTransform.Transitions>
+              <Transitions>
+                <DoubleTransition Property="X" Duration="0:0:0.1" />
+                <DoubleTransition Property="Y" Duration="0:0:0.1" />
+              </Transitions>
+            </TranslateTransform.Transitions>
+          </TranslateTransform>
+        </Ellipse.RenderTransform>
+      </Ellipse>
+    </Canvas>
+    <Canvas Grid.Column="2" Width="24" Height="256" Name="Canvas1D">
+      <Canvas Width="256" Height="256" Name="Canvas1DImageContainer">
+
+      </Canvas>
+      <Canvas Width="24" Height="8" Name="1DPositionCanvas">
+        <Rectangle Width="30" Height="10" Margin="-3,-5,0,0" Name="1DPositionRectangle" />
+        <Rectangle StrokeThickness="4" Stroke="#808080" Width="32" Height="12" Margin="-4,-6,0,0" StrokeJoin="Round" />
+        <Rectangle StrokeThickness="2" Stroke="White" Width="30" Height="10" Margin="-3,-5,0,0" StrokeJoin="Round"/>
+        <Canvas.RenderTransform>
+          <TranslateTransform X="0" Y="0">
+            <TranslateTransform.Transitions>
+              <Transitions>
+                <DoubleTransition Property="X" Duration="0:0:0.1" />
+                <DoubleTransition Property="Y" Duration="0:0:0.1" />
+              </Transitions>
+            </TranslateTransform.Transitions>
+          </TranslateTransform>
+        </Canvas.RenderTransform>
+      </Canvas>
+    </Canvas>
+    <Canvas Grid.Column="4" Width="24" Height="256" Name="AlphaCanvas" IsVisible="{Binding $parent[1].IsAlphaVisible}">
+      <Canvas Name="AlphaCanvasBackground" Width="24" Height="256" Background="White"></Canvas>
+      <Canvas Width="256" Height="256" Name="AlphaCanvasImageContainer">
+
+      </Canvas>
+      <Canvas Width="24" Height="8" Name="AlphaPositionCanvas">
+        <Rectangle Width="30" Height="10" Margin="-3,-5,0,0" Fill="White"></Rectangle>
+        <Rectangle Width="8" Height="10" Margin="0,-5,0,0" Fill="#DCDCDC"></Rectangle>
+        <Rectangle Width="8" Height="10" Margin="16,-5,0,0" Fill="#DCDCDC"></Rectangle>
+        <Rectangle Width="30" Height="10" Margin="-3,-5,0,0" Name="AlphaPositionRectangle" />
+        <Rectangle StrokeThickness="4" Stroke="#808080" Width="32" Height="12" Margin="-4,-6,0,0" StrokeJoin="Round" />
+        <Rectangle StrokeThickness="2" Stroke="White" Width="30" Height="10" Margin="-3,-5,0,0" StrokeJoin="Round"/>
+        <Canvas.RenderTransform>
+          <TranslateTransform X="0" Y="0">
+            <TranslateTransform.Transitions>
+              <Transitions>
+                <DoubleTransition Property="X" Duration="0:0:0.1" />
+                <DoubleTransition Property="Y" Duration="0:0:0.1" />
+              </Transitions>
+            </TranslateTransform.Transitions>
+          </TranslateTransform>
+        </Canvas.RenderTransform>
+      </Canvas>
+    </Canvas>
+  </Grid>
+</UserControl>

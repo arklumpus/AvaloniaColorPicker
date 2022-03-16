@@ -1,15 +1,17 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30621.155
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.32112.339
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvaloniaColorPicker", "AvaloniaColorPicker\AvaloniaColorPicker.csproj", "{8DDBA87E-F8AA-4FBC-9BBE-DAF33F8913B8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColorPickerDemo", "ColorPickerDemo\ColorPickerDemo.csproj", "{E2E508AD-77B3-4748-AA79-5B7B0F1570BA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LabColorSpaceCache", "LabColorSpaceCache\LabColorSpaceCache.csproj", "{EA73DA92-4A09-480E-BEEB-B946FA43E0A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LabColorSpaceCache", "LabColorSpaceCache\LabColorSpaceCache.csproj", "{EA73DA92-4A09-480E-BEEB-B946FA43E0A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ColorButtonDemo", "ColorButtonDemo\ColorButtonDemo.csproj", "{395EEBF6-9282-44BA-81D8-A48C1E37B67E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ColorButtonDemo", "ColorButtonDemo\ColorButtonDemo.csproj", "{395EEBF6-9282-44BA-81D8-A48C1E37B67E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomColorPickerExample", "CustomColorPickerExample\CustomColorPickerExample.csproj", "{46E5E554-9B9F-49A4-884B-653A3F0A89C0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{395EEBF6-9282-44BA-81D8-A48C1E37B67E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{395EEBF6-9282-44BA-81D8-A48C1E37B67E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{395EEBF6-9282-44BA-81D8-A48C1E37B67E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{46E5E554-9B9F-49A4-884B-653A3F0A89C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{46E5E554-9B9F-49A4-884B-653A3F0A89C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{46E5E554-9B9F-49A4-884B-653A3F0A89C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{46E5E554-9B9F-49A4-884B-653A3F0A89C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

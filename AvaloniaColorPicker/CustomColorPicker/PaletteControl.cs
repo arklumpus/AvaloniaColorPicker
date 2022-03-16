@@ -1,6 +1,6 @@
 ﻿/*
     AvaloniaColorPicker - A color picker for Avalonia.
-    Copyright (C) 2021  Giorgio Bianchini
+    Copyright (C) 2022  Giorgio Bianchini
  
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU Lesser General Public License as published by
@@ -17,110 +17,44 @@ using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
 using Avalonia.Input;
-using Avalonia.LogicalTree;
 using Avalonia.Media;
 using Avalonia.Styling;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Collections.Immutable;
 
 namespace AvaloniaColorPicker
 {
     /// <summary>
-    /// Represents a control displaying a colour palette.
+    /// A control representing a colour palette.
     /// </summary>
-    public interface IPaletteControl
+    public class PaletteControl : UserControl, IPaletteControl
     {
-        /// <summary>
-        /// Invoked when a colour is selected from the palette.
-        /// </summary>
-        event EventHandler<ColorSelectedEventArgs> ColorSelected;
-
-        /// <summary>
-        /// The <see cref="IColorPicker"/> to which the <see cref="IPaletteControl"/> belongs.
-        /// </summary>
-        IColorPicker Owner { get; set; }
-
-        /// <summary>
-        /// The colour blindness simulation mode.
-        /// </summary>
-        ColorBlindnessModes ColorBlindnessMode { get; set; }
-    }
-
-    /// <summary>
-    /// A control displaying a collection of pre-set and user defined palettes. These cannot be edited programmatically and are shared between all programs using this library.
-    /// </summary>
-    public class PaletteSelector : UserControl, IPaletteControl
-    {
-        private const string PaletteID = "e88b36a3734141738b6f8a5b605fb6f9";
-
-        private static List<Palette> Palettes { get; }
-
-        private static int DefaultIndex { get; } = 0;
-
-        internal static string PaletteDirectory { get; } = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), PaletteID, "ColorPicker");
-
         /// <inheritdoc/>
         public IColorPicker Owner { get; set; }
 
-        static PaletteSelector()
-        {
-            bool createPalettes = !Directory.Exists(PaletteDirectory) || Directory.GetFiles(PaletteDirectory, "*.palette").Length == 0;
-
-            if (createPalettes)
-            {
-                ColorPicker.ResetDefaultPalettes();
-            }
-
-            string[] paletteFiles = Directory.GetFiles(PaletteDirectory, "*.palette");
-
-            Palettes = new List<Palette>();
-
-            for (int i = 0; i < paletteFiles.Length; i++)
-            {
-                if (Path.GetFileName(paletteFiles[i]) == "Wong.palette")
-                {
-                    DefaultIndex = i;
-                }
-
-                string[] lines = File.ReadAllLines(paletteFiles[i]);
-
-                string name = lines[0].Substring(1);
-                string description = lines[1].Substring(1);
-
-                System.Text.RegularExpressions.Regex reg = new System.Text.RegularExpressions.Regex("#.*");
-
-                try
-                {
-                    Palette palette = new Palette(name, description, paletteFiles[i], (from el in lines let line = reg.Replace(el, "") where !string.IsNullOrWhiteSpace(line) select ColorFromBytes((from el2 in line.Split(',') select byte.Parse(el2.Trim())).ToArray())).ToArray());
-                    Palettes.Add(palette);
-                }
-                catch { }
-            }
-        }
-
-        private static Color ColorFromBytes(params byte[] bytes)
-        {
-            if (bytes.Length == 3)
-            {
-                return Color.FromRgb(bytes[0], bytes[1], bytes[2]);
-            }
-            else if (bytes.Length == 4)
-            {
-                return Color.FromArgb(bytes[3], bytes[0], bytes[1], bytes[2]);
-            }
-            else
-            {
-                throw new ArgumentException("The colour should be expressed in R,G,B or R,G,B,A format!");
-            }
-        }
-
-        private ComboBox PaletteSelectorBox { get; }
-
         /// <inheritdoc/>
         public event EventHandler<ColorSelectedEventArgs> ColorSelected;
+
+        /// <summary>
+        /// Invoked when the user adds a colour to the palette.
+        /// </summary>
+        public event EventHandler<ColorAddedRemovedEventArgs> ColorAdded;
+
+        /// <summary>
+        /// Invoked when the user removes a colour from the palette.
+        /// </summary>
+        public event EventHandler<ColorAddedRemovedEventArgs> ColorRemoved;
+
+        private static readonly StyledProperty<Func<Color, Color>> ColourBlindnessFunctionProperty = AvaloniaProperty.Register<PaletteSelector, Func<Color, Color>>(nameof(ColourBlindnessFunction), col => col);
+
+        private Func<Color, Color> ColourBlindnessFunction
+        {
+            get { return GetValue(ColourBlindnessFunctionProperty); }
+            set { SetValue(ColourBlindnessFunctionProperty, value); }
+        }
 
         /// <summary>
         /// Defines the <see cref="ColorBlindnessMode"/> property.
@@ -134,134 +68,57 @@ namespace AvaloniaColorPicker
             set { SetValue(ColorBlindnessModeProperty, value); }
         }
 
-        private static readonly StyledProperty<Func<Color, Color>> ColourBlindnessFunctionProperty = AvaloniaProperty.Register<PaletteSelector, Func<Color, Color>>(nameof(ColourBlindnessFunction), col => col);
+        /// <summary>
+        /// Defines the <see cref="Colors"/> property.
+        /// </summary>
+        public static readonly StyledProperty<ImmutableList<Color>> ColorsProperty = AvaloniaProperty.Register<PaletteControl, ImmutableList<Color>>(nameof(Colors), ImmutableList<Color>.Empty);
 
-        private Func<Color, Color> ColourBlindnessFunction
+        /// <summary>
+        /// The colours contained in the palette. Note that you cannot directly add, remove or change elements from this list;
+        /// you always need to create a new <see cref="ImmutableList"/> and change the value of the property.
+        /// </summary>
+        public ImmutableList<Color> Colors
         {
-            get { return GetValue(ColourBlindnessFunctionProperty); }
-            set { SetValue(ColourBlindnessFunctionProperty, value); }
+            get { return GetValue(ColorsProperty); }
+            set { SetValue(ColorsProperty, value); }
+        }
+
+        private bool ProgrammaticChange = false;
+
+        /// <summary>
+        /// Defines the <see cref="CanAddRemove"/> property.
+        /// </summary>
+        public static readonly StyledProperty<bool> CanAddRemoveProperty = AvaloniaProperty.Register<PaletteControl, bool>(nameof(CanAddRemove), true);
+
+        /// <summary>
+        /// Determines whether the user can add and remove colours from the palette.
+        /// </summary>
+        public bool CanAddRemove
+        {
+            get { return GetValue(CanAddRemoveProperty); }
+            set { SetValue(CanAddRemoveProperty, value); }
         }
 
         private Grid ScrollerContainer { get; }
-        private TextBlock PaletteDescription { get; }
 
         /// <summary>
-        /// Create a new <see cref="PaletteSelector"/>.
+        /// Create a new <see cref="PaletteControl"/>.
         /// </summary>
-        public PaletteSelector()
+        public PaletteControl()
         {
             SetStyles();
 
             Grid mainGrid = new Grid();
             mainGrid.RowDefinitions.Add(new RowDefinition(0, GridUnitType.Auto));
-            mainGrid.RowDefinitions.Add(new RowDefinition(0, GridUnitType.Auto));
-
-            Grid headerPanel = new Grid();
-            headerPanel.ColumnDefinitions.Add(new ColumnDefinition(0, GridUnitType.Auto));
-            headerPanel.ColumnDefinitions.Add(new ColumnDefinition(0, GridUnitType.Auto));
-            headerPanel.ColumnDefinitions.Add(new ColumnDefinition(0, GridUnitType.Auto));
-            headerPanel.ColumnDefinitions.Add(new ColumnDefinition(0, GridUnitType.Auto));
-            headerPanel.ColumnDefinitions.Add(new ColumnDefinition(0, GridUnitType.Auto));
-            headerPanel.ColumnDefinitions.Add(new ColumnDefinition(1, GridUnitType.Star));
-            mainGrid.Children.Add(headerPanel);
-
-            headerPanel.Children.Add(new TextBlock() { Text = "Palette:", Margin = new Avalonia.Thickness(5), VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center });
-
-            List<string> paletteNames = (from el in Palettes select el.Name).ToList();
-
-            int defaultIndex = DefaultIndex;
-
-            if (Palette.CurrentPalette != null && Palettes.Contains(Palette.CurrentPalette))
-            {
-                defaultIndex = Palettes.IndexOf(Palette.CurrentPalette);
-            }
-
-            PaletteSelectorBox = new ComboBox() { Items = paletteNames, SelectedIndex = defaultIndex, VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center };
-            Grid.SetColumn(PaletteSelectorBox, 1);
-            headerPanel.Children.Add(PaletteSelectorBox);
-
-            Canvas deleteCanvas = GetDeleteCanvas();
-            deleteCanvas.Margin = new Thickness(5, 0, 0, 0);
-            Grid.SetColumn(deleteCanvas, 2);
-            headerPanel.Children.Add(deleteCanvas);
-            deleteCanvas.PointerPressed += (s, e) =>
-            {
-                Palette palette = Palettes[PaletteSelectorBox.SelectedIndex];
-                if (File.Exists(palette.FileName))
-                {
-                    File.Delete(palette.FileName);
-                }
-
-                Palettes.Remove(palette);
-
-                if (Palettes.Count == 0)
-                {
-                    string id = Guid.NewGuid().ToString("N");
-                    Palette newPalette = new Palette("Custom", "A custom palette", Path.Combine(PaletteDirectory, id + ".palette"));
-                    newPalette.Save();
-                    Palettes.Add(newPalette);
-                }
-
-                List<string> _paletteNames = (from el in Palettes select el.Name).ToList();
-                PaletteSelectorBox.Items = _paletteNames;
-                PaletteSelectorBox.SelectedIndex = 0;
-            };
-
-            Canvas saveCanvas = GetSaveCanvas();
-            Grid.SetColumn(saveCanvas, 3);
-            headerPanel.Children.Add(saveCanvas);
-            saveCanvas.PointerPressed += (s, e) =>
-            {
-                Palettes[PaletteSelectorBox.SelectedIndex].Save();
-            };
-
-            Canvas addCanvas = GetAddCanvas();
-            Grid.SetColumn(addCanvas, 4);
-            headerPanel.Children.Add(addCanvas);
-            addCanvas.PointerPressed += async (s, e) =>
-            {
-                await AddButtonClicked();
-                addCanvas.Classes.Remove("pressed");
-            };
-
-            PaletteDescription = new TextBlock() { FontStyle = FontStyle.Italic, Foreground = new SolidColorBrush(Color.FromRgb(128, 128, 128)), VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center, Margin = new Thickness(5), TextWrapping = TextWrapping.Wrap };
-            Grid.SetColumn(PaletteDescription, 5);
-            headerPanel.Children.Add(PaletteDescription);
 
             ScrollViewer paletteScroller = new ScrollViewer() { HorizontalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Auto, VerticalScrollBarVisibility = Avalonia.Controls.Primitives.ScrollBarVisibility.Disabled, HorizontalContentAlignment = Avalonia.Layout.HorizontalAlignment.Left, Margin = new Thickness(5) };
-            Grid.SetRow(paletteScroller, 1);
             mainGrid.Children.Add(paletteScroller);
 
             ScrollerContainer = new Grid() { HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Left };
 
-            ScrollerContainer.Children.Add(BuildPaletteCanvas(Palettes[PaletteSelectorBox.SelectedIndex]));
+            ScrollerContainer.Children.Add(BuildPaletteCanvas(Colors));
 
             paletteScroller.Content = ScrollerContainer;
-            PaletteDescription.Text = Palettes[PaletteSelectorBox.SelectedIndex].Description;
-
-            PaletteSelectorBox.SelectionChanged += (s, e) =>
-            {
-                ScrollerContainer.Children.Clear();
-                if (PaletteSelectorBox.SelectedIndex >= 0 && PaletteSelectorBox.SelectedIndex < Palettes.Count)
-                {
-                    Palette.CurrentPalette = Palettes[PaletteSelectorBox.SelectedIndex];
-                    ScrollerContainer.Children.Add(BuildPaletteCanvas(Palettes[PaletteSelectorBox.SelectedIndex]));
-                    PaletteDescription.Text = Palettes[PaletteSelectorBox.SelectedIndex].Description;
-                }
-                else
-                {
-                    Palette.CurrentPalette = null;
-                }
-            };
-
-            if (PaletteSelectorBox.SelectedIndex >= 0 && PaletteSelectorBox.SelectedIndex < Palettes.Count)
-            {
-                Palette.CurrentPalette = Palettes[PaletteSelectorBox.SelectedIndex];
-            }
-            else
-            {
-                Palette.CurrentPalette = null;
-            }
 
             this.Content = mainGrid;
         }
@@ -276,22 +133,18 @@ namespace AvaloniaColorPicker
                 this.ColourBlindnessFunction = ColorPicker.GetColourBlindnessFunction((int)this.ColorBlindnessMode);
             }
 
-            if (change.Property == ColourBlindnessFunctionProperty)
+            if (change.Property == ColourBlindnessFunctionProperty || (change.Property == ColorsProperty && !ProgrammaticChange))
             {
                 ScrollerContainer.Children.Clear();
-                if (PaletteSelectorBox.SelectedIndex >= 0 && PaletteSelectorBox.SelectedIndex < Palettes.Count)
-                {
-                    ScrollerContainer.Children.Add(BuildPaletteCanvas(Palettes[PaletteSelectorBox.SelectedIndex]));
-                    PaletteDescription.Text = Palettes[PaletteSelectorBox.SelectedIndex].Description;
-                }
+                ScrollerContainer.Children.Add(BuildPaletteCanvas(Colors));
             }
         }
 
         const double HexagonRadius = 24;
 
-        private Canvas BuildPaletteCanvas(Palette palette)
+        private Canvas BuildPaletteCanvas(IReadOnlyList<Color> palette)
         {
-            int n = palette.Colors.Count + 1;
+            int n = palette.Count + 1;
 
             Canvas tbr = new Canvas() { Height = HexagonRadius * Math.Cos(Math.PI / 6) * 3, Width = HexagonRadius * (3 + 2.5 * (n - 1)) + 13.86, Margin = new Thickness(0, 0, 0, 5) };
 
@@ -310,7 +163,7 @@ namespace AvaloniaColorPicker
                 AddColorHexagon(i, palette, tbr, this, infos, this.ColourBlindnessFunction);
             }
 
-
+            if (CanAddRemove)
             {
                 int i = n - 1;
                 double centerX = (1.5 + 2.5 * i) * HexagonRadius + 6.93;
@@ -341,7 +194,7 @@ namespace AvaloniaColorPicker
                 plusGeometry.Figures.Add(horizontalPlusFigure);
 
                 Avalonia.Controls.Shapes.Path plusPath = new Avalonia.Controls.Shapes.Path() { Data = plusGeometry, StrokeThickness = HexagonRadius * 0.2, IsHitTestVisible = false, ZIndex = 2 };
-                AnimatableColorBrush plusStroke = new AnimatableColorBrush(Colors.White, col => plusPath.Stroke = new SolidColorBrush(col));
+                AnimatableColorBrush plusStroke = new AnimatableColorBrush(Avalonia.Media.Colors.White, col => plusPath.Stroke = new SolidColorBrush(col));
 
                 tbr.Children.Add(plusPath);
 
@@ -371,12 +224,14 @@ namespace AvaloniaColorPicker
                         leftFill.Update(Color.FromRgb(240, 240, 240), false);
                         rightFill.Update(Color.FromRgb(240, 240, 240), false);
                         centerFill.Update(Color.FromRgb(200, 200, 200), false);
-                        plusStroke.Update(Colors.White, false);
+                        plusStroke.Update(Avalonia.Media.Colors.White, false);
                     }
                 };
 
                 centerPath.PointerPressed += async (s, e) =>
                 {
+                    int index = this.Colors.Count;
+
                     disabled = true;
 
                     Color col = this.Owner.Color;
@@ -393,18 +248,24 @@ namespace AvaloniaColorPicker
                     rightPath.ZIndex = -1;
                     plusPath.ZIndex = -1;
 
-                    palette.Colors.Add(col);
-                    AddColorHexagon(palette.Colors.Count - 1, palette, tbr, this, infos, this.ColourBlindnessFunction);
+                    ProgrammaticChange = true;
+                    this.Colors = this.Colors.Add(col);
+                    palette = this.Colors;
+                    ProgrammaticChange = false;
+
+                    AddColorHexagon(palette.Count - 1, palette, tbr, this, infos, this.ColourBlindnessFunction);
 
                     leftFill.Update(Color.FromRgb(240, 240, 240), false);
                     rightFill.Update(Color.FromRgb(240, 240, 240), false);
                     centerFill.Update(Color.FromRgb(200, 200, 200), false);
-                    plusStroke.Update(Colors.White, false);
+                    plusStroke.Update(Avalonia.Media.Colors.White, false);
 
                     tbr.Width += HexagonRadius * 2.5;
                     double deltaX = HexagonRadius * 2.5;
-                    double deltaY = HexagonRadius * Math.Sin(Math.PI / 3) * (palette.Colors.Count % 2 == 0 ? -1 : 1);
+                    double deltaY = HexagonRadius * Math.Sin(Math.PI / 3) * (palette.Count % 2 == 0 ? -1 : 1);
                     transform.Matrix = new Matrix(1, 0, 0, 1, transform.Matrix.M31 + deltaX, transform.Matrix.M32 + deltaY);
+
+                    ColorAdded?.Invoke(this, new ColorAddedRemovedEventArgs(index, col));
 
                     await Task.Delay(100);
 
@@ -438,7 +299,7 @@ namespace AvaloniaColorPicker
             return geometry;
         }
 
-        private static void AddColorHexagon(int i, Palette palette, Canvas container, PaletteSelector owner, List<PaletteColorInfo> infos, Func<Color, Color> colourBlindnessFunction)
+        private static void AddColorHexagon(int i, IReadOnlyList<Color> palette, Canvas container, PaletteControl owner, List<PaletteColorInfo> infos, Func<Color, Color> colourBlindnessFunction)
         {
             // Needed to address https://github.com/AvaloniaUI/Avalonia/issues/6257
             Canvas myContainer = new Canvas() { Width = container.Width, Height = container.Height };
@@ -457,7 +318,7 @@ namespace AvaloniaColorPicker
             PathGeometry rightHexagon = GetHexagonPath(new Point(centerX + 0.5 * HexagonRadius, centerY), HexagonRadius);
 
 
-            Color color = palette.Colors[i % palette.Colors.Count];
+            Color color = palette[i % palette.Count];
             Color lighterColor = ColorPicker.GetLighterColor(color);
             Color darkerColor = ColorPicker.GetDarkerColor(color);
 
@@ -578,11 +439,14 @@ namespace AvaloniaColorPicker
             deleteBG.Path.PointerLeave += (s, e) =>
             {
                 bgFill.Update(Color.FromRgb(180, 180, 180), false);
-                fgStroke.Update(Colors.White, false);
+                fgStroke.Update(Avalonia.Media.Colors.White, false);
             };
 
-            myContainer.Children.Add(deleteBG.Path);
-            myContainer.Children.Add(deleteFG);
+            if (owner.CanAddRemove)
+            {
+                myContainer.Children.Add(deleteBG.Path);
+                myContainer.Children.Add(deleteFG);
+            }
 
             bool deleteVisible = false;
 
@@ -664,192 +528,25 @@ namespace AvaloniaColorPicker
                     }
                 }
 
+                Color col = owner.Colors[info.Index];
+
+                owner.ProgrammaticChange = true;
+                owner.Colors = owner.Colors.RemoveAt(info.Index);
+                owner.ProgrammaticChange = false;
+
+                owner.ColorRemoved?.Invoke(owner, new ColorAddedRemovedEventArgs(info.Index, col));
+
                 await Task.Delay(100);
                 container.Width -= HexagonRadius * 2.5;
 
                 infos.RemoveAt(info.Index);
-                palette.Colors.RemoveAt(info.Index);
 
-                /*container.Children.Remove(leftPath);
-                container.Children.Remove(rightPath);
-                container.Children.Remove(centerPath);
-                container.Children.Remove(deleteBG.Path);
-                container.Children.Remove(deleteFG);*/
                 container.Children.Remove(myContainer);
             };
         }
 
-        private static Canvas GetDeleteCanvas()
-        {
-            Canvas can = new Canvas() { Width = 24, Height = 24 };
-            can.Classes.Add("ButtonBG");
-            can.Classes.Add("DeleteButton");
-
-            can.PointerPressed += (s, e) =>
-            {
-                can.Classes.Add("pressed");
-            };
-
-            can.PointerReleased += (s, e) =>
-            {
-                can.Classes.Remove("pressed");
-            };
-
-            PathGeometry deleteGeometry = new PathGeometry();
-            PathFigure deleteFigure1 = new PathFigure() { StartPoint = new Point(6, 6), IsClosed = false };
-            deleteFigure1.Segments.Add(new LineSegment() { Point = new Point(18, 18) });
-            PathFigure deleteFigure2 = new PathFigure() { StartPoint = new Point(18, 6), IsClosed = false };
-            deleteFigure2.Segments.Add(new LineSegment() { Point = new Point(6, 18) });
-            deleteGeometry.Figures.Add(deleteFigure1);
-            deleteGeometry.Figures.Add(deleteFigure2);
-
-            Avalonia.Controls.Shapes.Path deletePath = new Avalonia.Controls.Shapes.Path() { Data = deleteGeometry, StrokeThickness = 4, IsHitTestVisible = false };
-
-            can.Children.Add(deletePath);
-
-            return can;
-        }
-
-        private static Canvas GetSaveCanvas()
-        {
-            Canvas can = new Canvas() { Width = 24, Height = 24 };
-            can.Classes.Add("ButtonBG");
-            can.Classes.Add("SaveButton");
-
-            can.PointerPressed += (s, e) =>
-            {
-                can.Classes.Add("pressed");
-            };
-
-            can.PointerReleased += (s, e) =>
-            {
-                can.Classes.Remove("pressed");
-            };
-
-            PathGeometry saveGeometry = new PathGeometry();
-            PathFigure saveFigure1 = new PathFigure() { StartPoint = new Point(4, 4), IsClosed = true };
-            saveFigure1.Segments.Add(new LineSegment() { Point = new Point(8, 4) });
-            saveFigure1.Segments.Add(new LineSegment() { Point = new Point(8, 10) });
-            saveFigure1.Segments.Add(new LineSegment() { Point = new Point(16, 10) });
-            saveFigure1.Segments.Add(new LineSegment() { Point = new Point(16, 4) });
-            saveFigure1.Segments.Add(new LineSegment() { Point = new Point(17, 4) });
-            saveFigure1.Segments.Add(new LineSegment() { Point = new Point(20, 7) });
-            saveFigure1.Segments.Add(new LineSegment() { Point = new Point(20, 20) });
-            saveFigure1.Segments.Add(new LineSegment() { Point = new Point(4, 20) });
-            saveGeometry.Figures.Add(saveFigure1);
-            PathFigure saveFigure2 = new PathFigure() { StartPoint = new Point(13, 4), IsClosed = true };
-            saveFigure2.Segments.Add(new LineSegment() { Point = new Point(15, 4) });
-            saveFigure2.Segments.Add(new LineSegment() { Point = new Point(15, 8) });
-            saveFigure2.Segments.Add(new LineSegment() { Point = new Point(13, 8) });
-            saveGeometry.Figures.Add(saveFigure2);
-
-            PathFigure saveFigure3 = new PathFigure() { StartPoint = new Point(16, 18), IsClosed = true, IsFilled = false };
-            saveFigure3.Segments.Add(new LineSegment() { Point = new Point(16, 13) });
-            saveFigure3.Segments.Add(new LineSegment() { Point = new Point(8, 13) });
-            saveFigure3.Segments.Add(new LineSegment() { Point = new Point(8, 18) });
-            saveGeometry.Figures.Add(saveFigure3);
-
-            Avalonia.Controls.Shapes.Path deletePath = new Avalonia.Controls.Shapes.Path() { Data = saveGeometry, IsHitTestVisible = false };
-
-            can.Children.Add(deletePath);
-
-            return can;
-        }
-
-        private static Canvas GetAddCanvas()
-        {
-            Canvas can = new Canvas() { Width = 24, Height = 24 };
-            can.Classes.Add("ButtonBG");
-            can.Classes.Add("AddButton");
-
-            can.PointerPressed += (s, e) =>
-            {
-                can.Classes.Add("pressed");
-            };
-
-            can.PointerReleased += (s, e) =>
-            {
-                can.Classes.Remove("pressed");
-            };
-
-            PathGeometry deleteGeometry = new PathGeometry();
-            PathFigure deleteFigure1 = new PathFigure() { StartPoint = new Point(12, 4), IsClosed = false };
-            deleteFigure1.Segments.Add(new LineSegment() { Point = new Point(12, 20) });
-            PathFigure deleteFigure2 = new PathFigure() { StartPoint = new Point(20, 12), IsClosed = false };
-            deleteFigure2.Segments.Add(new LineSegment() { Point = new Point(4, 12) });
-            deleteGeometry.Figures.Add(deleteFigure1);
-            deleteGeometry.Figures.Add(deleteFigure2);
-
-            Avalonia.Controls.Shapes.Path deletePath = new Avalonia.Controls.Shapes.Path() { Data = deleteGeometry, StrokeThickness = 4, IsHitTestVisible = false };
-
-            can.Children.Add(deletePath);
-
-            return can;
-        }
-
         private void SetStyles()
         {
-            Transitions buttonPathTransitions = null;
-
-            if (!ColorPicker.TransitionsDisabled)
-            {  
-                buttonPathTransitions = new Transitions
-                {
-                    new SolidBrushTransition() { Property = Avalonia.Controls.Shapes.Path.StrokeProperty, Duration = new TimeSpan(0, 0, 0, 0, 100) }
-                };
-            }
-
-            Style ButtonBG = new Style(x => x.OfType<Canvas>().Class("ButtonBG"));
-            ButtonBG.Setters.Add(new Setter(Canvas.BackgroundProperty, new SolidColorBrush(Color.FromArgb(0, 180, 180, 180))));
-            ButtonBG.Setters.Add(new Setter(Canvas.CursorProperty, new Cursor(StandardCursorType.Hand)));
-            if (!ColorPicker.TransitionsDisabled)
-            {
-                Transitions buttonBGTransitions = new Transitions
-                {
-                    new SolidBrushTransition() { Property = Canvas.BackgroundProperty, Duration = new TimeSpan(0, 0, 0, 0, 100) }
-                };
-
-                ButtonBG.Setters.Add(new Setter(Canvas.TransitionsProperty, buttonBGTransitions));
-            }
-            this.Styles.Add(ButtonBG);
-
-            Style DeleteButtonPath = new Style(x => x.OfType<Canvas>().Class("DeleteButton").Child().OfType<Avalonia.Controls.Shapes.Path>());
-            DeleteButtonPath.Setters.Add(new Setter(Avalonia.Controls.Shapes.Path.StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 237, 28, 36))));
-            if (!ColorPicker.TransitionsDisabled)
-            {
-                DeleteButtonPath.Setters.Add(new Setter(Avalonia.Controls.Shapes.Path.TransitionsProperty, buttonPathTransitions));
-            }
-            this.Styles.Add(DeleteButtonPath);
-
-            Style SaveButtonPath = new Style(x => x.OfType<Canvas>().Class("SaveButton").Child().OfType<Avalonia.Controls.Shapes.Path>());
-            SaveButtonPath.Setters.Add(new Setter(Avalonia.Controls.Shapes.Path.FillProperty, new SolidColorBrush(Color.FromArgb(255, 86, 180, 233))));
-            if (!ColorPicker.TransitionsDisabled)
-            {
-                SaveButtonPath.Setters.Add(new Setter(Avalonia.Controls.Shapes.Path.TransitionsProperty, buttonPathTransitions));
-            }
-            this.Styles.Add(SaveButtonPath);
-
-            Style AddButtonPath = new Style(x => x.OfType<Canvas>().Class("AddButton").Child().OfType<Avalonia.Controls.Shapes.Path>());
-            AddButtonPath.Setters.Add(new Setter(Avalonia.Controls.Shapes.Path.StrokeProperty, new SolidColorBrush(Color.FromArgb(255, 34, 177, 76))));
-            if (!ColorPicker.TransitionsDisabled)
-            {
-                AddButtonPath.Setters.Add(new Setter(Avalonia.Controls.Shapes.Path.TransitionsProperty, buttonPathTransitions));
-            }
-            this.Styles.Add(AddButtonPath);
-
-            Style ButtonBGOver = new Style(x => x.OfType<Canvas>().Class("ButtonBG").Class(":pointerover"));
-            ButtonBGOver.Setters.Add(new Setter(Canvas.BackgroundProperty, new SolidColorBrush(Color.FromArgb(255, 180, 180, 180))));
-            this.Styles.Add(ButtonBGOver);
-
-            Style ButtonBGOverPath = new Style(x => x.OfType<Canvas>().Class("ButtonBG").Class(":pointerover").Child().OfType<Avalonia.Controls.Shapes.Path>());
-            ButtonBGOverPath.Setters.Add(new Setter(Avalonia.Controls.Shapes.Path.StrokeProperty, Colours.BackgroundColour));
-            ButtonBGOverPath.Setters.Add(new Setter(Avalonia.Controls.Shapes.Path.FillProperty, Colours.BackgroundColour));
-            this.Styles.Add(ButtonBGOverPath);
-
-            Style ButtonBGPressed = new Style(x => x.OfType<Canvas>().Class("ButtonBG").Class("pressed"));
-            ButtonBGPressed.Setters.Add(new Setter(Canvas.BackgroundProperty, new SolidColorBrush(Color.FromArgb(255, 128, 128, 128))));
-            this.Styles.Add(ButtonBGPressed);
-
             Style HexagonLeftPalette = new Style(x => x.OfType<Avalonia.Controls.Shapes.Path>().Class("HexagonLeftPalette"));
             HexagonLeftPalette.Setters.Add(new Setter(Avalonia.Controls.Shapes.Path.MarginProperty, new Avalonia.Thickness(0)));
             this.Styles.Add(HexagonLeftPalette);
@@ -866,117 +563,33 @@ namespace AvaloniaColorPicker
             HexagonRightPaletteOver.Setters.Add(new Setter(Avalonia.Controls.Shapes.Path.MarginProperty, new Avalonia.Thickness(6.93, 0, 0, 0)));
             this.Styles.Add(HexagonRightPaletteOver);
         }
-
-        private async Task AddButtonClicked()
-        {
-            Window win = new Window() { Title = "Create new palette" };
-            win.Width = 600;
-            win.Height = 150;
-
-            Grid mainGrid = new Grid() { Margin = new Thickness(10) };
-            mainGrid.ColumnDefinitions.Add(new ColumnDefinition(0, GridUnitType.Auto));
-            mainGrid.ColumnDefinitions.Add(new ColumnDefinition(1, GridUnitType.Star));
-            mainGrid.RowDefinitions.Add(new RowDefinition(1, GridUnitType.Star));
-            mainGrid.RowDefinitions.Add(new RowDefinition(1, GridUnitType.Star));
-            mainGrid.RowDefinitions.Add(new RowDefinition(0, GridUnitType.Auto));
-
-            TextBlock nameBlock = new TextBlock() { Text = "Name:", HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Right, VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center };
-            mainGrid.Children.Add(nameBlock);
-
-            TextBlock descriptionBlock = new TextBlock() { Text = "Description:", HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Right, VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center };
-            Grid.SetRow(descriptionBlock, 1);
-            mainGrid.Children.Add(descriptionBlock);
-
-            TextBox nameBox = new TextBox() { VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center, Margin = new Thickness(5, 0, 0, 0) };
-            Grid.SetColumn(nameBox, 1);
-            mainGrid.Children.Add(nameBox);
-
-            TextBox descriptionBox = new TextBox() { VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center, Margin = new Thickness(5, 0, 0, 0) };
-            Grid.SetRow(descriptionBox, 1);
-            Grid.SetColumn(descriptionBox, 1);
-            mainGrid.Children.Add(descriptionBox);
-
-
-            Grid buttonGrid = new Grid() { Margin = new Thickness(0, 10, 0, 0) };
-            buttonGrid.ColumnDefinitions.Add(new ColumnDefinition(1, GridUnitType.Star));
-            buttonGrid.ColumnDefinitions.Add(new ColumnDefinition(0, GridUnitType.Auto));
-            buttonGrid.ColumnDefinitions.Add(new ColumnDefinition(1, GridUnitType.Star));
-            buttonGrid.ColumnDefinitions.Add(new ColumnDefinition(0, GridUnitType.Auto));
-            buttonGrid.ColumnDefinitions.Add(new ColumnDefinition(1, GridUnitType.Star));
-
-            Grid.SetRow(buttonGrid, 2);
-            Grid.SetColumnSpan(buttonGrid, 2);
-            mainGrid.Children.Add(buttonGrid);
-
-            Button okButton = new Button() { Content = "OK", Width = 100 };
-            Grid.SetColumn(okButton, 1);
-            buttonGrid.Children.Add(okButton);
-
-            Button cancelButton = new Button() { Content = "Cancel", Width = 100 };
-            Grid.SetColumn(cancelButton, 3);
-            buttonGrid.Children.Add(cancelButton);
-
-            bool result = false;
-
-            cancelButton.Click += (s, e) =>
-            {
-                result = false;
-                win.Close();
-            };
-
-            okButton.Click += (s, e) =>
-            {
-                result = true;
-                win.Close();
-            };
-
-            win.Content = mainGrid;
-            await win.ShowDialog(this.FindLogicalAncestorOfType<Window>());
-
-            if (result)
-            {
-                string name = nameBox.Text;
-                string description = descriptionBox.Text;
-
-                string id = Guid.NewGuid().ToString("N");
-
-                Palette newPalette = new Palette(name, description, Path.Combine(PaletteDirectory, id + ".palette"));
-                Palettes.Add(newPalette);
-                List<string> paletteNames = (from el in Palettes select el.Name).ToList();
-                PaletteSelectorBox.Items = paletteNames;
-                PaletteSelectorBox.SelectedIndex = Palettes.Count - 1;
-            }
-
-        }
-    }
-
-    internal class PaletteColorInfo
-    {
-        public int Index { get; set; }
-        public int OriginalIndex { get; set; }
-        public AnimatableTransform Transform { get; set; }
-        public AnimatablePath4Points DeleteBGPath { get; set; }
-        public AnimatableTransform DeleteFBTransform { get; set; }
-
     }
 
     /// <summary>
-    /// <see cref="EventArgs"/> for events where a colour has been selected.
+    /// <see cref="EventArgs"/> for the <see cref="PaletteControl.ColorAdded"/> and <see cref="PaletteControl.ColorRemoved"/> events.
     /// </summary>
-    public class ColorSelectedEventArgs : EventArgs
+    public class ColorAddedRemovedEventArgs : EventArgs
     {
         /// <summary>
-        /// The selected colour.
+        /// The index at which the colour was added or removed.
+        /// </summary>
+        public int Index { get; }
+
+        /// <summary>
+        /// The colour that was added or removed.
         /// </summary>
         public Color Color { get; }
 
         /// <summary>
-        /// Create a new <see cref="ColorSelectedEventArgs"/> object.
+        /// Create a new <see cref="ColorAddedRemovedEventArgs"/> instance.
         /// </summary>
-        /// <param name="color">The selected colour.</param>
-        public ColorSelectedEventArgs(Color color)
+        /// <param name="index">The index at which the colour was added or removed.</param>
+        /// <param name="color">The colour that was added or removed.</param>
+        public ColorAddedRemovedEventArgs(int index, Color color)
         {
+            this.Index = index;
             this.Color = color;
         }
     }
 }
+

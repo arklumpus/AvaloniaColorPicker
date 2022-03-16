@@ -957,7 +957,7 @@ namespace AvaloniaColorPicker
         public static Brush WarningBrush = new SolidColorBrush(Color.FromRgb(255, 204, 77));
 
 
-        public static Canvas GetLCanvas(double L, double a, double b, Canvas OldCanvas, bool instantTransition)
+        public static Canvas GetLCanvas(double L, double a, double b, Canvas OldCanvas, bool instantTransition, IOutsideRGBWarning warningTooltip)
         {
             if (OldCanvas is LabCanvas lCanvas)
             {
@@ -966,11 +966,11 @@ namespace AvaloniaColorPicker
             }
             else
             {
-                return new LabCanvas(L, a, b, LabComponents.L);
+                return new LabCanvas(L, a, b, LabComponents.L, warningTooltip);
             }
         }
 
-        public static Canvas GetACanvas(double L, double a, double b, Canvas OldCanvas, bool instantTransition)
+        public static Canvas GetACanvas(double L, double a, double b, Canvas OldCanvas, bool instantTransition, IOutsideRGBWarning warningTooltip)
         {
             if (OldCanvas is LabCanvas aCanvas)
             {
@@ -979,11 +979,11 @@ namespace AvaloniaColorPicker
             }
             else
             {
-                return new LabCanvas(L, a, b, LabComponents.a);
+                return new LabCanvas(L, a, b, LabComponents.a, warningTooltip);
             }
         }
 
-        public static Canvas GetBCanvas(double L, double a, double b, Canvas OldCanvas, bool instantTransition)
+        public static Canvas GetBCanvas(double L, double a, double b, Canvas OldCanvas, bool instantTransition, IOutsideRGBWarning warningTooltip)
         {
             if (OldCanvas is LabCanvas bCanvas)
             {
@@ -992,7 +992,7 @@ namespace AvaloniaColorPicker
             }
             else
             {
-                return new LabCanvas(L, a, b, LabComponents.b);
+                return new LabCanvas(L, a, b, LabComponents.b, warningTooltip);
             }
         }
 
@@ -1368,7 +1368,7 @@ namespace AvaloniaColorPicker
 
         AnimatableLABCanvas LABCanvas { get; }
 
-        public LabCanvas(double L, double a, double b, Lab.LabComponents labComponent)
+        public LabCanvas(double L, double a, double b, Lab.LabComponents labComponent, IOutsideRGBWarning warningTooltip)
         {
             this.Width = 128;
             this.Height = 96;
@@ -1401,12 +1401,18 @@ namespace AvaloniaColorPicker
 
             WarningCanvas.PointerEnter += (s, e) =>
             {
-                WarningCanvas.Parent.Parent.FindControl<Grid>("WarningTooltip").Opacity = 1;
+                if (warningTooltip != null)
+                {
+                    warningTooltip.Opacity = 1;
+                }
             };
 
             WarningCanvas.PointerLeave += (s, e) =>
             {
-                WarningCanvas.Parent.Parent.FindControl<Grid>("WarningTooltip").Opacity = 0;
+                if (warningTooltip != null)
+                {
+                    warningTooltip.Opacity = 0;
+                }
             };
 
             this.Children.Add(WarningCanvas);

@@ -1,0 +1,67 @@
+<!--
+    AvaloniaColorPicker - A color picker for Avalonia.
+    Copyright (C) 2022  Giorgio Bianchini
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, version 3.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+    You should have received a copy of the GNU Lesser General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AvaloniaColorPicker.ColorPreview">
+  <UserControl.Styles>
+    <Styles>
+      <Style Selector="Path.HexagonLeft">
+        <Setter Property="RenderTransform" Value="none" />
+        <Setter Property="Transitions">
+          <Transitions>
+            <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1" />
+          </Transitions>
+        </Setter>
+      </Style>
+      <Style Selector="Path.HexagonRight">
+        <Setter Property="RenderTransform" Value="none" />
+        <Setter Property="Transitions">
+          <Transitions>
+            <TransformOperationsTransition Property="RenderTransform" Duration="0:0:0.1" />
+          </Transitions>
+        </Setter>
+      </Style>
+      <Style Selector="Path.HexagonCenter">
+        <Setter Property="StrokeThickness" Value="0" />
+        <Setter Property="Transitions">
+          <Setter.Value>
+            <Transitions>
+              <DoubleTransition Property="StrokeThickness" Duration="0:0:0.1" />
+            </Transitions>
+          </Setter.Value>
+        </Setter>
+      </Style>
+      <Style Selector="Path.HexagonCenter:pointerover">
+        <Setter Property="StrokeThickness" Value="4" />
+      </Style>
+      <Style Selector="Path.HexagonLeft:pointerover">
+        <Setter Property="RenderTransform" Value="translate(-6.93px, 0)" />
+      </Style>
+      <Style Selector="Path.HexagonRight:pointerover">
+        <Setter Property="RenderTransform" Value="translate(6.93px, 0)" />
+      </Style>
+    </Styles>
+  </UserControl.Styles>
+  <Canvas Width="128" Height="48">
+    <Path Data="M0,24 L13.86,0 L41.57,0 L55.43,24 L41.57,48 L13.86,48 Z" Fill="#80FF0000" Margin="16,0,0,0" Name="HexagonColor1" Cursor="Hand" Classes="HexagonLeft"></Path>
+    <Path Data="M0,24 L13.86,0 L41.57,0 L55.43,24 L41.57,48 L13.86,48 Z" Fill="#80008000" Margin="57.57,0,0,0" Name="HexagonColor4" Cursor="Hand" Classes="HexagonRight"></Path>
+    <Path Data="M0,24 L13.86,0 L41.57,0 L55.43,24 L41.57,48 L13.86,48 Z" Fill="#800000FF" Margin="43.71,0,0,0" Name="HexagonColor3" Cursor="Hand" Classes="HexagonRight"></Path>
+    <Path Data="M0,24 L13.86,0 L41.57,0 L55.43,24 L41.57,48 L13.86,48 Z" Fill="#80FFFF00" Margin="29.86,0,0,0" Name="HexagonColor2" Classes="HexagonCenter"></Path>
+  </Canvas>
+</UserControl>

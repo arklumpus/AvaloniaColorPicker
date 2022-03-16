@@ -22,18 +22,6 @@
              x:Class="AvaloniaColorPicker.ColorPicker" Margin="10">
   <UserControl.Styles>
     <Styles>
-      <Style Selector="Path.HexagonLeftPalette">
-        <Setter Property="Margin" Value="0,0,0,0" />
-      </Style>
-      <Style Selector="Path.HexagonRightPalette">
-        <Setter Property="Margin" Value="0,0,0,0" />
-      </Style>
-      <Style Selector="Path.HexagonLeftPalette:pointerover">
-        <Setter Property="Margin" Value="-6.93,0,0,0" />
-      </Style>
-      <Style Selector="Path.HexagonRightPalette:pointerover">
-        <Setter Property="Margin" Value="6.93,0,0,0" />
-      </Style>
       <Style Selector="Path.HexagonLeft">
         <Setter Property="RenderTransform" Value="none" />
         <Setter Property="Transitions">
@@ -51,8 +39,6 @@
         </Setter>
       </Style>
       <Style Selector="Path.HexagonCenter">
-        <!--
-        <Setter Property="Stroke" Value="{StaticResource ThemeBackgroundBrush}" />-->
         <Setter Property="StrokeThickness" Value="0" />
         <Setter Property="Transitions">
           <Setter.Value>
@@ -305,16 +291,7 @@
 
       </local:PaletteSelector>
 
-      <Grid Grid.ColumnSpan="11" HorizontalAlignment="Center" VerticalAlignment="Center" Opacity="0" Name="WarningTooltip" IsHitTestVisible="False" Grid.RowSpan="2">
-        <Border Padding="10,2,10,2" CornerRadius="5" BorderThickness="1" Name="WarningTooltipBorder">
-          <TextBlock Text="The colour falls outside of the sRGB colour space!"  HorizontalAlignment="Center" />
-        </Border>
-        <Grid.Transitions>
-          <Transitions>
-            <DoubleTransition Property="Opacity" Duration="0:0:0.1" />
-          </Transitions>
-        </Grid.Transitions>
-      </Grid>
+      <local:OutsideRGBWarning Grid.ColumnSpan="11" Grid.RowSpan="2" Name="WarningTooltip" />
     </Grid>
   </Grid>
 </UserControl>

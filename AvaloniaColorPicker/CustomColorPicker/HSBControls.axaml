@@ -1,0 +1,41 @@
+<!--
+    AvaloniaColorPicker - A color picker for Avalonia.
+    Copyright (C) 2022  Giorgio Bianchini
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU Lesser General Public License as published by
+    the Free Software Foundation, version 3.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU Lesser General Public License for more details.
+    You should have received a copy of the GNU Lesser General Public License
+    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+-->
+
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="AvaloniaColorPicker.HSBControls">
+  <Grid>
+    <Grid.RowDefinitions>
+      <RowDefinition Height="1*"/>
+      <RowDefinition Height="1*"/>
+      <RowDefinition Height="1*"/>
+    </Grid.RowDefinitions>
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="Auto" />
+      <ColumnDefinition Width="1*" />
+    </Grid.ColumnDefinitions>
+    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,5" Grid.Row="0">H:</TextBlock>
+    <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Padding="5,0,5,0" VerticalContentAlignment="Center" Grid.Row="0" VerticalAlignment="Center" Value="140" Name="HBox"></NumericUpDown>
+
+    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Margin="0,0,0,5">S:</TextBlock>
+    <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Grid.Row="1" Padding="5,0,5,0" VerticalContentAlignment="Center" VerticalAlignment="Center" Value="255" Name="SBox"></NumericUpDown>
+
+    <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Margin="0,0,0,5">B:</TextBlock>
+    <NumericUpDown Grid.Column="1" Minimum="0" Maximum="255" Margin="5,0,0,5" Grid.Row="2" Padding="5,0,5,0" VerticalContentAlignment="Center" VerticalAlignment="Center" Value="232" Name="BBox"></NumericUpDown>
+  </Grid>
+</UserControl>

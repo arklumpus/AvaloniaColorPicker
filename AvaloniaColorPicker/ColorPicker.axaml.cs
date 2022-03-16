@@ -34,7 +34,7 @@ namespace AvaloniaColorPicker
     /// <summary>
     /// A control that enables the user to select a <see cref="Color"/>.
     /// </summary>
-    public class ColorPicker : UserControl
+    public class ColorPicker : UserControl, IColorPicker
     {
         /// <summary>
         /// Set this property to <see langword="true"/> before creating any object from this library to disable all transitions.
@@ -458,7 +458,7 @@ namespace AvaloniaColorPicker
         public static readonly StyledProperty<Color?> PreviousColorProperty = AvaloniaProperty.Register<ColorPicker, Color?>(nameof(PreviousColor), null);
 
         /// <summary>
-        /// Represents the previously selected <see cref="Avalonia.Media.Color"/> (e.g. if the <see cref="ColorPicker"/> is being used to change the colour of an object, it would represent the previous colour of the object. Set to <see langword="null" /> to hide the previous colour display.
+        /// Represents the previously selected <see cref="Avalonia.Media.Color"/> (e.g. if the <see cref="ColorPicker"/> is being used to change the colour of an object, it would represent the previous colour of the object). Set to <see langword="null" /> to hide the previous colour display.
         /// </summary>
         public Color? PreviousColor
         {
@@ -495,10 +495,7 @@ namespace AvaloniaColorPicker
         {
             this.InitializeComponent();
 
-            ((Style)((Styles)this.Styles[0])[6]).Setters.Add(new Setter(Path.StrokeProperty, Colours.BackgroundColour));
-
-            this.FindControl<Border>("WarningTooltipBorder").BorderBrush = Colours.BorderLowColour;
-            this.FindControl<Border>("WarningTooltipBorder").Background = Colours.BackgroundColour;
+            ((Style)((Styles)this.Styles[0])[2]).Setters.Add(new Setter(Path.StrokeProperty, Colours.BackgroundColour));
 
             IBrush alphaBGBrush = Brush.Parse("#DCDCDC");
 
@@ -683,7 +680,7 @@ namespace AvaloniaColorPicker
 
             this.FindControl<ComboBox>("ColourBlindnessBox").SelectionChanged += (s, e) =>
             {
-                this.FindControl<PaletteSelector>("PaletteSelector").ColourBlindnessFunction = GetColourBlindnessFunction(this.FindControl<ComboBox>("ColourBlindnessBox").SelectedIndex);
+                this.FindControl<PaletteSelector>("PaletteSelector").ColorBlindnessMode = (ColorBlindnessModes)this.FindControl<ComboBox>("ColourBlindnessBox").SelectedIndex;
 
                 UpdateDependingOnAlpha(false);
             };
@@ -915,21 +912,21 @@ namespace AvaloniaColorPicker
                             SetTranslateRenderTransform(this.FindControl<Ellipse>("2DPositionCircle"), (255 + 255 * b / 100.0) / 2, (255 - 255 * a / 100.0) / 2, instantTransition);
                             SetTranslateRenderTransform(this.FindControl<Canvas>("1DPositionCanvas"), 0, 255 - L / 100.0 * 255, instantTransition);
                             this.FindControl<Rectangle>("1DPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
-                            colorSpaceCanvas = Lab.GetLCanvas(L / 100.0, a / 100.0, b / 100.0, previousCanvas, instantTransition);
+                            colorSpaceCanvas = Lab.GetLCanvas(L / 100.0, a / 100.0, b / 100.0, previousCanvas, instantTransition, this.FindControl<OutsideRGBWarning>("WarningTooltip"));
                             break;
                         case ColorComponents.A:
                             AnimatableColourCanvas.Updatea(L / 100.0, a / 100.0, b / 100.0, instantTransition);
                             SetTranslateRenderTransform(this.FindControl<Ellipse>("2DPositionCircle"), (255 + 255 * b / 100.0) / 2, 255 - 255 * L / 100.0, instantTransition);
                             SetTranslateRenderTransform(this.FindControl<Canvas>("1DPositionCanvas"), 0, (255 - a / 100.0 * 255) * 0.5, instantTransition);
                             this.FindControl<Rectangle>("1DPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
-                            colorSpaceCanvas = Lab.GetACanvas(L / 100.0, a / 100.0, b / 100.0, previousCanvas, instantTransition);
+                            colorSpaceCanvas = Lab.GetACanvas(L / 100.0, a / 100.0, b / 100.0, previousCanvas, instantTransition, this.FindControl<OutsideRGBWarning>("WarningTooltip"));
                             break;
                         case ColorComponents.B:
                             AnimatableColourCanvas.Updateb(L / 100.0, a / 100.0, b / 100.0, instantTransition);
                             SetTranslateRenderTransform(this.FindControl<Ellipse>("2DPositionCircle"), 255 - 255 * L / 100.0, (255 - 255 * a / 100.0) / 2, instantTransition);
                             SetTranslateRenderTransform(this.FindControl<Canvas>("1DPositionCanvas"), 0, (255 - b / 100.0 * 255) * 0.5, instantTransition);
                             this.FindControl<Rectangle>("1DPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
-                            colorSpaceCanvas = Lab.GetBCanvas(L / 100.0, a / 100.0, b / 100.0, previousCanvas, instantTransition);
+                            colorSpaceCanvas = Lab.GetBCanvas(L / 100.0, a / 100.0, b / 100.0, previousCanvas, instantTransition, this.FindControl<OutsideRGBWarning>("WarningTooltip"));
                             break;
                     }
 
@@ -988,7 +985,7 @@ namespace AvaloniaColorPicker
             return tbr;
         }
 
-        private static Func<Color, Color> GetColourBlindnessFunction(int index)
+        internal static Func<Color, Color> GetColourBlindnessFunction(int index)
         {
             switch (index)
             {
