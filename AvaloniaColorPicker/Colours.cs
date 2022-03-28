@@ -77,37 +77,67 @@ namespace AvaloniaColorPicker
             }
         }
 
+        private static bool? isDarkCached = null;
+
         private static bool IsDark
         {
             get
             {
-                foreach (Avalonia.Styling.IStyle style in Avalonia.Application.Current.Styles)
+                if (isDarkCached == null)
                 {
-                    if (style is Avalonia.Themes.Fluent.FluentTheme theme)
+                    foreach (Avalonia.Styling.IStyle style in Avalonia.Application.Current.Styles)
                     {
-                        if (theme.Mode == Avalonia.Themes.Fluent.FluentThemeMode.Dark)
+                        if (style is Avalonia.Themes.Fluent.FluentTheme theme)
                         {
-                            return true;
+                            if (theme.Mode == Avalonia.Themes.Fluent.FluentThemeMode.Dark)
+                            {
+                                isDarkCached = true;
+                                break;
+                            }
+                            else if (theme.Mode == Avalonia.Themes.Fluent.FluentThemeMode.Light)
+                            {
+                                isDarkCached = false;
+                                break;
+                            }
                         }
-                        else if (theme.Mode == Avalonia.Themes.Fluent.FluentThemeMode.Light)
+                        else if (style is Avalonia.Markup.Xaml.Styling.StyleInclude include)
                         {
-                            return false;
+                            if (include.Source.IsAbsoluteUri)
+                            {
+                                if (include.Source.AbsoluteUri.Contains("BaseLight"))
+                                {
+                                    isDarkCached = false;
+                                    break;
+                                }
+                                else if (include.Source.AbsoluteUri.Contains("BaseDark"))
+                                {
+                                    isDarkCached = true;
+                                    break;
+                                }
+                            }
+                            else
+                            {
+                                if (include.Source.OriginalString.Contains("Light"))
+                                {
+                                    isDarkCached = false;
+                                    break;
+                                }
+                                else if (include.Source.OriginalString.Contains("Dark"))
+                                {
+                                    isDarkCached = true;
+                                    break;
+                                }
+                            }
                         }
                     }
-                    else if (style is Avalonia.Markup.Xaml.Styling.StyleInclude include)
+
+                    if (isDarkCached == null)
                     {
-                        if (include.Source.AbsoluteUri.Contains("BaseLight"))
-                        {
-                            return false;
-                        }
-                        else if (include.Source.AbsoluteUri.Contains("BaseDark"))
-                        {
-                            return true;
-                        }
+                        isDarkCached = false;
                     }
                 }
 
-                return false;
+                return isDarkCached.Value;
             }
         }
 
