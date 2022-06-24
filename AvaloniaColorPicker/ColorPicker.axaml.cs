@@ -32,7 +32,7 @@ using System.Reflection;
 namespace AvaloniaColorPicker
 {
     /// <summary>
-    /// A control that enables the user to select a <see cref="Color"/>.
+    /// A control that enables the user to select a <see cref="Avalonia.Media.Color"/>.
     /// </summary>
     public class ColorPicker : UserControl, IColorPicker
     {
@@ -438,9 +438,21 @@ namespace AvaloniaColorPicker
         private ColorComponents ColorComponent { get; set; } = ColorComponents.H;
 
         /// <summary>
+        /// Defines the <see cref="Color"/> property.
+        /// </summary>
+        public static readonly StyledProperty<Color> ColorProperty = AvaloniaProperty.Register<ColorPicker, Color>(nameof(Color), Color.FromRgb(0, 162, 232));
+
+        /// <summary>
         /// The <see cref="Avalonia.Media.Color"/> that is currently selected.
         /// </summary>
         public Color Color
+        {
+            get { return GetValue(ColorProperty); }
+            set { SetValue(ColorProperty, value); }
+        }
+
+
+        private Color InternalColor
         {
             get { return Color.FromArgb(A, R, G, B); }
             set
@@ -470,6 +482,8 @@ namespace AvaloniaColorPicker
 
         private void SetColor(byte r, byte g, byte b, byte a)
         {
+            ChangeAllAtOnce = true;
+
             this.R = r;
             this.G = g;
             this.B = b;
@@ -486,6 +500,10 @@ namespace AvaloniaColorPicker
             this.H = (byte)Math.Min(255, Math.Max(0, (_H * 255)));
             this.S = (byte)Math.Min(255, Math.Max(0, (_S * 255)));
             this.V = (byte)Math.Min(255, Math.Max(0, (_V * 255)));
+
+            this.Color = this.InternalColor;
+
+            ChangeAllAtOnce = false;
         }
 
         /// <summary>
@@ -732,7 +750,16 @@ namespace AvaloniaColorPicker
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == PreviousColorProperty)
+            if (change.Property == ColorProperty)
+            {
+                Color newVal = change.NewValue.GetValueOrDefault<Color>();
+
+                if (newVal != this.InternalColor)
+                {
+                    this.InternalColor = newVal;
+                }
+            }
+            else if (change.Property == PreviousColorProperty)
             {
                 UpdateDependingOnAlpha(true);
             }
@@ -1140,6 +1167,7 @@ namespace AvaloniaColorPicker
 
 
         private bool ProgrammaticChange = false;
+        private bool ChangeAllAtOnce = false;
 
         bool IsCanvas2DPressed = false;
 
@@ -1255,6 +1283,8 @@ namespace AvaloniaColorPicker
             }
 
             BuildColorInterface(instantTransition);
+
+            this.Color = this.InternalColor;
 
             ProgrammaticChange = false;
         }
@@ -1377,6 +1407,8 @@ namespace AvaloniaColorPicker
 
             BuildColorInterface(instantTransition);
 
+            this.Color = this.InternalColor;
+
             ProgrammaticChange = false;
         }
 
@@ -1414,6 +1446,8 @@ namespace AvaloniaColorPicker
             double y = Math.Max(0, Math.Min(pos.Y, 255));
 
             this.A = (byte)Math.Round(255 - y);
+
+            this.Color = this.InternalColor;
 
             BuildColorInterface(instantTransition);
 
@@ -1485,6 +1519,11 @@ namespace AvaloniaColorPicker
 
                     case "A_NUD":
                         break;
+                }
+
+                if (!ChangeAllAtOnce)
+                {
+                    this.Color = this.InternalColor;
                 }
 
                 if (currColorSpace != null)

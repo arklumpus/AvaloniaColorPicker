@@ -82,10 +82,22 @@ namespace AvaloniaColorPicker
 
         private int b { get; set; }
 
+
+        /// <summary>
+        /// Defines the <see cref="Color"/> property.
+        /// </summary>
+        public static readonly StyledProperty<Color> ColorProperty = AvaloniaProperty.Register<ColorPicker, Color>(nameof(Color), Color.FromRgb(0, 162, 232));
+
         /// <summary>
         /// The <see cref="Avalonia.Media.Color"/> that is currently selected.
         /// </summary>
         public Color Color
+        {
+            get { return GetValue(ColorProperty); }
+            set { SetValue(ColorProperty, value); }
+        }
+
+        private Color InternalColor
         {
             get { return Color.FromArgb(A, R, G, B); }
             set
@@ -129,6 +141,8 @@ namespace AvaloniaColorPicker
             this.H = (byte)Math.Min(255, Math.Max(0, (_H * 255)));
             this.S = (byte)Math.Min(255, Math.Max(0, (_S * 255)));
             this.V = (byte)Math.Min(255, Math.Max(0, (_V * 255)));
+
+            this.Color = this.InternalColor;
         }
 
         private List<IColorCanvasControls> ColorCanvasControls = new List<IColorCanvasControls>();
@@ -334,7 +348,7 @@ namespace AvaloniaColorPicker
         {
             foreach (IColorCanvasControls control in this.ColorCanvasControls)
             {
-                control.ColorUpdatedFromAlphaCanvas += (s, e) => { this.A = e.A; UpdateDependingOnAlpha(e.InstantTransition, s); };
+                control.ColorUpdatedFromAlphaCanvas += (s, e) => { this.A = e.A; UpdateDependingOnAlpha(e.InstantTransition, s); this.Color = this.InternalColor; };
                 control.ColorUpdatedFromCanvas1D += (s, e) =>
                 {
                     this.R = e.R;
@@ -352,6 +366,8 @@ namespace AvaloniaColorPicker
                     this.A = e.A;
 
                     BuildColorInterface(e.InstantTransition, s);
+                    
+                    this.Color = this.InternalColor;
                 };
                 control.ColorUpdatedFromCanvas2D += (s, e) =>
                 {
@@ -370,6 +386,8 @@ namespace AvaloniaColorPicker
                     this.A = e.A;
 
                     BuildColorInterface(e.InstantTransition, s);
+
+                    this.Color = this.InternalColor;
                 };
             }
 
@@ -435,7 +453,7 @@ namespace AvaloniaColorPicker
             {
                 control.ColorSelected += (s, e) =>
                 {
-                    this.Color = e.Color;
+                    this.InternalColor = e.Color;
                 };
             }
 
@@ -443,7 +461,7 @@ namespace AvaloniaColorPicker
             {
                 control.ColorSelected += (s, e) =>
                 {
-                    this.Color = e.Color;
+                    this.InternalColor = e.Color;
                 };
             }
 
@@ -493,6 +511,7 @@ namespace AvaloniaColorPicker
                     {
                         this.A = e.A;
                         UpdateDependingOnAlpha(false, s);
+                        this.Color = this.InternalColor;
                     }
                 };
             }
@@ -570,7 +589,7 @@ namespace AvaloniaColorPicker
                 palette.Owner = this;
                 palette.ColorSelected += (s, e) =>
                 {
-                    this.Color = e.Color;
+                    this.InternalColor = e.Color;
                 };
             }
         }
@@ -580,7 +599,16 @@ namespace AvaloniaColorPicker
         {
             base.OnPropertyChanged(change);
 
-            if (change.Property == PreviousColorProperty)
+            if (change.Property == ColorProperty)
+            {
+                Color newVal = change.NewValue.GetValueOrDefault<Color>();
+
+                if (newVal != this.InternalColor)
+                {
+                    this.InternalColor = newVal;
+                }
+            }
+            else if (change.Property == PreviousColorProperty)
             {
                 foreach (IPreviousColorPreview control in PreviousColorPreviews)
                 {
@@ -683,7 +711,7 @@ namespace AvaloniaColorPicker
 
             foreach (ICurrentColorPreview control in CurrentColorPreviews)
             {
-                control.SetColor(this.Color, instantTransition);
+                control.SetColor(this.InternalColor, instantTransition);
             }
 
             foreach (IColorCanvasControls control in this.ColorCanvasControls)
@@ -748,6 +776,8 @@ namespace AvaloniaColorPicker
             this.L = (byte)Math.Min(100, Math.Max(0, (_L * 100)));
             this.a = (int)Math.Min(100, Math.Max(-100, (_a * 100)));
             this.b = (int)Math.Min(100, Math.Max(-100, (_b * 100)));
+
+            this.Color = this.InternalColor;
         }
 
         private void SetColorFromLab(byte L, int a, int b)
@@ -767,6 +797,8 @@ namespace AvaloniaColorPicker
             this.H = (byte)Math.Min(255, Math.Max(0, (_H * 255)));
             this.S = (byte)Math.Min(255, Math.Max(0, (_S * 255)));
             this.V = (byte)Math.Min(255, Math.Max(0, (_V * 255)));
+
+            this.Color = this.InternalColor;
         }
     }
 }
