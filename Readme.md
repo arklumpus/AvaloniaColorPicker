@@ -21,7 +21,7 @@ The library is released under the [LGPLv3](https://www.gnu.org/licenses/lgpl-3.0
 
 ## Getting started
 
-The library targets .NET Standard 2.0, thuis it can be used in projects that target .NET Standard 2.0+ and .NET Core 2.0+.
+The library targets .NET Standard 2.0, thus it can be used in projects that target .NET Standard 2.0+ and .NET Core 2.0+.
 
 To use the library in your project, you should install the [AvaloniaColorPicker Nuget package](https://www.nuget.org/packages/AvaloniaColorPicker/).
 
