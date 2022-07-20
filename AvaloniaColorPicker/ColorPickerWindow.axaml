@@ -20,7 +20,7 @@
         xmlns:local="clr-namespace:AvaloniaColorPicker;assembly=AvaloniaColorPicker"
         mc:Ignorable="d" 
         x:Class="AvaloniaColorPicker.ColorPickerWindow"
-        Title="Color picker" SizeToContent="WidthAndHeight">
+        Title="Color picker" SizeToContent="WidthAndHeight" CanResize="False">
   <Grid Margin="10">
     <Grid.RowDefinitions>
       <RowDefinition Height="1*" />
