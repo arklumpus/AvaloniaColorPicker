@@ -73,6 +73,25 @@ namespace AvaloniaColorPicker
             {
                 ColorPicker.ResetDefaultPalettes();
             }
+            // Replace an unmodified Wong palette file with the OkabeIto palette file (issue #9).
+            else if (File.Exists(Path.Combine(PaletteDirectory, "Wong.palette")) && new FileInfo(Path.Combine(PaletteDirectory, "Wong.palette")).Length == 186)
+            {
+                try
+                {
+                    File.Delete(Path.Combine(PaletteDirectory, "Wong.palette"));
+                }
+                catch { }
+
+                try
+                {
+                    using (System.IO.Stream resourceStream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("AvaloniaColorPicker.Palettes.OkabeIto.palette"))
+                    using (System.IO.Stream fileStream = System.IO.File.Create(System.IO.Path.Combine(PaletteSelector.PaletteDirectory, "OkabeIto.palette")))
+                    {
+                        resourceStream.CopyTo(fileStream);
+                    }
+                }
+                catch { }
+            }
 
             string[] paletteFiles = Directory.GetFiles(PaletteDirectory, "*.palette");
 
@@ -80,7 +99,7 @@ namespace AvaloniaColorPicker
 
             for (int i = 0; i < paletteFiles.Length; i++)
             {
-                if (Path.GetFileName(paletteFiles[i]) == "Wong.palette")
+                if (Path.GetFileName(paletteFiles[i]) == "OkabeIto.palette")
                 {
                     DefaultIndex = i;
                 }

@@ -84,8 +84,8 @@ namespace AvaloniaColorPicker
                 resourceStream.CopyTo(fileStream);
             }
 
-            using (System.IO.Stream resourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("AvaloniaColorPicker.Palettes.Wong.palette"))
-            using (System.IO.Stream fileStream = System.IO.File.Create(System.IO.Path.Combine(PaletteSelector.PaletteDirectory, "Wong.palette")))
+            using (System.IO.Stream resourceStream = Assembly.GetExecutingAssembly().GetManifestResourceStream("AvaloniaColorPicker.Palettes.OkabeIto.palette"))
+            using (System.IO.Stream fileStream = System.IO.File.Create(System.IO.Path.Combine(PaletteSelector.PaletteDirectory, "OkabeIto.palette")))
             {
                 resourceStream.CopyTo(fileStream);
             }
