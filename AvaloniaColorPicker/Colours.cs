@@ -14,9 +14,6 @@
 */
 
 using Avalonia.Media;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace AvaloniaColorPicker
 {
@@ -87,7 +84,8 @@ namespace AvaloniaColorPicker
                 {
                     foreach (Avalonia.Styling.IStyle style in Avalonia.Application.Current.Styles)
                     {
-                        if (style is Avalonia.Themes.Fluent.FluentTheme theme)
+                        //TODO: Sort out how we do this (Maybe just reference the fluent package?)
+                        /*if (style is Avalonia.Themes.Fluent.FluentTheme theme)
                         {
                             if (theme.Mode == Avalonia.Themes.Fluent.FluentThemeMode.Dark)
                             {
@@ -100,7 +98,7 @@ namespace AvaloniaColorPicker
                                 break;
                             }
                         }
-                        else if (style is Avalonia.Markup.Xaml.Styling.StyleInclude include)
+                        else*/ if (style is Avalonia.Markup.Xaml.Styling.StyleInclude include)
                         {
                             if (include.Source.IsAbsoluteUri)
                             {
@@ -140,7 +138,5 @@ namespace AvaloniaColorPicker
                 return isDarkCached.Value;
             }
         }
-
-
     }
 }

@@ -71,13 +71,13 @@ namespace AvaloniaColorPicker
             this.Matrix = matrix;
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
             if (change.Property == MatrixProperty)
             {
-                this.MatrixTransform.Matrix = (change.NewValue.Value as Matrix?).Value;
+                this.MatrixTransform.Matrix = (change.NewValue as Matrix?).Value;
             }
         }
     }
@@ -150,13 +150,13 @@ namespace AvaloniaColorPicker
             this.Angle = angle;
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
             if (change.Property == AngleProperty)
             {
-                double H = (change.NewValue.Value as double?).Value;
+                double H = (change.NewValue as double?).Value;
 
                 Point v23 = new Point(64 + 64 * Math.Cos(H * 2 * Math.PI), 20 + 20 * Math.Sin(H * 2 * Math.PI));
                 Point v14 = new Point(64, 20);

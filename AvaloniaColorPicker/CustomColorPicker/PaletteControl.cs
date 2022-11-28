@@ -16,12 +16,10 @@
 using Avalonia;
 using Avalonia.Animation;
 using Avalonia.Controls;
-using Avalonia.Input;
 using Avalonia.Media;
 using Avalonia.Styling;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using System.Collections.Immutable;
 
@@ -124,7 +122,7 @@ namespace AvaloniaColorPicker
         }
 
         /// <inheritdoc/>
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
@@ -207,7 +205,7 @@ namespace AvaloniaColorPicker
 
                 bool disabled = false;
 
-                centerPath.PointerEnter += (s, e) =>
+                centerPath.PointerEntered += (s, e) =>
                 {
                     if (!disabled)
                     {
@@ -217,7 +215,7 @@ namespace AvaloniaColorPicker
                         plusStroke.Update(Color.FromRgb(180, 180, 180), false);
                     }
                 };
-                centerPath.PointerLeave += (s, e) =>
+                centerPath.PointerExited += (s, e) =>
                 {
                     if (!disabled)
                     {
@@ -344,14 +342,14 @@ namespace AvaloniaColorPicker
             rightPath.Classes.Add("HexagonRightPalette");
             centerPath.Classes.Add("HexagonCenter");
 
-            rightPath.PointerEnter += (s, e) =>
+            rightPath.PointerEntered += (s, e) =>
             {
                 rightPath.ZIndex = 10;
                 centerPath.ZIndex = 10;
                 myContainer.ZIndex = 10;
             };
 
-            rightPath.PointerLeave += async (s, e) =>
+            rightPath.PointerExited += async (s, e) =>
             {
                 await Task.Delay(100);
                 rightPath.ZIndex = 0;
@@ -430,13 +428,13 @@ namespace AvaloniaColorPicker
 
             AnimatableColorBrush fgStroke = new AnimatableColorBrush(Color.FromRgb(255, 255, 255), col => deleteFG.Stroke = new SolidColorBrush(col));
 
-            deleteBG.Path.PointerEnter += (s, e) =>
+            deleteBG.Path.PointerEntered += (s, e) =>
             {
                 bgFill.Update(Color.FromRgb(240, 240, 240), false);
                 fgStroke.Update(Color.FromRgb(128, 128, 128), false);
             };
 
-            deleteBG.Path.PointerLeave += (s, e) =>
+            deleteBG.Path.PointerExited += (s, e) =>
             {
                 bgFill.Update(Color.FromRgb(180, 180, 180), false);
                 fgStroke.Update(Avalonia.Media.Colors.White, false);
@@ -450,7 +448,7 @@ namespace AvaloniaColorPicker
 
             bool deleteVisible = false;
 
-            centerPath.PointerEnter += async (s, e) =>
+            centerPath.PointerEntered += async (s, e) =>
             {
                 if (!deleteVisible)
                 {

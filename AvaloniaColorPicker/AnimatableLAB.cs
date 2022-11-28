@@ -65,13 +65,13 @@ namespace AvaloniaColorPicker
             }
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
             if (change.Property == LABProperty)
             {
-                LAB lab = (change.NewValue.Value as LAB?).Value;
+                LAB lab = (change.NewValue as LAB?).Value;
 
                 double L = lab.L;
                 double a = lab.a;
