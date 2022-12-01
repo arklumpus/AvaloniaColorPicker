@@ -30,12 +30,12 @@
       <ColumnDefinition Width="1*" />
     </Grid.ColumnDefinitions>
     <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,0,0,5" Grid.Row="0">L*:</TextBlock>
-    <NumericUpDown Grid.Column="1" Minimum="0" Maximum="100" Margin="5,0,0,5" Padding="5,0,5,0" VerticalContentAlignment="Center" Grid.Row="0" VerticalAlignment="Center" Value="63" Name="LBox"></NumericUpDown>
+    <NumericUpDown Grid.Column="1" Minimum="0" Maximum="100" Margin="5,0,0,5" Padding="5,0,5,0" VerticalContentAlignment="Center" Grid.Row="0" VerticalAlignment="Center" Value="63" Name="LBox" FormatString="0"></NumericUpDown>
 
     <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="1" Margin="0,0,0,5">a*:</TextBlock>
-    <NumericUpDown Grid.Column="1" Minimum="-100" Maximum="100" Margin="5,0,0,5" Grid.Row="1" Padding="5,0,5,0" VerticalContentAlignment="Center" VerticalAlignment="Center" Value="-10" Name="aBox"></NumericUpDown>
+    <NumericUpDown Grid.Column="1" Minimum="-100" Maximum="100" Margin="5,0,0,5" Grid.Row="1" Padding="5,0,5,0" VerticalContentAlignment="Center" VerticalAlignment="Center" Value="-10" Name="aBox" FormatString="0"></NumericUpDown>
 
     <TextBlock HorizontalAlignment="Right" VerticalAlignment="Center" Grid.Row="2" Margin="0,0,0,5">b*:</TextBlock>
-    <NumericUpDown Grid.Column="1" Minimum="-100" Maximum="100" Margin="5,0,0,5" Grid.Row="2" Padding="5,0,5,0" VerticalContentAlignment="Center" VerticalAlignment="Center" Value="-44" Name="bBox"></NumericUpDown>
+    <NumericUpDown Grid.Column="1" Minimum="-100" Maximum="100" Margin="5,0,0,5" Grid.Row="2" Padding="5,0,5,0" VerticalContentAlignment="Center" VerticalAlignment="Center" Value="-44" Name="bBox" FormatString="0"></NumericUpDown>
   </Grid>
 </UserControl>
