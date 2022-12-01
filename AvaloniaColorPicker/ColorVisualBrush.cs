@@ -68,14 +68,14 @@ namespace AvaloniaColorPicker
             }
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
             if (change.Property == ColorProperty)
             {
-                ColorRectangle.Fill = new SolidColorBrush((change.NewValue.Value as Color?).Value);
-                this.RaiseInvalidated(new EventArgs());
+                ColorRectangle.Fill = new SolidColorBrush((change.NewValue as Color?).Value);
+                this.RaiseInvalidated(EventArgs.Empty);
             }
         }
     }
@@ -114,13 +114,13 @@ namespace AvaloniaColorPicker
             }
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
             if (change.Property == ColorProperty)
             {
-                ColorSetter((change.NewValue.Value as Color?).Value);
+                ColorSetter((change.NewValue as Color?).Value);
             }
         }
 

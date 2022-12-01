@@ -63,7 +63,7 @@ namespace AvaloniaColorPicker
         public event EventHandler<AChangedEventArgs> AChanged;
 
         /// <inheritdoc/>
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 

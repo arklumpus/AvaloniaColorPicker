@@ -26,7 +26,6 @@ using Avalonia.Media.Transformation;
 using Avalonia.Styling;
 using System;
 using System.Threading.Tasks;
-using System.Linq;
 
 namespace AvaloniaColorPicker
 {
@@ -330,13 +329,13 @@ namespace AvaloniaColorPicker
         }
 
         /// <inheritdoc/>
-        protected override void OnPropertyChanged<T2>(AvaloniaPropertyChangedEventArgs<T2> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
             if (change.Property == ColorProperty)
             {
-                Color col = (change.NewValue.Value as Color?).Value;
+                Color col = (change.NewValue as Color?).Value;
                 ColorBrush.Color = col;
             }
         }
@@ -418,7 +417,7 @@ namespace AvaloniaColorPicker
             rightPath.Classes.Add("HexagonRightButton");
             centerPath.Classes.Add("HexagonCenterButton");
 
-            rightPath.PointerEnter += (s, e) =>
+            rightPath.PointerEntered += (s, e) =>
             {
                 rightPath.Classes.Add("rightOver");
                 centerPath.Classes.Add("rightOver");
@@ -426,7 +425,7 @@ namespace AvaloniaColorPicker
                 myContainer.Classes.Add("rightOver");
             };
 
-            rightPath.PointerLeave += async (s, e) =>
+            rightPath.PointerExited += async (s, e) =>
             {
                 rightPath.Classes.Add("rightOverBlurring");
                 centerPath.Classes.Add("rightOverBlurring");
@@ -444,7 +443,7 @@ namespace AvaloniaColorPicker
                 myContainer.Classes.Remove("rightOverBlurring");
             };
 
-            leftPath.PointerEnter += (s, e) =>
+            leftPath.PointerEntered += (s, e) =>
             {
                 rightPath.Classes.Add("leftOver");
                 centerPath.Classes.Add("leftOver");
@@ -452,7 +451,7 @@ namespace AvaloniaColorPicker
                 myContainer.Classes.Add("leftOver");
             };
 
-            leftPath.PointerLeave += async (s, e) =>
+            leftPath.PointerExited += async (s, e) =>
             {
                 rightPath.Classes.Add("leftOverBlurring");
                 centerPath.Classes.Add("leftOverBlurring");
@@ -470,7 +469,7 @@ namespace AvaloniaColorPicker
                 myContainer.Classes.Remove("leftOverBlurring");
             };
 
-            centerPath.PointerEnter += (s, e) =>
+            centerPath.PointerEntered += (s, e) =>
             {
                 rightPath.Classes.Add("centerOver");
                 centerPath.Classes.Add("centerOver");
@@ -478,7 +477,7 @@ namespace AvaloniaColorPicker
                 myContainer.Classes.Add("centerOver");
             };
 
-            centerPath.PointerLeave += async (s, e) =>
+            centerPath.PointerExited += async (s, e) =>
             {
                 rightPath.Classes.Add("centerOverBlurring");
                 centerPath.Classes.Add("centerOverBlurring");

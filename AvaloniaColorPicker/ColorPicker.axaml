@@ -22,6 +22,9 @@
              x:Class="AvaloniaColorPicker.ColorPicker" Margin="10">
   <UserControl.Styles>
     <Styles>
+	  <Style Selector="NumericUpDown">
+		<Setter Property="FormatString" Value="0"/>	
+	  </Style>
       <Style Selector="Path.HexagonLeft">
         <Setter Property="RenderTransform" Value="none" />
         <Setter Property="Transitions">

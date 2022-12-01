@@ -1059,12 +1059,12 @@ namespace AvaloniaColorPicker
 
                 //ToolTip.SetTip(warningCanvas, "The colour falls outside of the sRGB colour space!");
 
-                warningCanvas.PointerEnter += (s, e) =>
+                warningCanvas.PointerEntered += (s, e) =>
                 {
                     can.Parent.FindControl<Grid>("WarningTooltip").Opacity = 1;
                 };
 
-                warningCanvas.PointerLeave += (s, e) =>
+                warningCanvas.PointerExited += (s, e) =>
                 {
                     can.Parent.FindControl<Grid>("WarningTooltip").Opacity = 0;
                 };
@@ -1137,12 +1137,12 @@ namespace AvaloniaColorPicker
 
                 //ToolTip.SetTip(warningCanvas, "The colour falls outside of the sRGB colour space!");
 
-                warningCanvas.PointerEnter += (s, e) =>
+                warningCanvas.PointerEntered += (s, e) =>
                 {
                     can.Parent.FindControl<Grid>("WarningTooltip").Opacity = 1;
                 };
 
-                warningCanvas.PointerLeave += (s, e) =>
+                warningCanvas.PointerExited += (s, e) =>
                 {
                     can.Parent.FindControl<Grid>("WarningTooltip").Opacity = 0;
                 };
@@ -1399,7 +1399,7 @@ namespace AvaloniaColorPicker
 
             WarningCanvas.Children.Add(new Ellipse() { Width = 3, Height = 3, RenderTransform = new TranslateTransform(16 - 1.5, 24), Fill = Brushes.Black });
 
-            WarningCanvas.PointerEnter += (s, e) =>
+            WarningCanvas.PointerEntered += (s, e) =>
             {
                 if (warningTooltip != null)
                 {
@@ -1407,7 +1407,7 @@ namespace AvaloniaColorPicker
                 }
             };
 
-            WarningCanvas.PointerLeave += (s, e) =>
+            WarningCanvas.PointerExited += (s, e) =>
             {
                 if (warningTooltip != null)
                 {

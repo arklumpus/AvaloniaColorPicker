@@ -17,7 +17,6 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Media;
 using Avalonia.Styling;
-using Avalonia.VisualTree;
 using Avalonia.LogicalTree;
 using System;
 using System.Collections.Generic;
@@ -595,13 +594,13 @@ namespace AvaloniaColorPicker
         }
 
         /// <inheritdoc/>
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
             if (change.Property == ColorProperty)
             {
-                Color newVal = change.NewValue.GetValueOrDefault<Color>();
+                Color newVal = change.GetNewValue<Color>();
 
                 if (newVal != this.InternalColor)
                 {

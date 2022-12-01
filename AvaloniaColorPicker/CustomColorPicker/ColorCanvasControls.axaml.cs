@@ -432,13 +432,13 @@ namespace AvaloniaColorPicker
         }
 
         /// <inheritdoc/>
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
             if (change.Property == IsAlphaVisibleProperty)
             {
-                if (change.NewValue.GetValueOrDefault<bool>())
+                if (change.GetNewValue<bool>())
                 {
                     this.FindControl<Grid>("MainGrid").ColumnDefinitions[3].Width = new GridLength(15, GridUnitType.Pixel);
                     this.FindControl<Grid>("MainGrid").ColumnDefinitions[4].Width = new GridLength(24, GridUnitType.Pixel);

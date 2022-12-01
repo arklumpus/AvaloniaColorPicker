@@ -125,13 +125,13 @@ namespace AvaloniaColorPicker
 
 
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
             if (change.Property == PointsProperty)
             {
-                PointCollection4 newPoints = (change.NewValue.Value as PointCollection4?).Value;
+                PointCollection4 newPoints = (change.NewValue as PointCollection4?).Value;
 
                 this.Figure.StartPoint = newPoints.P1;
                 this.Segment1.Point = newPoints.P2;
@@ -262,13 +262,13 @@ namespace AvaloniaColorPicker
             }
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
             if (change.Property == AngleProperty)
             {
-                double angle = (change.NewValue.Value as double?).Value;
+                double angle = (change.NewValue as double?).Value;
 
                 Point v23 = new Point(64 + 64 * Math.Cos(angle * 2 * Math.PI), 20 + 20 * Math.Sin(angle * 2 * Math.PI));
                 Point v67 = new Point(64 + 64 * Math.Cos(angle * 2 * Math.PI), 76 + 20 * Math.Sin(angle * 2 * Math.PI));
@@ -461,13 +461,13 @@ namespace AvaloniaColorPicker
             }
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
             if (change.Property == HeightProperty)
             {
-                double height = (change.NewValue.Value as double?).Value;
+                double height = (change.NewValue as double?).Value;
 
                 PathGeometry cylinderGeometry = new PathGeometry();
                 Figure.StartPoint = new Point(0, 76 - height * 56 - 1);
@@ -548,13 +548,13 @@ namespace AvaloniaColorPicker
             }
         }
 
-        protected override void OnPropertyChanged<T>(AvaloniaPropertyChangedEventArgs<T> change)
+        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
         {
             base.OnPropertyChanged(change);
 
             if (change.Property == HSVProperty)
             {
-                HSV hsv = (change.NewValue.Value as HSV?).Value;
+                HSV hsv = (change.NewValue as HSV?).Value;
                 double H = hsv.H;
                 double S = hsv.S;
                 double V = hsv.V;
