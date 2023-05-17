@@ -66,8 +66,8 @@ namespace AvaloniaColorPicker
 
         private ColorPicker.ColorComponents ColorComponent { get; set; }
 
-        public Image Canvas2D { get; }
-        public Image Canvas1D { get; }
+        public Image CanvasTwoD { get; }
+        public Image CanvasOneD { get; }
         public Image AlphaCanvas { get; }
 
         private HSVTransition HSVTransition { get; }
@@ -76,8 +76,8 @@ namespace AvaloniaColorPicker
 
         public AnimatableColourCanvas()
         {
-            Canvas2D = new Image() { Width = 256, Height = 256 };
-            Canvas1D = new Image() { Width = 24, Height = 256, Stretch = Avalonia.Media.Stretch.Fill };
+            CanvasTwoD = new Image() { Width = 256, Height = 256 };
+            CanvasOneD = new Image() { Width = 24, Height = 256, Stretch = Avalonia.Media.Stretch.Fill };
             AlphaCanvas = new Image() { Width = 24, Height = 256, Stretch = Avalonia.Media.Stretch.Fill };
 
             if (!ColorPicker.TransitionsDisabled)
@@ -129,13 +129,13 @@ namespace AvaloniaColorPicker
             }
 
             this.ColorComponent = ColorPicker.ColorComponents.R;
-            
+
             Color newValue = Color.FromRgb(R, G, B);
 
             if (this.RGB != newValue)
             {
                 this.RGB = newValue;
-                
+
                 if (instantTransition)
                 {
                     Update(ColorPicker.ColorSpaces.RGB);
@@ -414,8 +414,8 @@ namespace AvaloniaColorPicker
 
         private void Update(ColorPicker.ColorSpaces colorSpace)
         {
-            WriteableBitmap canvas2Dimage = null;
-            WriteableBitmap canvas1Dimage = null;
+            WriteableBitmap canvasTwoDimage = null;
+            WriteableBitmap canvasOneDimage = null;
 
             (byte R, byte G, byte B) = (RGB.R, RGB.G, RGB.B);
 
@@ -428,16 +428,16 @@ namespace AvaloniaColorPicker
                     switch (ColorComponent)
                     {
                         case ColorPicker.ColorComponents.R:
-                            canvas1Dimage = AvaloniaColorPicker.RGB.GetR(G, B);
-                            canvas2Dimage = AvaloniaColorPicker.RGB.GetGB(R);
+                            canvasOneDimage = AvaloniaColorPicker.RGB.GetR(G, B);
+                            canvasTwoDimage = AvaloniaColorPicker.RGB.GetGB(R);
                             break;
                         case ColorPicker.ColorComponents.G:
-                            canvas1Dimage = AvaloniaColorPicker.RGB.GetG(R, B);
-                            canvas2Dimage = AvaloniaColorPicker.RGB.GetRB(G);
+                            canvasOneDimage = AvaloniaColorPicker.RGB.GetG(R, B);
+                            canvasTwoDimage = AvaloniaColorPicker.RGB.GetRB(G);
                             break;
                         case ColorPicker.ColorComponents.B:
-                            canvas1Dimage = AvaloniaColorPicker.RGB.GetB(R, G);
-                            canvas2Dimage = AvaloniaColorPicker.RGB.GetRG(B);
+                            canvasOneDimage = AvaloniaColorPicker.RGB.GetB(R, G);
+                            canvasTwoDimage = AvaloniaColorPicker.RGB.GetRG(B);
                             break;
                     }
                     break;
@@ -446,16 +446,16 @@ namespace AvaloniaColorPicker
                     switch (ColorComponent)
                     {
                         case ColorPicker.ColorComponents.H:
-                            canvas1Dimage = HSB.GetH();
-                            canvas2Dimage = HSB.GetSB(H);
+                            canvasOneDimage = HSB.GetH();
+                            canvasTwoDimage = HSB.GetSB(H);
                             break;
                         case ColorPicker.ColorComponents.S:
-                            canvas1Dimage = HSB.GetS(H, V);
-                            canvas2Dimage = HSB.GetHB(S);
+                            canvasOneDimage = HSB.GetS(H, V);
+                            canvasTwoDimage = HSB.GetHB(S);
                             break;
                         case ColorPicker.ColorComponents.B:
-                            canvas1Dimage = HSB.GetB(H, S);
-                            canvas2Dimage = HSB.GetHS(V);
+                            canvasOneDimage = HSB.GetB(H, S);
+                            canvasTwoDimage = HSB.GetHS(V);
                             break;
                     }
                     break;
@@ -464,23 +464,23 @@ namespace AvaloniaColorPicker
                     switch (ColorComponent)
                     {
                         case ColorPicker.ColorComponents.L:
-                            canvas1Dimage = Lab.GetL(a, b);
-                            canvas2Dimage = Lab.GetAB(L);
+                            canvasOneDimage = Lab.GetL(a, b);
+                            canvasTwoDimage = Lab.GetAB(L);
                             break;
                         case ColorPicker.ColorComponents.A:
-                            canvas1Dimage = Lab.GetA(L, b);
-                            canvas2Dimage = Lab.GetLB(a);
+                            canvasOneDimage = Lab.GetA(L, b);
+                            canvasTwoDimage = Lab.GetLB(a);
                             break;
                         case ColorPicker.ColorComponents.B:
-                            canvas1Dimage = Lab.GetB(L, a);
-                            canvas2Dimage = Lab.GetLA(b);
+                            canvasOneDimage = Lab.GetB(L, a);
+                            canvasTwoDimage = Lab.GetLA(b);
                             break;
                     }
                     break;
             }
 
-            Canvas2D.Source = canvas2Dimage;
-            Canvas1D.Source = canvas1Dimage;
+            CanvasTwoD.Source = canvasTwoDimage;
+            CanvasOneD.Source = canvasOneDimage;
             AlphaCanvas.Source = AvaloniaColorPicker.RGB.GetA(R, G, B);
         }
     }

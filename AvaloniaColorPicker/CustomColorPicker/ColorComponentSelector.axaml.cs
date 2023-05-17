@@ -170,7 +170,7 @@ namespace AvaloniaColorPicker
                 ColorComponent = ColorComponents.Component1;
             }
         }
-        
+
         /// <summary>
         /// Create a new <see cref="ColorComponentSelector"/>.
         /// </summary>
@@ -178,9 +178,9 @@ namespace AvaloniaColorPicker
         {
             InitializeComponent();
 
-            this.FindControl<ToggleButton>("Dim1Toggle").Checked += (s, e) => { this.ColorComponent = ColorComponents.Component1; };
-            this.FindControl<ToggleButton>("Dim2Toggle").Checked += (s, e) => { this.ColorComponent = ColorComponents.Component2; };
-            this.FindControl<ToggleButton>("Dim3Toggle").Checked += (s, e) => { this.ColorComponent = ColorComponents.Component3; };
+            this.FindControl<ToggleButton>("Dim1Toggle").IsCheckedChanged += (s, e) => { this.ColorComponent = ColorComponents.Component1; };
+            this.FindControl<ToggleButton>("Dim2Toggle").IsCheckedChanged += (s, e) => { this.ColorComponent = ColorComponents.Component2; };
+            this.FindControl<ToggleButton>("Dim3Toggle").IsCheckedChanged += (s, e) => { this.ColorComponent = ColorComponents.Component3; };
         }
 
         private void InitializeComponent()

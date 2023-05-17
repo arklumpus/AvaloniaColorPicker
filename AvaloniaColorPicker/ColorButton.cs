@@ -117,7 +117,7 @@ namespace AvaloniaColorPicker
 
             Popup palettePopup = new Popup
             {
-                PlacementMode = PlacementMode.AnchorAndGravity,
+                Placement = PlacementMode.AnchorAndGravity,
                 PlacementGravity = Avalonia.Controls.Primitives.PopupPositioning.PopupGravity.Bottom,
                 PlacementAnchor = Avalonia.Controls.Primitives.PopupPositioning.PopupAnchor.Bottom,
                 PlacementConstraintAdjustment = Avalonia.Controls.Primitives.PopupPositioning.PopupPositionerConstraintAdjustment.FlipY,
@@ -198,13 +198,13 @@ namespace AvaloniaColorPicker
 
             IInputElement element = FocusManager.Instance.Current;
 
-            if (!HasParent(element as IControl, ContentButton))
+            if (!HasParent(element as Control, ContentButton))
             {
                 ContentButton.IsChecked = false;
             }
         }
 
-        private static bool HasParent(IControl child, IControl parent)
+        private static bool HasParent(Control child, Control parent)
         {
             while (child != null)
             {
@@ -213,7 +213,7 @@ namespace AvaloniaColorPicker
                     return true;
                 }
 
-                child = child.Parent;
+                child = child.Parent as Control;
             }
 
             return false;
@@ -495,7 +495,7 @@ namespace AvaloniaColorPicker
                 myContainer.Classes.Remove("centerOverBlurring");
             };
 
-            leftPath.PointerPressed += async(s, e) =>
+            leftPath.PointerPressed += async (s, e) =>
             {
                 this.Color = lighterColor;
                 ContentButton.IsChecked = false;

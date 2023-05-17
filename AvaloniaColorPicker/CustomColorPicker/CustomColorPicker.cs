@@ -348,7 +348,7 @@ namespace AvaloniaColorPicker
             foreach (IColorCanvasControls control in this.ColorCanvasControls)
             {
                 control.ColorUpdatedFromAlphaCanvas += (s, e) => { this.A = e.A; UpdateDependingOnAlpha(e.InstantTransition, s); this.Color = this.InternalColor; };
-                control.ColorUpdatedFromCanvas1D += (s, e) =>
+                control.ColorUpdatedFromCanvasOneD += (s, e) =>
                 {
                     this.R = e.R;
                     this.G = e.G;
@@ -365,10 +365,10 @@ namespace AvaloniaColorPicker
                     this.A = e.A;
 
                     BuildColorInterface(e.InstantTransition, s);
-                    
+
                     this.Color = this.InternalColor;
                 };
-                control.ColorUpdatedFromCanvas2D += (s, e) =>
+                control.ColorUpdatedFromCanvasTwoD += (s, e) =>
                 {
                     this.R = e.R;
                     this.G = e.G;

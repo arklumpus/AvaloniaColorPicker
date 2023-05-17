@@ -90,14 +90,14 @@ namespace AvaloniaColorPicker
         byte A { get; set; }
 
         /// <summary>
-        /// Invoked when the user selects a new colour from the 2D canvas.
+        /// Invoked when the user selects a new colour from the TwoD canvas.
         /// </summary>
-        event EventHandler<ColorUpdatedEventArgs> ColorUpdatedFromCanvas2D;
+        event EventHandler<ColorUpdatedEventArgs> ColorUpdatedFromCanvasTwoD;
 
         /// <summary>
-        /// Invoked when the user selects a new colour from the 1D canvas.
+        /// Invoked when the user selects a new colour from the OneD canvas.
         /// </summary>
-        event EventHandler<ColorUpdatedEventArgs> ColorUpdatedFromCanvas1D;
+        event EventHandler<ColorUpdatedEventArgs> ColorUpdatedFromCanvasOneD;
 
         /// <summary>
         /// Invoked when the user changes the alpha value of the colour.
@@ -311,10 +311,10 @@ namespace AvaloniaColorPicker
         }
 
         /// <inheritdoc/>
-        public event EventHandler<ColorUpdatedEventArgs> ColorUpdatedFromCanvas2D;
+        public event EventHandler<ColorUpdatedEventArgs> ColorUpdatedFromCanvasTwoD;
 
         /// <inheritdoc/>
-        public event EventHandler<ColorUpdatedEventArgs> ColorUpdatedFromCanvas1D;
+        public event EventHandler<ColorUpdatedEventArgs> ColorUpdatedFromCanvasOneD;
 
         /// <inheritdoc/>
         public event EventHandler<ColorUpdatedEventArgs> ColorUpdatedFromAlphaCanvas;
@@ -331,30 +331,30 @@ namespace AvaloniaColorPicker
                     {
                         case ColorComponents.Component1:
                             AnimatableColourCanvas.UpdateR(R, G, B, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("2DPositionCircle"), G, 255 - B, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("1DPositionCanvas"), 0, 255 - R, instantTransition);
-                            this.FindControl<Rectangle>("1DPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("TwoDPositionCircle"), G, 255 - B, instantTransition);
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("OneDPositionCanvas"), 0, 255 - R, instantTransition);
+                            this.FindControl<Rectangle>("OneDPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
                             break;
                         case ColorComponents.Component2:
                             AnimatableColourCanvas.UpdateG(R, G, B, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("2DPositionCircle"), 255 - R, 255 - B, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("1DPositionCanvas"), 0, 255 - G, instantTransition);
-                            this.FindControl<Rectangle>("1DPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("TwoDPositionCircle"), 255 - R, 255 - B, instantTransition);
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("OneDPositionCanvas"), 0, 255 - G, instantTransition);
+                            this.FindControl<Rectangle>("OneDPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
                             break;
                         case ColorComponents.Component3:
                             AnimatableColourCanvas.UpdateB(R, G, B, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("2DPositionCircle"), G, R, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("1DPositionCanvas"), 0, 255 - B, instantTransition);
-                            this.FindControl<Rectangle>("1DPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("TwoDPositionCircle"), G, R, instantTransition);
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("OneDPositionCanvas"), 0, 255 - B, instantTransition);
+                            this.FindControl<Rectangle>("OneDPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
                             break;
                     }
                     if (S < 128 && V > 128)
                     {
-                        this.FindControl<Ellipse>("2DPositionCircle").Stroke = Brushes.Black;
+                        this.FindControl<Ellipse>("TwoDPositionCircle").Stroke = Brushes.Black;
                     }
                     else
                     {
-                        this.FindControl<Ellipse>("2DPositionCircle").Stroke = Brushes.White;
+                        this.FindControl<Ellipse>("TwoDPositionCircle").Stroke = Brushes.White;
                     }
                     break;
                 case ColorPicker.ColorSpaces.HSB:
@@ -362,30 +362,30 @@ namespace AvaloniaColorPicker
                     {
                         case ColorComponents.Component1:
                             AnimatableColourCanvas.UpdateH(H / 255.0, S / 255.0, V / 255.0, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("2DPositionCircle"), S, 255 - V, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("1DPositionCanvas"), 0, 255 - H, instantTransition);
-                            this.FindControl<Rectangle>("1DPositionRectangle").Fill = new SolidColorBrush(HSB.ColorFromHSV(H / 255.0, 1, 1));
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("TwoDPositionCircle"), S, 255 - V, instantTransition);
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("OneDPositionCanvas"), 0, 255 - H, instantTransition);
+                            this.FindControl<Rectangle>("OneDPositionRectangle").Fill = new SolidColorBrush(HSB.ColorFromHSV(H / 255.0, 1, 1));
                             break;
                         case ColorComponents.Component2:
                             AnimatableColourCanvas.UpdateS(H / 255.0, S / 255.0, V / 255.0, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("2DPositionCircle"), H, 255 - V, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("1DPositionCanvas"), 0, 255 - S, instantTransition);
-                            this.FindControl<Rectangle>("1DPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("TwoDPositionCircle"), H, 255 - V, instantTransition);
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("OneDPositionCanvas"), 0, 255 - S, instantTransition);
+                            this.FindControl<Rectangle>("OneDPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
                             break;
                         case ColorComponents.Component3:
                             AnimatableColourCanvas.UpdateV(H / 255.0, S / 255.0, V / 255.0, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("2DPositionCircle"), 128 + S * 0.5 * Math.Cos(H / 255.0 * 2 * Math.PI), 128 + S * 0.5 * Math.Sin(H / 255.0 * 2 * Math.PI), instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("1DPositionCanvas"), 0, 255 - V, instantTransition);
-                            this.FindControl<Rectangle>("1DPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("TwoDPositionCircle"), 128 + S * 0.5 * Math.Cos(H / 255.0 * 2 * Math.PI), 128 + S * 0.5 * Math.Sin(H / 255.0 * 2 * Math.PI), instantTransition);
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("OneDPositionCanvas"), 0, 255 - V, instantTransition);
+                            this.FindControl<Rectangle>("OneDPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
                             break;
                     }
                     if (S < 128 && V > 128)
                     {
-                        this.FindControl<Ellipse>("2DPositionCircle").Stroke = Brushes.Black;
+                        this.FindControl<Ellipse>("TwoDPositionCircle").Stroke = Brushes.Black;
                     }
                     else
                     {
-                        this.FindControl<Ellipse>("2DPositionCircle").Stroke = Brushes.White;
+                        this.FindControl<Ellipse>("TwoDPositionCircle").Stroke = Brushes.White;
                     }
                     break;
                 case ColorPicker.ColorSpaces.LAB:
@@ -393,21 +393,21 @@ namespace AvaloniaColorPicker
                     {
                         case ColorComponents.Component1:
                             AnimatableColourCanvas.UpdateL(L / 100.0, a / 100.0, b / 100.0, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("2DPositionCircle"), (255 + 255 * b / 100.0) / 2, (255 - 255 * a / 100.0) / 2, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("1DPositionCanvas"), 0, 255 - L / 100.0 * 255, instantTransition);
-                            this.FindControl<Rectangle>("1DPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("TwoDPositionCircle"), (255 + 255 * b / 100.0) / 2, (255 - 255 * a / 100.0) / 2, instantTransition);
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("OneDPositionCanvas"), 0, 255 - L / 100.0 * 255, instantTransition);
+                            this.FindControl<Rectangle>("OneDPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
                             break;
                         case ColorComponents.Component2:
                             AnimatableColourCanvas.Updatea(L / 100.0, a / 100.0, b / 100.0, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("2DPositionCircle"), (255 + 255 * b / 100.0) / 2, 255 - 255 * L / 100.0, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("1DPositionCanvas"), 0, (255 - a / 100.0 * 255) * 0.5, instantTransition);
-                            this.FindControl<Rectangle>("1DPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("TwoDPositionCircle"), (255 + 255 * b / 100.0) / 2, 255 - 255 * L / 100.0, instantTransition);
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("OneDPositionCanvas"), 0, (255 - a / 100.0 * 255) * 0.5, instantTransition);
+                            this.FindControl<Rectangle>("OneDPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
                             break;
                         case ColorComponents.Component3:
                             AnimatableColourCanvas.Updateb(L / 100.0, a / 100.0, b / 100.0, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("2DPositionCircle"), 255 - 255 * L / 100.0, (255 - 255 * a / 100.0) / 2, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("1DPositionCanvas"), 0, (255 - b / 100.0 * 255) * 0.5, instantTransition);
-                            this.FindControl<Rectangle>("1DPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("TwoDPositionCircle"), 255 - 255 * L / 100.0, (255 - 255 * a / 100.0) / 2, instantTransition);
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("OneDPositionCanvas"), 0, (255 - b / 100.0 * 255) * 0.5, instantTransition);
+                            this.FindControl<Rectangle>("OneDPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
                             break;
                     }
 
@@ -418,11 +418,11 @@ namespace AvaloniaColorPicker
 
                     if (Sl < 0.5 && L1 > 0.5)
                     {
-                        this.FindControl<Ellipse>("2DPositionCircle").Stroke = Brushes.Black;
+                        this.FindControl<Ellipse>("TwoDPositionCircle").Stroke = Brushes.Black;
                     }
                     else
                     {
-                        this.FindControl<Ellipse>("2DPositionCircle").Stroke = Brushes.White;
+                        this.FindControl<Ellipse>("TwoDPositionCircle").Stroke = Brushes.White;
                     }
                     break;
             }
@@ -461,21 +461,21 @@ namespace AvaloniaColorPicker
         {
             InitializeComponent();
 
-            this.FindControl<Canvas>("Canvas2D").PointerPressed += Canvas2DPressed;
-            this.FindControl<Canvas>("Canvas2D").PointerReleased += Canvas2DReleased;
-            this.FindControl<Canvas>("Canvas2D").PointerMoved += Canvas2DMove;
+            this.FindControl<Canvas>("CanvasTwoD").PointerPressed += CanvasTwoDPressed;
+            this.FindControl<Canvas>("CanvasTwoD").PointerReleased += CanvasTwoDReleased;
+            this.FindControl<Canvas>("CanvasTwoD").PointerMoved += CanvasTwoDMove;
 
-            this.FindControl<Canvas>("Canvas1D").PointerPressed += Canvas1DPressed;
-            this.FindControl<Canvas>("Canvas1D").PointerReleased += Canvas1DReleased;
-            this.FindControl<Canvas>("Canvas1D").PointerMoved += Canvas1DMove;
+            this.FindControl<Canvas>("CanvasOneD").PointerPressed += CanvasOneDPressed;
+            this.FindControl<Canvas>("CanvasOneD").PointerReleased += CanvasOneDReleased;
+            this.FindControl<Canvas>("CanvasOneD").PointerMoved += CanvasOneDMove;
 
             this.FindControl<Canvas>("AlphaCanvas").PointerPressed += AlphaCanvasPressed;
             this.FindControl<Canvas>("AlphaCanvas").PointerReleased += AlphaCanvasReleased;
             this.FindControl<Canvas>("AlphaCanvas").PointerMoved += AlphaCanvasMove;
 
             AnimatableColourCanvas = new AnimatableColourCanvas();
-            this.FindControl<Canvas>("Canvas2DImageContainer").Children.Add(AnimatableColourCanvas.Canvas2D);
-            this.FindControl<Canvas>("Canvas1DImageContainer").Children.Add(AnimatableColourCanvas.Canvas1D);
+            this.FindControl<Canvas>("CanvasTwoDImageContainer").Children.Add(AnimatableColourCanvas.CanvasTwoD);
+            this.FindControl<Canvas>("CanvasOneDImageContainer").Children.Add(AnimatableColourCanvas.CanvasOneD);
             this.FindControl<Canvas>("AlphaCanvasImageContainer").Children.Add(AnimatableColourCanvas.AlphaCanvas);
 
             IBrush alphaBGBrush = Brush.Parse("#DCDCDC");
@@ -495,10 +495,10 @@ namespace AvaloniaColorPicker
             UpdatePreview(true);
         }
 
-        private bool IsCanvas2DPressed = false;
+        private bool IsCanvasTwoDPressed = false;
 
-        private DispatcherTimer Canvas2DTimer { get; } = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 100), DispatcherPriority.Input, StopTimer);
-        private DispatcherTimer Canvas1DTimer { get; } = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 100), DispatcherPriority.Input, StopTimer);
+        private DispatcherTimer CanvasTwoDTimer { get; } = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 100), DispatcherPriority.Input, StopTimer);
+        private DispatcherTimer CanvasOneDTimer { get; } = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 100), DispatcherPriority.Input, StopTimer);
         private DispatcherTimer AlphaCanvasTimer { get; } = new DispatcherTimer(new TimeSpan(0, 0, 0, 0, 100), DispatcherPriority.Input, StopTimer);
 
         private static void StopTimer(object sender, EventArgs e)
@@ -506,7 +506,7 @@ namespace AvaloniaColorPicker
             ((DispatcherTimer)sender).Stop();
         }
 
-        private void UpdateColorFromCanvas2D(Point pos, bool instantTransition)
+        private void UpdateColorFromCanvasTwoD(Point pos, bool instantTransition)
         {
             double x = Math.Max(0, Math.Min(pos.X, 255));
             double y = Math.Max(0, Math.Min(pos.Y, 255));
@@ -608,40 +608,40 @@ namespace AvaloniaColorPicker
 
             UpdatePreview(instantTransition);
 
-            ColorUpdatedFromCanvas2D?.Invoke(this, new ColorUpdatedEventArgs(R, G, B, H, S, V, L, a, b, A, instantTransition));
+            ColorUpdatedFromCanvasTwoD?.Invoke(this, new ColorUpdatedEventArgs(R, G, B, H, S, V, L, a, b, A, instantTransition));
         }
 
-        private void Canvas2DPressed(object sender, PointerPressedEventArgs e)
+        private void CanvasTwoDPressed(object sender, PointerPressedEventArgs e)
         {
-            Point pos = e.GetPosition(this.FindControl<Canvas>("Canvas2D"));
+            Point pos = e.GetPosition(this.FindControl<Canvas>("CanvasTwoD"));
 
-            UpdateColorFromCanvas2D(pos, false);
+            UpdateColorFromCanvasTwoD(pos, false);
 
-            IsCanvas2DPressed = true;
+            IsCanvasTwoDPressed = true;
 
-            Canvas2DTimer.Start();
+            CanvasTwoDTimer.Start();
         }
 
-        private void Canvas2DReleased(object sender, PointerReleasedEventArgs e)
+        private void CanvasTwoDReleased(object sender, PointerReleasedEventArgs e)
         {
-            IsCanvas2DPressed = false;
+            IsCanvasTwoDPressed = false;
         }
 
-        private void Canvas2DMove(object sender, PointerEventArgs e)
+        private void CanvasTwoDMove(object sender, PointerEventArgs e)
         {
-            if (IsCanvas2DPressed && !Canvas2DTimer.IsEnabled)
+            if (IsCanvasTwoDPressed && !CanvasTwoDTimer.IsEnabled)
             {
-                Point pos = e.GetPosition(this.FindControl<Canvas>("Canvas2D"));
+                Point pos = e.GetPosition(this.FindControl<Canvas>("CanvasTwoD"));
 
-                UpdateColorFromCanvas2D(pos, true);
+                UpdateColorFromCanvasTwoD(pos, true);
             }
         }
 
 
 
-        bool IsCanvas1DPressed = false;
+        bool IsCanvasOneDPressed = false;
 
-        private void UpdateColorFromCanvas1D(Point pos, bool instantTransition)
+        private void UpdateColorFromCanvasOneD(Point pos, bool instantTransition)
         {
             double y = Math.Max(0, Math.Min(pos.Y, 255));
 
@@ -727,31 +727,31 @@ namespace AvaloniaColorPicker
 
             UpdatePreview(instantTransition);
 
-            ColorUpdatedFromCanvas1D?.Invoke(this, new ColorUpdatedEventArgs(R, G, B, H, S, V, L, a, b, A, instantTransition));
+            ColorUpdatedFromCanvasOneD?.Invoke(this, new ColorUpdatedEventArgs(R, G, B, H, S, V, L, a, b, A, instantTransition));
         }
 
-        private void Canvas1DPressed(object sender, PointerPressedEventArgs e)
+        private void CanvasOneDPressed(object sender, PointerPressedEventArgs e)
         {
-            Point pos = e.GetPosition(this.FindControl<Canvas>("Canvas1D"));
+            Point pos = e.GetPosition(this.FindControl<Canvas>("CanvasOneD"));
 
-            UpdateColorFromCanvas1D(pos, false);
+            UpdateColorFromCanvasOneD(pos, false);
 
-            IsCanvas1DPressed = true;
-            Canvas1DTimer.Start();
+            IsCanvasOneDPressed = true;
+            CanvasOneDTimer.Start();
         }
 
-        private void Canvas1DReleased(object sender, PointerReleasedEventArgs e)
+        private void CanvasOneDReleased(object sender, PointerReleasedEventArgs e)
         {
-            IsCanvas1DPressed = false;
+            IsCanvasOneDPressed = false;
         }
 
-        private void Canvas1DMove(object sender, PointerEventArgs e)
+        private void CanvasOneDMove(object sender, PointerEventArgs e)
         {
-            if (IsCanvas1DPressed && !Canvas1DTimer.IsEnabled)
+            if (IsCanvasOneDPressed && !CanvasOneDTimer.IsEnabled)
             {
-                Point pos = e.GetPosition(this.FindControl<Canvas>("Canvas1D"));
+                Point pos = e.GetPosition(this.FindControl<Canvas>("CanvasOneD"));
 
-                UpdateColorFromCanvas1D(pos, true);
+                UpdateColorFromCanvasOneD(pos, true);
             }
         }
 
@@ -801,8 +801,8 @@ namespace AvaloniaColorPicker
     }
 
     /// <summary>
-    /// <see cref="EventArgs"/> for the <see cref="IColorCanvasControls.ColorUpdatedFromAlphaCanvas"/>, <see cref="IColorCanvasControls.ColorUpdatedFromCanvas1D"/>
-    /// and <see cref="IColorCanvasControls.ColorUpdatedFromCanvas2D"/> events.
+    /// <see cref="EventArgs"/> for the <see cref="IColorCanvasControls.ColorUpdatedFromAlphaCanvas"/>, <see cref="IColorCanvasControls.ColorUpdatedFromCanvasOneD"/>
+    /// and <see cref="IColorCanvasControls.ColorUpdatedFromCanvasTwoD"/> events.
     /// </summary>
     public class ColorUpdatedEventArgs : EventArgs
     {

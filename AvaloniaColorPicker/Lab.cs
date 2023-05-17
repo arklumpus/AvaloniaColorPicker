@@ -1061,12 +1061,12 @@ namespace AvaloniaColorPicker
 
                 warningCanvas.PointerEntered += (s, e) =>
                 {
-                    can.Parent.FindControl<Grid>("WarningTooltip").Opacity = 1;
+                    ((Control)can.Parent).FindControl<Grid>("WarningTooltip").Opacity = 1;
                 };
 
                 warningCanvas.PointerExited += (s, e) =>
                 {
-                    can.Parent.FindControl<Grid>("WarningTooltip").Opacity = 0;
+                    ((Control)can.Parent).FindControl<Grid>("WarningTooltip").Opacity = 0;
                 };
 
                 can.Children.Add(warningCanvas);
@@ -1139,12 +1139,12 @@ namespace AvaloniaColorPicker
 
                 warningCanvas.PointerEntered += (s, e) =>
                 {
-                    can.Parent.FindControl<Grid>("WarningTooltip").Opacity = 1;
+                    ((Control)can.Parent).FindControl<Grid>("WarningTooltip").Opacity = 1;
                 };
 
                 warningCanvas.PointerExited += (s, e) =>
                 {
-                    can.Parent.FindControl<Grid>("WarningTooltip").Opacity = 0;
+                    ((Control)can.Parent).FindControl<Grid>("WarningTooltip").Opacity = 0;
                 };
 
                 can.Children.Add(warningCanvas);

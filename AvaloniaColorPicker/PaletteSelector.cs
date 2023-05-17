@@ -195,7 +195,7 @@ namespace AvaloniaColorPicker
                 defaultIndex = Palettes.IndexOf(Palette.CurrentPalette);
             }
 
-            PaletteSelectorBox = new ComboBox() { Items = paletteNames, SelectedIndex = defaultIndex, VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center };
+            PaletteSelectorBox = new ComboBox() { ItemsSource = paletteNames, SelectedIndex = defaultIndex, VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center };
             Grid.SetColumn(PaletteSelectorBox, 1);
             headerPanel.Children.Add(PaletteSelectorBox);
 
@@ -222,7 +222,7 @@ namespace AvaloniaColorPicker
                 }
 
                 List<string> _paletteNames = (from el in Palettes select el.Name).ToList();
-                PaletteSelectorBox.Items = _paletteNames;
+                PaletteSelectorBox.ItemsSource = _paletteNames;
                 PaletteSelectorBox.SelectedIndex = 0;
             };
 
@@ -811,7 +811,7 @@ namespace AvaloniaColorPicker
             Transitions buttonPathTransitions = null;
 
             if (!ColorPicker.TransitionsDisabled)
-            {  
+            {
                 buttonPathTransitions = new Transitions
                 {
                     new SolidBrushTransition() { Property = Avalonia.Controls.Shapes.Path.StrokeProperty, Duration = new TimeSpan(0, 0, 0, 0, 100) }
@@ -962,7 +962,7 @@ namespace AvaloniaColorPicker
                 Palette newPalette = new Palette(name, description, Path.Combine(PaletteDirectory, id + ".palette"));
                 Palettes.Add(newPalette);
                 List<string> paletteNames = (from el in Palettes select el.Name).ToList();
-                PaletteSelectorBox.Items = paletteNames;
+                PaletteSelectorBox.ItemsSource = paletteNames;
                 PaletteSelectorBox.SelectedIndex = Palettes.Count - 1;
             }
 

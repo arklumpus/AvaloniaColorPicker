@@ -27,11 +27,11 @@
       <ColumnDefinition Width="15" />
       <ColumnDefinition Width="24" />
     </Grid.ColumnDefinitions>
-    <Canvas Grid.Column="0" Width="256" Height="256" Name="Canvas2D" Margin="8,0,0,0">
-      <Canvas Width="256" Height="256" Name="Canvas2DImageContainer">
+    <Canvas Grid.Column="0" Width="256" Height="256" Name="CanvasTwoD" Margin="8,0,0,0">
+      <Canvas Width="256" Height="256" Name="CanvasTwoDImageContainer">
 
       </Canvas>
-      <Ellipse Width="16" Height="16" Stroke="White" StrokeThickness="2" Margin="-8,-8" Name="2DPositionCircle">
+      <Ellipse Width="16" Height="16" Stroke="White" StrokeThickness="2" Margin="-8,-8" Name="TwoDPositionCircle">
         <Ellipse.RenderTransform>
           <TranslateTransform X="0" Y="0">
             <TranslateTransform.Transitions>
@@ -44,12 +44,12 @@
         </Ellipse.RenderTransform>
       </Ellipse>
     </Canvas>
-    <Canvas Grid.Column="2" Width="24" Height="256" Name="Canvas1D">
-      <Canvas Width="256" Height="256" Name="Canvas1DImageContainer">
+    <Canvas Grid.Column="2" Width="24" Height="256" Name="CanvasOneD">
+      <Canvas Width="256" Height="256" Name="CanvasOneDImageContainer">
 
       </Canvas>
-      <Canvas Width="24" Height="8" Name="1DPositionCanvas">
-        <Rectangle Width="30" Height="10" Margin="-3,-5,0,0" Name="1DPositionRectangle" />
+      <Canvas Width="24" Height="8" Name="OneDPositionCanvas">
+        <Rectangle Width="30" Height="10" Margin="-3,-5,0,0" Name="OneDPositionRectangle" />
         <Rectangle StrokeThickness="4" Stroke="#808080" Width="32" Height="12" Margin="-4,-6,0,0" StrokeJoin="Round" />
         <Rectangle StrokeThickness="2" Stroke="White" Width="30" Height="10" Margin="-3,-5,0,0" StrokeJoin="Round"/>
         <Canvas.RenderTransform>
