@@ -82,48 +82,47 @@ namespace AvaloniaColorPicker
             {
                 if (isDarkCached == null)
                 {
-                    foreach (Avalonia.Styling.IStyle style in Avalonia.Application.Current.Styles)
+                    if (Avalonia.Application.Current.ActualThemeVariant.Key is string s && s == "Dark")
                     {
-                        //TODO: Sort out how we do this (Maybe just reference the fluent package?)
-                        /*if (style is Avalonia.Themes.Fluent.FluentTheme theme)
+                        isDarkCached = true;
+                        return true;
+                    }
+                    else if (Avalonia.Application.Current.ActualThemeVariant.Key is string s2 && s2 == "Light")
+                    {
+                        isDarkCached = false;
+                        return false;
+                    }
+                    else
+                    {
+                        foreach (Avalonia.Styling.IStyle style in Avalonia.Application.Current.Styles)
                         {
-                            if (theme.Mode == Avalonia.Themes.Fluent.FluentThemeMode.Dark)
+                            if (style is Avalonia.Markup.Xaml.Styling.StyleInclude include)
                             {
-                                isDarkCached = true;
-                                break;
-                            }
-                            else if (theme.Mode == Avalonia.Themes.Fluent.FluentThemeMode.Light)
-                            {
-                                isDarkCached = false;
-                                break;
-                            }
-                        }
-                        else*/ if (style is Avalonia.Markup.Xaml.Styling.StyleInclude include)
-                        {
-                            if (include.Source.IsAbsoluteUri)
-                            {
-                                if (include.Source.AbsoluteUri.Contains("BaseLight"))
+                                if (include.Source.IsAbsoluteUri)
                                 {
-                                    isDarkCached = false;
-                                    break;
+                                    if (include.Source.AbsoluteUri.Contains("BaseLight"))
+                                    {
+                                        isDarkCached = false;
+                                        break;
+                                    }
+                                    else if (include.Source.AbsoluteUri.Contains("BaseDark"))
+                                    {
+                                        isDarkCached = true;
+                                        break;
+                                    }
                                 }
-                                else if (include.Source.AbsoluteUri.Contains("BaseDark"))
+                                else
                                 {
-                                    isDarkCached = true;
-                                    break;
-                                }
-                            }
-                            else
-                            {
-                                if (include.Source.OriginalString.Contains("Light"))
-                                {
-                                    isDarkCached = false;
-                                    break;
-                                }
-                                else if (include.Source.OriginalString.Contains("Dark"))
-                                {
-                                    isDarkCached = true;
-                                    break;
+                                    if (include.Source.OriginalString.Contains("Light"))
+                                    {
+                                        isDarkCached = false;
+                                        break;
+                                    }
+                                    else if (include.Source.OriginalString.Contains("Dark"))
+                                    {
+                                        isDarkCached = true;
+                                        break;
+                                    }
                                 }
                             }
                         }
