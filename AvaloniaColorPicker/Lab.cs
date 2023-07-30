@@ -1235,11 +1235,13 @@ namespace AvaloniaColorPicker
 
             if (A > 0)
             {
-                WarningCanvas.Opacity = 1;
+                WarningCanvas.IsVisible = false;
+                WarningCanvas.Opacity = 0;
             }
             else
             {
-                WarningCanvas.Opacity = 0;
+                WarningCanvas.IsVisible = true;
+                WarningCanvas.Opacity = 1;
             }
         }
 
@@ -1252,10 +1254,12 @@ namespace AvaloniaColorPicker
             if (A > 0)
             {
                 WarningCanvas.IsVisible = false;
+                WarningCanvas.Opacity = 0;
             }
             else
             {
                 WarningCanvas.IsVisible = true;
+                WarningCanvas.Opacity = 1;
             }
         }
     }
