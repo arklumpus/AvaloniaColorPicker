@@ -18,7 +18,6 @@ using Avalonia.Animation;
 using Avalonia.Animation.Easings;
 using Avalonia.Media;
 using System;
-using System.Reactive.Linq;
 
 namespace AvaloniaColorPicker
 {
@@ -82,25 +81,18 @@ namespace AvaloniaColorPicker
         }
     }
 
-    internal class MatrixTransition : Transition<Matrix>
+    internal class MatrixTransition : InterpolatingTransitionBase<Matrix>
     {
-        public override IObservable<Matrix> DoTransition(IObservable<double> progress, Matrix oldValue, Matrix newValue)
+        protected override Matrix Interpolate(double f, Matrix oldValue, Matrix newValue)
         {
-            return progress.Select(p =>
-            {
-                double f = Easing.Ease(p);
-
-                return new Matrix(oldValue.M11 + (newValue.M11 - oldValue.M11) * f,
+            return new Matrix(oldValue.M11 + (newValue.M11 - oldValue.M11) * f,
                     oldValue.M12 + (newValue.M12 - oldValue.M12) * f,
                     oldValue.M21 + (newValue.M21 - oldValue.M21) * f,
                     oldValue.M22 + (newValue.M22 - oldValue.M22) * f,
                     oldValue.M31 + (newValue.M31 - oldValue.M31) * f,
                     oldValue.M32 + (newValue.M32 - oldValue.M32) * f);
-            });
         }
     }
-
-
 
     internal class AnimatableAngleTransform : Animatable
     {

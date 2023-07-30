@@ -331,30 +331,30 @@ namespace AvaloniaColorPicker
                     {
                         case ColorComponents.Component1:
                             AnimatableColourCanvas.UpdateR(R, G, B, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("2DPositionCircle"), G, 255 - B, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("1DPositionCanvas"), 0, 255 - R, instantTransition);
-                            this.FindControl<Rectangle>("1DPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("PositionCircle2D"), G, 255 - B, instantTransition);
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("PositionCanvas1D"), 0, 255 - R, instantTransition);
+                            this.FindControl<Rectangle>("PositionRectangle1D").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
                             break;
                         case ColorComponents.Component2:
                             AnimatableColourCanvas.UpdateG(R, G, B, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("2DPositionCircle"), 255 - R, 255 - B, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("1DPositionCanvas"), 0, 255 - G, instantTransition);
-                            this.FindControl<Rectangle>("1DPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("PositionCircle2D"), 255 - R, 255 - B, instantTransition);
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("PositionCanvas1D"), 0, 255 - G, instantTransition);
+                            this.FindControl<Rectangle>("PositionRectangle1D").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
                             break;
                         case ColorComponents.Component3:
                             AnimatableColourCanvas.UpdateB(R, G, B, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("2DPositionCircle"), G, R, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("1DPositionCanvas"), 0, 255 - B, instantTransition);
-                            this.FindControl<Rectangle>("1DPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("PositionCircle2D"), G, R, instantTransition);
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("PositionCanvas1D"), 0, 255 - B, instantTransition);
+                            this.FindControl<Rectangle>("PositionRectangle1D").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
                             break;
                     }
                     if (S < 128 && V > 128)
                     {
-                        this.FindControl<Ellipse>("2DPositionCircle").Stroke = Brushes.Black;
+                        this.FindControl<Ellipse>("PositionCircle2D").Stroke = Brushes.Black;
                     }
                     else
                     {
-                        this.FindControl<Ellipse>("2DPositionCircle").Stroke = Brushes.White;
+                        this.FindControl<Ellipse>("PositionCircle2D").Stroke = Brushes.White;
                     }
                     break;
                 case ColorPicker.ColorSpaces.HSB:
@@ -362,30 +362,30 @@ namespace AvaloniaColorPicker
                     {
                         case ColorComponents.Component1:
                             AnimatableColourCanvas.UpdateH(H / 255.0, S / 255.0, V / 255.0, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("2DPositionCircle"), S, 255 - V, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("1DPositionCanvas"), 0, 255 - H, instantTransition);
-                            this.FindControl<Rectangle>("1DPositionRectangle").Fill = new SolidColorBrush(HSB.ColorFromHSV(H / 255.0, 1, 1));
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("PositionCircle2D"), S, 255 - V, instantTransition);
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("PositionCanvas1D"), 0, 255 - H, instantTransition);
+                            this.FindControl<Rectangle>("PositionRectangle1D").Fill = new SolidColorBrush(HSB.ColorFromHSV(H / 255.0, 1, 1));
                             break;
                         case ColorComponents.Component2:
                             AnimatableColourCanvas.UpdateS(H / 255.0, S / 255.0, V / 255.0, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("2DPositionCircle"), H, 255 - V, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("1DPositionCanvas"), 0, 255 - S, instantTransition);
-                            this.FindControl<Rectangle>("1DPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("PositionCircle2D"), H, 255 - V, instantTransition);
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("PositionCanvas1D"), 0, 255 - S, instantTransition);
+                            this.FindControl<Rectangle>("PositionRectangle1D").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
                             break;
                         case ColorComponents.Component3:
                             AnimatableColourCanvas.UpdateV(H / 255.0, S / 255.0, V / 255.0, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("2DPositionCircle"), 128 + S * 0.5 * Math.Cos(H / 255.0 * 2 * Math.PI), 128 + S * 0.5 * Math.Sin(H / 255.0 * 2 * Math.PI), instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("1DPositionCanvas"), 0, 255 - V, instantTransition);
-                            this.FindControl<Rectangle>("1DPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("PositionCircle2D"), 128 + S * 0.5 * Math.Cos(H / 255.0 * 2 * Math.PI), 128 + S * 0.5 * Math.Sin(H / 255.0 * 2 * Math.PI), instantTransition);
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("PositionCanvas1D"), 0, 255 - V, instantTransition);
+                            this.FindControl<Rectangle>("PositionRectangle1D").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
                             break;
                     }
                     if (S < 128 && V > 128)
                     {
-                        this.FindControl<Ellipse>("2DPositionCircle").Stroke = Brushes.Black;
+                        this.FindControl<Ellipse>("PositionCircle2D").Stroke = Brushes.Black;
                     }
                     else
                     {
-                        this.FindControl<Ellipse>("2DPositionCircle").Stroke = Brushes.White;
+                        this.FindControl<Ellipse>("PositionCircle2D").Stroke = Brushes.White;
                     }
                     break;
                 case ColorPicker.ColorSpaces.LAB:
@@ -393,21 +393,21 @@ namespace AvaloniaColorPicker
                     {
                         case ColorComponents.Component1:
                             AnimatableColourCanvas.UpdateL(L / 100.0, a / 100.0, b / 100.0, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("2DPositionCircle"), (255 + 255 * b / 100.0) / 2, (255 - 255 * a / 100.0) / 2, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("1DPositionCanvas"), 0, 255 - L / 100.0 * 255, instantTransition);
-                            this.FindControl<Rectangle>("1DPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("PositionCircle2D"), (255 + 255 * b / 100.0) / 2, (255 - 255 * a / 100.0) / 2, instantTransition);
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("PositionCanvas1D"), 0, 255 - L / 100.0 * 255, instantTransition);
+                            this.FindControl<Rectangle>("PositionRectangle1D").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
                             break;
                         case ColorComponents.Component2:
                             AnimatableColourCanvas.Updatea(L / 100.0, a / 100.0, b / 100.0, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("2DPositionCircle"), (255 + 255 * b / 100.0) / 2, 255 - 255 * L / 100.0, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("1DPositionCanvas"), 0, (255 - a / 100.0 * 255) * 0.5, instantTransition);
-                            this.FindControl<Rectangle>("1DPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("PositionCircle2D"), (255 + 255 * b / 100.0) / 2, 255 - 255 * L / 100.0, instantTransition);
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("PositionCanvas1D"), 0, (255 - a / 100.0 * 255) * 0.5, instantTransition);
+                            this.FindControl<Rectangle>("PositionRectangle1D").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
                             break;
                         case ColorComponents.Component3:
                             AnimatableColourCanvas.Updateb(L / 100.0, a / 100.0, b / 100.0, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("2DPositionCircle"), 255 - 255 * L / 100.0, (255 - 255 * a / 100.0) / 2, instantTransition);
-                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("1DPositionCanvas"), 0, (255 - b / 100.0 * 255) * 0.5, instantTransition);
-                            this.FindControl<Rectangle>("1DPositionRectangle").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Ellipse>("PositionCircle2D"), 255 - 255 * L / 100.0, (255 - 255 * a / 100.0) / 2, instantTransition);
+                            ColorPicker.SetTranslateRenderTransform(this.FindControl<Canvas>("PositionCanvas1D"), 0, (255 - b / 100.0 * 255) * 0.5, instantTransition);
+                            this.FindControl<Rectangle>("PositionRectangle1D").Fill = new SolidColorBrush(Color.FromRgb(R, G, B));
                             break;
                     }
 
@@ -418,11 +418,11 @@ namespace AvaloniaColorPicker
 
                     if (Sl < 0.5 && L1 > 0.5)
                     {
-                        this.FindControl<Ellipse>("2DPositionCircle").Stroke = Brushes.Black;
+                        this.FindControl<Ellipse>("PositionCircle2D").Stroke = Brushes.Black;
                     }
                     else
                     {
-                        this.FindControl<Ellipse>("2DPositionCircle").Stroke = Brushes.White;
+                        this.FindControl<Ellipse>("PositionCircle2D").Stroke = Brushes.White;
                     }
                     break;
             }

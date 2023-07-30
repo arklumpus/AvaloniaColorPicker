@@ -17,6 +17,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+			 xmlns:local="clr-namespace:AvaloniaColorPicker;assembly=AvaloniaColorPicker"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AvaloniaColorPicker.ColorPreview">
   <UserControl.Styles>
@@ -59,9 +60,33 @@
     </Styles>
   </UserControl.Styles>
   <Canvas Width="128" Height="48">
-    <Path Data="M0,24 L13.86,0 L41.57,0 L55.43,24 L41.57,48 L13.86,48 Z" Fill="#80FF0000" Margin="16,0,0,0" Name="HexagonColor1" Cursor="Hand" Classes="HexagonLeft"></Path>
-    <Path Data="M0,24 L13.86,0 L41.57,0 L55.43,24 L41.57,48 L13.86,48 Z" Fill="#80008000" Margin="57.57,0,0,0" Name="HexagonColor4" Cursor="Hand" Classes="HexagonRight"></Path>
-    <Path Data="M0,24 L13.86,0 L41.57,0 L55.43,24 L41.57,48 L13.86,48 Z" Fill="#800000FF" Margin="43.71,0,0,0" Name="HexagonColor3" Cursor="Hand" Classes="HexagonRight"></Path>
-    <Path Data="M0,24 L13.86,0 L41.57,0 L55.43,24 L41.57,48 L13.86,48 Z" Fill="#80FFFF00" Margin="29.86,0,0,0" Name="HexagonColor2" Classes="HexagonCenter"></Path>
+    <Path Data="M0,24 L13.86,0 L41.57,0 L55.43,24 L41.57,48 L13.86,48 Z" Fill="#80FF0000" Margin="16,0,0,0" Name="HexagonColor1" Cursor="Hand" Classes="HexagonLeft">
+		<Path.Transitions>
+			<Transitions>
+				<local:ColorVisualBrushTransition Duration="0:0:0.1" Property="Fill"></local:ColorVisualBrushTransition>
+			</Transitions>
+		</Path.Transitions>
+	</Path>
+    <Path Data="M0,24 L13.86,0 L41.57,0 L55.43,24 L41.57,48 L13.86,48 Z" Fill="#80008000" Margin="57.57,0,0,0" Name="HexagonColor4" Cursor="Hand" Classes="HexagonRight">
+		<Path.Transitions>
+			<Transitions>
+				<local:ColorVisualBrushTransition Duration="0:0:0.1" Property="Fill"></local:ColorVisualBrushTransition>
+			</Transitions>
+		</Path.Transitions>
+	</Path>
+    <Path Data="M0,24 L13.86,0 L41.57,0 L55.43,24 L41.57,48 L13.86,48 Z" Fill="#800000FF" Margin="43.71,0,0,0" Name="HexagonColor3" Cursor="Hand" Classes="HexagonRight">
+		<Path.Transitions>
+			<Transitions>
+				<local:ColorVisualBrushTransition Duration="0:0:0.1" Property="Fill"></local:ColorVisualBrushTransition>
+			</Transitions>
+		</Path.Transitions>
+	</Path>
+    <Path Data="M0,24 L13.86,0 L41.57,0 L55.43,24 L41.57,48 L13.86,48 Z" Fill="#80FFFF00" Margin="29.86,0,0,0" Name="HexagonColor2" Classes="HexagonCenter">
+		<Path.Transitions>
+			<Transitions>
+				<local:ColorVisualBrushTransition Duration="0:0:0.1" Property="Fill"></local:ColorVisualBrushTransition>
+			</Transitions>
+		</Path.Transitions>
+	</Path>
   </Canvas>
 </UserControl>

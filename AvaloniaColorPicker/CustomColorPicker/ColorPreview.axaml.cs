@@ -42,7 +42,7 @@ namespace AvaloniaColorPicker
         /// Invoked when the user clicks on a colour.
         /// </summary>
         event EventHandler<ColorSelectedEventArgs> ColorSelected;
-        
+
         /// <summary>
         /// Change the currently selected colour.
         /// </summary>
@@ -201,28 +201,14 @@ namespace AvaloniaColorPicker
 
             Func<Color, Color> colourBlindnessFunction = ColorPicker.GetColourBlindnessFunction((int)ColorBlindnessMode);
 
-            if (instantTransition)
-            {
-                this.FindControl<Path>("HexagonColor1").Fill = new ColorVisualBrush(colourBlindnessFunction(contrasting));
-                this.FindControl<Path>("HexagonColor1").Tag = contrasting;
-                this.FindControl<Path>("HexagonColor2").Fill = new ColorVisualBrush(colourBlindnessFunction(Color));
-                this.FindControl<Path>("HexagonColor2").Tag = Color;
-                this.FindControl<Path>("HexagonColor3").Fill = new ColorVisualBrush(colourBlindnessFunction(light));
-                this.FindControl<Path>("HexagonColor3").Tag = light;
-                this.FindControl<Path>("HexagonColor4").Fill = new ColorVisualBrush(colourBlindnessFunction(dark));
-                this.FindControl<Path>("HexagonColor4").Tag = dark;
-            }
-            else
-            {
-                ((ColorVisualBrush)this.FindControl<Path>("HexagonColor1").Fill).Color = colourBlindnessFunction(contrasting);
-                this.FindControl<Path>("HexagonColor1").Tag = contrasting;
-                ((ColorVisualBrush)this.FindControl<Path>("HexagonColor2").Fill).Color = colourBlindnessFunction(Color);
-                this.FindControl<Path>("HexagonColor2").Tag = Color;
-                ((ColorVisualBrush)this.FindControl<Path>("HexagonColor3").Fill).Color = colourBlindnessFunction(light);
-                this.FindControl<Path>("HexagonColor3").Tag = light;
-                ((ColorVisualBrush)this.FindControl<Path>("HexagonColor4").Fill).Color = colourBlindnessFunction(dark);
-                this.FindControl<Path>("HexagonColor4").Tag = dark;
-            }
+            ColorVisualBrush.SetColor(this.FindControl<Path>("HexagonColor1"), colourBlindnessFunction(contrasting), instantTransition);
+            this.FindControl<Path>("HexagonColor1").Tag = contrasting;
+            ColorVisualBrush.SetColor(this.FindControl<Path>("HexagonColor2"), colourBlindnessFunction(Color), instantTransition);
+            this.FindControl<Path>("HexagonColor2").Tag = Color;
+            ColorVisualBrush.SetColor(this.FindControl<Path>("HexagonColor3"), colourBlindnessFunction(light), instantTransition);
+            this.FindControl<Path>("HexagonColor3").Tag = light;
+            ColorVisualBrush.SetColor(this.FindControl<Path>("HexagonColor4"), colourBlindnessFunction(dark), instantTransition);
+            this.FindControl<Path>("HexagonColor4").Tag = dark;
         }
 
         private void HexagonPressed(object sender, PointerPressedEventArgs e)

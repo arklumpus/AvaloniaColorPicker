@@ -20,69 +20,48 @@ using Avalonia.Controls;
 using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using System;
-using System.Reactive.Linq;
 
 namespace AvaloniaColorPicker
 {
-    internal class ColorVisualBrush : VisualBrush
+    internal static class ColorVisualBrush
     {
         private static IBrush AlphaBackgroundBrush { get; } = Brush.Parse("#DCDCDC");
 
-        private Rectangle ColorRectangle { get; }
-
-        public static readonly StyledProperty<Color> ColorProperty = AvaloniaProperty.Register<ColorVisualBrush, Color>(nameof(Color));
-
-        public Color Color
-        {
-            get
-            {
-                return GetValue(ColorProperty);
-            }
-            set
-            {
-                SetValue(ColorProperty, value);
-            }
-        }
-
-        public ColorVisualBrush(Color color) : base()
+        public static VisualBrush Create(Color color)
         {
             Canvas can = new Canvas() { Width = 16, Height = 16, Background = Brushes.White };
             can.Children.Add(new Rectangle() { Width = 8, Height = 8, Fill = AlphaBackgroundBrush });
             can.Children.Add(new Rectangle() { Width = 8, Height = 8, Fill = AlphaBackgroundBrush, Margin = new Avalonia.Thickness(8, 8, 0, 0) });
-            ColorRectangle = new Rectangle() { Width = 16, Height = 16 };
+            Rectangle ColorRectangle = new Rectangle() { Width = 16, Height = 16, Fill = new SolidColorBrush(color) };
             can.Children.Add(ColorRectangle);
-            this.Visual = can;
-            this.SourceRect = new Avalonia.RelativeRect(0, 0, 16, 16, Avalonia.RelativeUnit.Absolute);
-            this.DestinationRect = new Avalonia.RelativeRect(0, 0, 16, 16, Avalonia.RelativeUnit.Absolute);
-            this.TileMode = TileMode.Tile;
-            this.Color = color;
 
-            AffectsRender<ColorVisualBrush>(ColorProperty);
-            
-            if (!ColorPicker.TransitionsDisabled)
-            {
-                this.Transitions = new Avalonia.Animation.Transitions
-                {
-                    new ColorTransition() { Property = ColorProperty, Duration = new TimeSpan(0, 0, 0, 0, 100) }
-                };
-            }
+            VisualBrush visualBrush = new VisualBrush(can);
+            visualBrush.SourceRect = new Avalonia.RelativeRect(0, 0, 16, 16, Avalonia.RelativeUnit.Absolute);
+            visualBrush.DestinationRect = new Avalonia.RelativeRect(0, 0, 16, 16, Avalonia.RelativeUnit.Absolute);
+            visualBrush.TileMode = TileMode.Tile;
+
+            return visualBrush;
         }
 
-        protected override void OnPropertyChanged(AvaloniaPropertyChangedEventArgs change)
+        public static void SetColor(Path pth, Color color, bool instantTransition)
         {
-            base.OnPropertyChanged(change);
-
-            if (change.Property == ColorProperty)
+            if (instantTransition)
             {
-                ColorRectangle.Fill = new SolidColorBrush((change.NewValue as Color?).Value);
-                this.RaiseInvalidated(EventArgs.Empty);
+                Transitions prevTrans = pth.Transitions;
+                pth.Transitions = null;
+                pth.Fill = Create(color);
+                pth.Transitions = prevTrans;
+            }
+            else
+            {
+                pth.Fill = Create(color);
             }
         }
     }
 
     internal class AnimatableColorBrush : Animatable
     {
-        public static readonly StyledProperty<Color> ColorProperty = AvaloniaProperty.Register<ColorVisualBrush, Color>(nameof(Color));
+        public static readonly StyledProperty<Color> ColorProperty = AvaloniaProperty.Register<AnimatableColorBrush, Color>(nameof(Color));
 
         public Color Color
         {
@@ -142,72 +121,82 @@ namespace AvaloniaColorPicker
         }
     }
 
-    internal class ColorTransition : Transition<Color>
+    internal class ColorTransition : InterpolatingTransitionBase<Color>
     {
-        public override IObservable<Color> DoTransition(IObservable<double> progress, Color oldValue, Color newValue)
+        protected override Color Interpolate(double f, Color oldValue, Color newValue)
         {
-            return progress.Select(p =>
+            (double L1, double a1, double b1) = Lab.ToLab(oldValue);
+            (double L2, double a2, double b2) = Lab.ToLab(newValue);
+
+            byte A = (byte)(oldValue.A + ((double)newValue.A - oldValue.A) * f);
+
+            Lab.FromLab(L1 + (L2 - L1) * f, a1 + (a2 - a1) * f, b1 + (b2 - b1) * f, out byte R, out byte G, out byte B);
+
+            return Color.FromArgb(A, R, G, B);
+        }
+    }
+
+    internal class SolidBrushTransition : InterpolatingTransitionBase<IBrush>
+    {
+        protected override IBrush Interpolate(double f, IBrush oldBrush, IBrush newBrush)
+        {
+            if (oldBrush is SolidColorBrush oldSolidBrush && newBrush is SolidColorBrush newSolidBrush)
             {
+                Color oldValue = oldSolidBrush.Color;
+                Color newValue = newSolidBrush.Color;
+
                 (double L1, double a1, double b1) = Lab.ToLab(oldValue);
                 (double L2, double a2, double b2) = Lab.ToLab(newValue);
-
-                double f = Easing.Ease(p);
 
                 byte A = (byte)(oldValue.A + ((double)newValue.A - oldValue.A) * f);
 
                 Lab.FromLab(L1 + (L2 - L1) * f, a1 + (a2 - a1) * f, b1 + (b2 - b1) * f, out byte R, out byte G, out byte B);
 
-                return Color.FromArgb(A, R, G, B);
-            });
+                return new SolidColorBrush(Color.FromArgb(A, R, G, B));
+            }
+            else
+            {
+                return newBrush;
+            }
         }
     }
 
-    internal class SolidBrushTransition : Transition<IBrush>
+    internal class RGBTransition : InterpolatingTransitionBase<Color>
     {
-        public override IObservable<IBrush> DoTransition(IObservable<double> progress, IBrush oldBrush, IBrush newBrush)
+        protected override Color Interpolate(double f, Color oldValue, Color newValue)
         {
-            return progress.Select(p =>
-            {
-                if (oldBrush is SolidColorBrush oldSolidBrush && newBrush is SolidColorBrush newSolidBrush)
-                {
-                    Color oldValue = oldSolidBrush.Color;
-                    Color newValue = newSolidBrush.Color;
+            byte R = (byte)(oldValue.R + ((double)newValue.R - oldValue.R) * f);
+            byte G = (byte)(oldValue.G + ((double)newValue.G - oldValue.G) * f);
+            byte B = (byte)(oldValue.B + ((double)newValue.B - oldValue.B) * f);
+            byte A = (byte)(oldValue.A + ((double)newValue.A - oldValue.A) * f);
 
-
-                    (double L1, double a1, double b1) = Lab.ToLab(oldValue);
-                    (double L2, double a2, double b2) = Lab.ToLab(newValue);
-
-                    double f = Easing.Ease(p);
-
-                    byte A = (byte)(oldValue.A + ((double)newValue.A - oldValue.A) * f);
-
-                    Lab.FromLab(L1 + (L2 - L1) * f, a1 + (a2 - a1) * f, b1 + (b2 - b1) * f, out byte R, out byte G, out byte B);
-
-                    return new SolidColorBrush(Color.FromArgb(A, R, G, B));
-                }
-                else
-                {
-                    return newBrush;
-                }
-            });
+            return Color.FromArgb(A, R, G, B);
         }
     }
 
-    internal class RGBTransition : Transition<Color>
+    internal class ColorVisualBrushTransition : InterpolatingTransitionBase<IBrush>
     {
-        public override IObservable<Color> DoTransition(IObservable<double> progress, Color oldValue, Color newValue)
+        protected override IBrush Interpolate(double f, IBrush oldBrush, IBrush newBrush)
         {
-            return progress.Select(p =>
+            if (oldBrush is VisualBrush oldVisualBrush && newBrush is VisualBrush newVisualBrush)
             {
-                double f = Easing.Ease(p);
+                Color oldValue = ((SolidColorBrush)((Rectangle)((Canvas)oldVisualBrush.Visual).Children[2]).Fill).Color;
+                Color newValue = ((SolidColorBrush)((Rectangle)((Canvas)newVisualBrush.Visual).Children[2]).Fill).Color;
 
-                byte R = (byte)(oldValue.R + ((double)newValue.R - oldValue.R) * f);
-                byte G = (byte)(oldValue.G + ((double)newValue.G - oldValue.G) * f);
-                byte B = (byte)(oldValue.B + ((double)newValue.B - oldValue.B) * f);
+                (double L1, double a1, double b1) = Lab.ToLab(oldValue);
+                (double L2, double a2, double b2) = Lab.ToLab(newValue);
+
                 byte A = (byte)(oldValue.A + ((double)newValue.A - oldValue.A) * f);
 
-                return Color.FromArgb(A, R, G, B);
-            });
+                Lab.FromLab(L1 + (L2 - L1) * f, a1 + (a2 - a1) * f, b1 + (b2 - b1) * f, out byte R, out byte G, out byte B);
+
+                //return new SolidColorBrush(Color.FromArgb(A, R, G, B));
+                return ColorVisualBrush.Create(Color.FromArgb(A, R, G, B));
+            }
+            else
+            {
+                return newBrush;
+            }
         }
     }
 }

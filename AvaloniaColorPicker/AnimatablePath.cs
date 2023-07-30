@@ -21,7 +21,6 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using System;
-using System.Reactive.Linq;
 
 namespace AvaloniaColorPicker
 {
@@ -153,15 +152,11 @@ namespace AvaloniaColorPicker
         }
     }
 
-    internal class PointCollection4Transition : Transition<PointCollection4>
+    internal class PointCollection4Transition : InterpolatingTransitionBase<PointCollection4>
     {
-        public override IObservable<PointCollection4> DoTransition(IObservable<double> progress, PointCollection4 oldValue, PointCollection4 newValue)
+        protected override PointCollection4 Interpolate(double f, PointCollection4 oldValue, PointCollection4 newValue)
         {
-            return progress.Select(p =>
-            {
-                double f = Easing.Ease(p);
-                return new PointCollection4(oldValue.P1 + (newValue.P1 - oldValue.P1) * f, oldValue.P2 + (newValue.P2 - oldValue.P2) * f, oldValue.P3 + (newValue.P3 - oldValue.P3) * f, oldValue.P4 + (newValue.P4 - oldValue.P4) * f);
-            });
+            return new PointCollection4(oldValue.P1 + (newValue.P1 - oldValue.P1) * f, oldValue.P2 + (newValue.P2 - oldValue.P2) * f, oldValue.P3 + (newValue.P3 - oldValue.P3) * f, oldValue.P4 + (newValue.P4 - oldValue.P4) * f);
         }
     }
 
@@ -647,27 +642,19 @@ namespace AvaloniaColorPicker
         }
     }
 
-    internal class HSVTransition : Transition<HSV>
+    internal class HSVTransition : InterpolatingTransitionBase<HSV>
     {
-        public override IObservable<HSV> DoTransition(IObservable<double> progress, HSV oldValue, HSV newValue)
+        protected override HSV Interpolate(double f, HSV oldValue, HSV newValue)
         {
-            return progress.Select(p =>
-            {
-                double f = Easing.Ease(p);
-                return new HSV(oldValue.H + (newValue.H - oldValue.H) * f, oldValue.S + (newValue.S - oldValue.S) * f, oldValue.V + (newValue.V - oldValue.V) * f);
-            });
+            return new HSV(oldValue.H + (newValue.H - oldValue.H) * f, oldValue.S + (newValue.S - oldValue.S) * f, oldValue.V + (newValue.V - oldValue.V) * f);
         }
     }
 
-    internal class ThicknessTransition : Transition<Thickness>
+    internal class ThicknessTransition : InterpolatingTransitionBase<Thickness>
     {
-        public override IObservable<Thickness> DoTransition(IObservable<double> progress, Thickness oldValue, Thickness newValue)
+        protected override Thickness Interpolate(double f, Thickness oldValue, Thickness newValue)
         {
-            return progress.Select(p =>
-            {
-                double f = Easing.Ease(p);
-                return new Thickness(oldValue.Left + (newValue.Left - oldValue.Left) * f, oldValue.Top + (newValue.Top - oldValue.Top) * f, oldValue.Right + (newValue.Right - oldValue.Right) * f, oldValue.Bottom + (newValue.Bottom - oldValue.Bottom) * f);
-            });
+            return new Thickness(oldValue.Left + (newValue.Left - oldValue.Left) * f, oldValue.Top + (newValue.Top - oldValue.Top) * f, oldValue.Right + (newValue.Right - oldValue.Right) * f, oldValue.Bottom + (newValue.Bottom - oldValue.Bottom) * f);
         }
     }
 }

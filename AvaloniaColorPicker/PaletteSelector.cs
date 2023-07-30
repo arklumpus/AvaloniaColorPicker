@@ -195,7 +195,7 @@ namespace AvaloniaColorPicker
                 defaultIndex = Palettes.IndexOf(Palette.CurrentPalette);
             }
 
-            PaletteSelectorBox = new ComboBox() { Items = paletteNames, SelectedIndex = defaultIndex, VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center };
+            PaletteSelectorBox = new ComboBox() { ItemsSource = paletteNames, SelectedIndex = defaultIndex, VerticalAlignment = Avalonia.Layout.VerticalAlignment.Center };
             Grid.SetColumn(PaletteSelectorBox, 1);
             headerPanel.Children.Add(PaletteSelectorBox);
 
@@ -222,7 +222,7 @@ namespace AvaloniaColorPicker
                 }
 
                 List<string> _paletteNames = (from el in Palettes select el.Name).ToList();
-                PaletteSelectorBox.Items = _paletteNames;
+                PaletteSelectorBox.ItemsSource = _paletteNames;
                 PaletteSelectorBox.SelectedIndex = 0;
             };
 
@@ -481,9 +481,9 @@ namespace AvaloniaColorPicker
             Color darkerColor = ColorPicker.GetDarkerColor(color);
 
 
-            Avalonia.Controls.Shapes.Path leftPath = new Avalonia.Controls.Shapes.Path() { Data = leftHexagon, Fill = new ColorVisualBrush(colourBlindnessFunction(lighterColor)), Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Hand) };
-            Avalonia.Controls.Shapes.Path rightPath = new Avalonia.Controls.Shapes.Path() { Data = rightHexagon, Fill = new ColorVisualBrush(colourBlindnessFunction(darkerColor)), Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Hand) };
-            Avalonia.Controls.Shapes.Path centerPath = new Avalonia.Controls.Shapes.Path() { Data = centerHexagon, Fill = new ColorVisualBrush(colourBlindnessFunction(color)), Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Hand) };
+            Avalonia.Controls.Shapes.Path leftPath = new Avalonia.Controls.Shapes.Path() { Data = leftHexagon, Fill = ColorVisualBrush.Create(colourBlindnessFunction(lighterColor)), Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Hand) };
+            Avalonia.Controls.Shapes.Path rightPath = new Avalonia.Controls.Shapes.Path() { Data = rightHexagon, Fill = ColorVisualBrush.Create(colourBlindnessFunction(darkerColor)), Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Hand) };
+            Avalonia.Controls.Shapes.Path centerPath = new Avalonia.Controls.Shapes.Path() { Data = centerHexagon, Fill = ColorVisualBrush.Create(colourBlindnessFunction(color)), Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Hand) };
 
             if (!ColorPicker.TransitionsDisabled)
             {
@@ -962,7 +962,7 @@ namespace AvaloniaColorPicker
                 Palette newPalette = new Palette(name, description, Path.Combine(PaletteDirectory, id + ".palette"));
                 Palettes.Add(newPalette);
                 List<string> paletteNames = (from el in Palettes select el.Name).ToList();
-                PaletteSelectorBox.Items = paletteNames;
+                PaletteSelectorBox.ItemsSource = paletteNames;
                 PaletteSelectorBox.SelectedIndex = Palettes.Count - 1;
             }
 

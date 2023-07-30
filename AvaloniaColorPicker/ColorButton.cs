@@ -65,7 +65,7 @@ namespace AvaloniaColorPicker
 
         private Grid PaletteContainer { get; }
 
-        private ColorVisualBrush ColorBrush { get; }
+        private Border ColorBorder { get; }
 
         private MyToggleButton ContentButton { get; }
 
@@ -92,13 +92,16 @@ namespace AvaloniaColorPicker
             mainGrid.ColumnDefinitions.Add(new ColumnDefinition(1, GridUnitType.Star));
             mainGrid.ColumnDefinitions.Add(new ColumnDefinition(16, GridUnitType.Pixel));
 
-            Border colorBorder = new Border() { MinHeight = 16, MinWidth = 24, BorderThickness = new Avalonia.Thickness(1), BorderBrush = Colours.ForegroundColour, HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch, VerticalAlignment = Avalonia.Layout.VerticalAlignment.Stretch };
+            ColorBorder = new Border() { MinHeight = 16, MinWidth = 24, BorderThickness = new Avalonia.Thickness(1), BorderBrush = Colours.ForegroundColour, HorizontalAlignment = Avalonia.Layout.HorizontalAlignment.Stretch, VerticalAlignment = Avalonia.Layout.VerticalAlignment.Stretch };
 
-            mainGrid.Children.Add(colorBorder);
+            mainGrid.Children.Add(ColorBorder);
 
-            ColorBrush = new ColorVisualBrush(Color);
+            ColorBorder.Background = ColorVisualBrush.Create(Color);
 
-            colorBorder.Background = ColorBrush;
+            ColorBorder.Transitions = new Transitions()
+            {
+                new ColorVisualBrushTransition() { Duration = TimeSpan.FromMilliseconds(100), Property = Border.BackgroundProperty }
+            };
 
             Canvas arrowCanvas = new Canvas() { Width = 16, Height = 16 };
             arrowCanvas.Classes.Add("ArrowCanvas");
@@ -196,15 +199,15 @@ namespace AvaloniaColorPicker
         {
             base.OnLostFocus(e);
 
-            IInputElement element = FocusManager.Instance.Current;
+            IInputElement element = TopLevel.GetTopLevel(this).FocusManager.GetFocusedElement();
 
-            if (!HasParent(element as IControl, ContentButton))
+            if (!HasParent(element as Control, ContentButton))
             {
                 ContentButton.IsChecked = false;
             }
         }
 
-        private static bool HasParent(IControl child, IControl parent)
+        private static bool HasParent(Control child, Control parent)
         {
             while (child != null)
             {
@@ -213,7 +216,7 @@ namespace AvaloniaColorPicker
                     return true;
                 }
 
-                child = child.Parent;
+                child = child.Parent as Control;
             }
 
             return false;
@@ -336,7 +339,7 @@ namespace AvaloniaColorPicker
             if (change.Property == ColorProperty)
             {
                 Color col = (change.NewValue as Color?).Value;
-                ColorBrush.Color = col;
+                ColorBorder.Background = ColorVisualBrush.Create(col);
             }
         }
 
@@ -409,9 +412,9 @@ namespace AvaloniaColorPicker
             Color darkerColor = ColorPicker.GetDarkerColor(color);
 
 
-            Avalonia.Controls.Shapes.Path leftPath = new Avalonia.Controls.Shapes.Path() { Data = leftHexagon, Fill = new ColorVisualBrush(lighterColor), Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Hand) };
-            Avalonia.Controls.Shapes.Path rightPath = new Avalonia.Controls.Shapes.Path() { Data = rightHexagon, Fill = new ColorVisualBrush(darkerColor), Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Hand) };
-            Avalonia.Controls.Shapes.Path centerPath = new Avalonia.Controls.Shapes.Path() { Data = centerHexagon, Fill = new ColorVisualBrush(color), Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Hand) };
+            Avalonia.Controls.Shapes.Path leftPath = new Avalonia.Controls.Shapes.Path() { Data = leftHexagon, Fill = ColorVisualBrush.Create(lighterColor), Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Hand) };
+            Avalonia.Controls.Shapes.Path rightPath = new Avalonia.Controls.Shapes.Path() { Data = rightHexagon, Fill = ColorVisualBrush.Create(darkerColor), Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Hand) };
+            Avalonia.Controls.Shapes.Path centerPath = new Avalonia.Controls.Shapes.Path() { Data = centerHexagon, Fill = ColorVisualBrush.Create(color), Cursor = new Avalonia.Input.Cursor(Avalonia.Input.StandardCursorType.Hand) };
 
             leftPath.Classes.Add("HexagonLeftButton");
             rightPath.Classes.Add("HexagonRightButton");

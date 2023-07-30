@@ -47,7 +47,7 @@ namespace AvaloniaColorPicker
     /// <summary>
     /// A <see cref="Window"/> containing a <see cref="ColorPicker"/> control.
     /// </summary>
-    public class ColorPickerWindow : Window, IColorPickerWindow
+    public partial class ColorPickerWindow : Window, IColorPickerWindow
     {
         /// <summary>
         /// The color that is currently selected in the <see cref="ColorPicker"/>.

@@ -3,7 +3,7 @@ using Avalonia.Markup.Xaml;
 
 namespace ColorPickerDemo
 {
-    public class MainWindow : Window
+    public partial class MainWindow : Window
     {
         public MainWindow()
         {

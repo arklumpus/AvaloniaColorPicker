@@ -21,7 +21,6 @@ using Avalonia.Controls.Shapes;
 using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using System;
-using System.Reactive.Linq;
 
 namespace AvaloniaColorPicker
 {
@@ -182,15 +181,11 @@ namespace AvaloniaColorPicker
         }
     }
 
-    internal class LABTransition : Transition<LAB>
+    internal class LABTransition : InterpolatingTransitionBase<LAB>
     {
-        public override IObservable<LAB> DoTransition(IObservable<double> progress, LAB oldValue, LAB newValue)
+        protected override LAB Interpolate(double f, LAB oldValue, LAB newValue)
         {
-            return progress.Select(p =>
-            {
-                double f = Easing.Ease(p);
-                return new LAB(oldValue.L + (newValue.L - oldValue.L) * f, oldValue.a + (newValue.a - oldValue.a) * f, oldValue.b + (newValue.b - oldValue.b) * f);
-            });
+            return new LAB(oldValue.L + (newValue.L - oldValue.L) * f, oldValue.a + (newValue.a - oldValue.a) * f, oldValue.b + (newValue.b - oldValue.b) * f);
         }
     }
 }
